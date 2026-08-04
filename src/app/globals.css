@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Premium Dark Theme Core */
+  --background: #030509; /* Deep midnight navy */
+  --foreground: #f8fafc; /* slate-50 */
+  
+  /* Brand Accents */
+  --accent-primary: #06b6d4; /* Performance Cyan */
+  --accent-primary-glow: rgba(6, 182, 212, 0.15);
+  
+  --accent-success: #10b981; /* Controlled Emerald */
+  --accent-warning: #f59e0b; /* Warm Amber */
+  --accent-urgent: #ef4444; /* Clear Red */
+  --accent-health: #fb7185; /* Soft Rose */
+  
+  /* Surfaces */
+  --surface-1: rgba(15, 23, 42, 0.6); /* Glass 1 */
+  --surface-2: rgba(30, 41, 59, 0.5); /* Glass 2 */
+  --surface-border: rgba(255, 255, 255, 0.06);
 }
 
 @theme inline {
@@ -12,17 +27,16 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background-attachment: fixed;
+}
+
+/* Base resets for premium feel */
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 @layer utilities {
@@ -31,6 +45,25 @@ body {
   }
   .pt-safe {
     padding-top: env(safe-area-inset-top, 20px);
+  }
+  .px-safe {
+    padding-left: env(safe-area-inset-left, 16px);
+    padding-right: env(safe-area-inset-right, 16px);
+  }
+  
+  /* Premium Glass Utilities */
+  .glass-panel {
+    background: var(--surface-1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--surface-border);
+  }
+  .glass-card {
+    background: var(--surface-2);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--surface-border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   }
 }
 

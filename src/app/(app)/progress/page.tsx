@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { WeightChart } from '@/components/weight-chart'
-import { TrendingDown, Scale, Sparkles, Activity, RefreshCw, Layers, ShieldCheck, Cpu } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { TrendingDown, Sparkles, RefreshCw, Cpu, Activity, Flame, Zap, Droplets, Dumbbell } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
 import { NumberCounter } from '@/components/motion/number-counter'
-import { AnimatedCard } from '@/components/motion/animated-card'
 
 export default function ProgressPage() {
   const [weight, setWeight] = useState<number>(82.10)
@@ -94,101 +93,127 @@ export default function ProgressPage() {
   }, [])
 
   return (
-    <div className="p-4 md:p-8 space-y-8 max-w-2xl mx-auto font-sans text-slate-100 pb-32 md:pb-16">
+    <div className="space-y-6 md:space-y-8">
       
-      {/* Top Header */}
-      <motion.div 
-        initial={{ opacity: 0, y: -15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex items-center justify-between pt-2"
-      >
+      {/* ── TOP HEADER ────────────────────────────────────────────────────────── */}
+      <header className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 bg-gradient-to-r from-teal-500/20 to-cyan-500/20 border border-teal-500/40 text-teal-300 text-[11px] font-black uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg">
-              <Cpu className="w-3.5 h-3.5" /> OURA & VESYNC MATRIX
+            <span className="px-3 py-1 bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] text-[10px] font-black uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg border border-[var(--accent-primary)]/20">
+              <Cpu className="w-3.5 h-3.5" /> VeSync Engine
             </span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight mt-2 flex items-center gap-2">
-            Progress <Sparkles className="w-6 h-6 text-teal-400 animate-pulse" />
+          <h1 className="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight mt-2 flex items-center gap-2">
+            Body Composition
           </h1>
-          <p className="text-slate-400 text-xs md:text-sm font-medium mt-0.5">VeSync Scale & HealthKit Analytics</p>
+          <p className="text-slate-400 text-sm font-medium mt-1">Live metrics from your smart scale</p>
         </div>
 
         <button 
           onClick={fetchProgress}
-          className="px-4 py-2 bg-gradient-to-r from-slate-800 to-slate-850 hover:from-slate-750 hover:to-slate-800 border border-white/10 text-teal-400 text-xs font-extrabold rounded-2xl flex items-center gap-2 shadow-xl transition-all active:scale-95"
+          disabled={isLoading}
+          className="glass-panel hover:bg-white/5 text-[var(--accent-primary)] text-xs font-bold px-4 py-2 rounded-2xl flex items-center gap-2 transition-all active:scale-95"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> 
-          {isLoading ? 'Loading...' : 'Refresh Matrix'}
+          <span className="hidden md:inline">{isLoading ? 'Syncing...' : 'Sync Scale'}</span>
         </button>
-      </motion.div>
+      </header>
 
-      {/* Primary Scale Weight Header Card */}
-      <AnimatedCard delay={0.1}>
-        <div className="bg-gradient-to-br from-slate-900/90 via-slate-950 to-teal-950/40 border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <span className="text-xs font-black text-teal-400 uppercase tracking-widest">Latest Smart Scale Weight</span>
-              <div className="text-4xl md:text-5xl font-black text-white tracking-tight mt-2 flex items-baseline gap-2">
-                <NumberCounter value={weight} decimals={2} /> <span className="text-xl text-slate-400 font-bold">kg</span>
-              </div>
-              <p className="text-xs text-slate-400 mt-1 font-medium">VeSync Scale Synced • Live Database</p>
-            </div>
-            <div className="flex items-center gap-1.5 text-teal-400 bg-teal-500/10 border border-teal-500/30 px-4 py-2 rounded-2xl text-xs font-black shadow-lg">
-              <TrendingDown className="w-4 h-4" /> {(weight - 75.0).toFixed(2)} kg to goal
+      {/* ── HERO: WEIGHT JOURNEY ─────────────────────────────────────────────── */}
+      <section className="glass-panel rounded-3xl p-6 md:p-8 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--accent-primary-glow)] rounded-full blur-[100px] pointer-events-none" />
+        
+        <div className="flex justify-between items-start mb-6 relative z-10">
+          <div>
+            <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Current Weight</h2>
+            <div className="text-5xl md:text-6xl font-bold text-[var(--foreground)] tracking-tighter mt-1 flex items-baseline gap-2">
+              <NumberCounter value={weight} decimals={2} /> <span className="text-xl text-slate-400 font-medium">kg</span>
             </div>
           </div>
+          <div className="flex items-center gap-1.5 text-[var(--accent-success)] bg-[var(--accent-success)]/10 px-4 py-2 rounded-2xl text-xs font-bold">
+            <TrendingDown className="w-4 h-4" /> {(weight - 75.0).toFixed(2)} kg to goal
+          </div>
+        </div>
 
+        <div className="relative z-10">
           <WeightChart />
         </div>
-      </AnimatedCard>
-
-      {/* Complete VeSync Body Composition Breakdown Grid */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="text-sm font-black text-slate-200 uppercase tracking-wider flex items-center gap-2">
-            <Layers className="w-4 h-4 text-teal-400" /> Full VeSync Body Composition Matrix
-          </h2>
-          <span className="text-[11px] text-teal-400 font-bold px-2.5 py-0.5 bg-teal-500/10 border border-teal-500/30 rounded-full">
-            12 Parameters
-          </span>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-          <OuraMetricCard delay={0.15} title="BMI" numVal={bmi} decimals={1} status="High" statusColor="text-amber-400 bg-amber-500/10 border-amber-500/30" />
-          <OuraMetricCard delay={0.2} title="Body Fat" numVal={bodyFat} decimals={1} suffix="%" status="Acceptable" statusColor="text-teal-400 bg-teal-500/10 border-teal-500/30" />
-          <OuraMetricCard delay={0.25} title="Subcutaneous Fat" numVal={subcutFat} decimals={1} suffix="%" status="High" statusColor="text-amber-400 bg-amber-500/10 border-amber-500/30" />
-          
-          <OuraMetricCard delay={0.3} title="Fat-Free Weight" numVal={62.23} decimals={2} suffix=" kg" status="Standard" statusColor="text-teal-400 bg-teal-500/10 border-teal-500/30" />
-          <OuraMetricCard delay={0.35} title="Visceral Fat" numVal={visceralFat} decimals={0} status="Standard" statusColor="text-teal-400 bg-teal-500/10 border-teal-500/30" />
-          <OuraMetricCard delay={0.4} title="Muscle Mass" numVal={muscleMass} decimals={2} suffix=" kg" status="Standard" statusColor="text-teal-400 bg-teal-500/10 border-teal-500/30" />
-          
-          <OuraMetricCard delay={0.45} title="Body Water" numVal={bodyWater} decimals={1} suffix="%" status="Standard" statusColor="text-teal-400 bg-teal-500/10 border-teal-500/30" />
-          <OuraMetricCard delay={0.5} title="Skeletal Muscle" numVal={skeletalMuscle} decimals={1} suffix="%" status="Standard" statusColor="text-teal-400 bg-teal-500/10 border-teal-500/30" />
-          <OuraMetricCard delay={0.55} title="Bone Mass" numVal={boneMass} decimals={2} suffix=" kg" status="Standard" statusColor="text-teal-400 bg-teal-500/10 border-teal-500/30" />
-          
-          <OuraMetricCard delay={0.6} title="Protein" numVal={protein} decimals={1} suffix="%" status="Standard" statusColor="text-teal-400 bg-teal-500/10 border-teal-500/30" />
-          <OuraMetricCard delay={0.65} title="BMR" numVal={bmr} decimals={0} suffix=" kcal" status="Standard" statusColor="text-teal-400 bg-teal-500/10 border-teal-500/30" />
-          <OuraMetricCard delay={0.7} title="Metabolic Age" numVal={metabolicAge} decimals={0} status="High" statusColor="text-amber-400 bg-amber-500/10 border-amber-500/30" />
-        </div>
       </section>
+
+      {/* ── THE METRICS STORY ────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {/* Core Health Indicators */}
+        <section className="glass-panel rounded-3xl p-6 relative overflow-hidden">
+          <h3 className="text-lg font-bold text-[var(--foreground)] tracking-tight mb-6 flex items-center gap-2">
+            <Activity className="w-5 h-5 text-[var(--accent-primary)]" /> Core Indicators
+          </h3>
+          <div className="space-y-4">
+            <MetricRow icon={<Activity />} label="BMI" value={bmi} suffix="" status="High" statusColor="amber" />
+            <MetricRow icon={<Flame />} label="Body Fat" value={bodyFat} suffix="%" status="Standard" statusColor="teal" />
+            <MetricRow icon={<Zap />} label="Visceral Fat" value={visceralFat} suffix="" status="Standard" statusColor="teal" />
+            <MetricRow icon={<Activity />} label="Subcutaneous Fat" value={subcutFat} suffix="%" status="High" statusColor="amber" />
+          </div>
+        </section>
+
+        {/* Composition Breakdown */}
+        <section className="glass-panel rounded-3xl p-6 relative overflow-hidden">
+          <h3 className="text-lg font-bold text-[var(--foreground)] tracking-tight mb-6 flex items-center gap-2">
+            <Dumbbell className="w-5 h-5 text-[var(--accent-primary)]" /> Composition
+          </h3>
+          <div className="space-y-4">
+            <MetricRow icon={<Dumbbell />} label="Muscle Mass" value={muscleMass} suffix=" kg" status="Standard" statusColor="teal" />
+            <MetricRow icon={<Dumbbell />} label="Skeletal Muscle" value={skeletalMuscle} suffix="%" status="Standard" statusColor="teal" />
+            <MetricRow icon={<Activity />} label="Bone Mass" value={boneMass} suffix=" kg" status="Standard" statusColor="teal" />
+            <MetricRow icon={<Droplets />} label="Body Water" value={bodyWater} suffix="%" status="Standard" statusColor="teal" />
+          </div>
+        </section>
+
+        {/* Metabolic Profile */}
+        <section className="glass-panel rounded-3xl p-6 relative overflow-hidden md:col-span-2">
+          <h3 className="text-lg font-bold text-[var(--foreground)] tracking-tight mb-6 flex items-center gap-2">
+            <Flame className="w-5 h-5 text-[var(--accent-warning)]" /> Metabolic Profile
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+            <MetricRow icon={<Activity />} label="Protein" value={protein} suffix="%" status="Standard" statusColor="teal" />
+            <MetricRow icon={<Flame />} label="Basal Metabolic Rate" value={bmr} suffix=" kcal" status="Standard" statusColor="teal" />
+            <MetricRow icon={<Activity />} label="Fat-Free Weight" value={62.23} suffix=" kg" status="Standard" statusColor="teal" />
+            <MetricRow icon={<Activity />} label="Metabolic Age" value={metabolicAge} suffix=" yrs" status="High" statusColor="amber" />
+          </div>
+        </section>
+      </div>
+
     </div>
   )
 }
 
-function OuraMetricCard({ title, numVal, decimals = 1, suffix = '', status, statusColor, delay = 0 }: { title: string; numVal: number; decimals?: number; suffix?: string; status: string; statusColor: string; delay?: number }) {
+function MetricRow({ 
+  icon, label, value, suffix, status, statusColor 
+}: { 
+  icon: React.ReactNode, label: string, value: number, suffix: string, status: string, statusColor: 'teal' | 'amber' 
+}) {
+  const colorMap = {
+    teal: 'text-[var(--accent-success)] bg-[var(--accent-success)]/10',
+    amber: 'text-[var(--accent-warning)] bg-[var(--accent-warning)]/10'
+  }
+  
   return (
-    <AnimatedCard delay={delay}>
-      <div className="bg-slate-900/80 border border-white/10 rounded-3xl p-4 shadow-xl backdrop-blur-xl hover:border-slate-700 transition-all flex flex-col justify-between space-y-3 h-full">
-        <span className="text-[11px] font-extrabold text-slate-400 truncate uppercase tracking-wider">{title}</span>
-        <div className="text-2xl font-black text-white tracking-tight">
-          <NumberCounter value={numVal} decimals={decimals} suffix={suffix} />
+    <div className="flex items-center justify-between py-2 border-b border-white/5 last:border-0 group hover:bg-white/[0.02] -mx-2 px-2 rounded-xl transition-colors">
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-white transition-colors">
+          {icon}
         </div>
-        <span className={`inline-block self-start text-[10px] font-black px-2.5 py-0.5 rounded-full border ${statusColor}`}>
+        <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{label}</span>
+      </div>
+      <div className="flex items-center gap-4">
+        <span className="text-base font-bold text-[var(--foreground)]">
+          <NumberCounter value={value} decimals={label === 'Visceral Fat' || label === 'Basal Metabolic Rate' || label === 'Metabolic Age' ? 0 : 1} />
+          {suffix}
+        </span>
+        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${colorMap[statusColor]}`}>
           {status}
         </span>
       </div>
-    </AnimatedCard>
+    </div>
   )
 }

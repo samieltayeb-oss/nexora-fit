@@ -29,8 +29,7 @@ export default function ActiveWorkoutContent() {
   const isGym = params.get('type') !== 'calisthenics'
 
   const exercises: WorkoutExercise[] = isGym ? GYM_SESSION : CALISTHENICS_SESSION
-  const programTitle = isGym ? 'GYM STRENGTH CHALLENGE' : 'CALISTHENICS CHALLENGE'
-  const accentColor  = isGym ? 'teal' : 'indigo'
+  const programTitle = isGym ? 'Gym Strength' : 'Calisthenics'
 
   // ── Core state ──────────────────────────────────────────────────
   const [exIdx,       setExIdx]       = useState(0)
@@ -146,27 +145,23 @@ export default function ActiveWorkoutContent() {
     }
   }
 
-  // ── Set dots display ─────────────────────────────────────────────
-  // Show ONLY current exercise's set dots in the float card (max 12 dots)
   const setDots = Array.from({ length: totalSets }, (_, i) => i < currentSet - 1 || (phase === 'done'))
-
-  // ── Phase label ──────────────────────────────────────────────────
-  const phaseLabel = phase === 'ready' ? 'TAP TO START' :
-                     phase === 'active' ? `SET ${currentSet} OF ${totalSets}` :
-                     phase === 'rest'   ? 'REST' : 'COMPLETE ✓'
-  const phaseColor = phase === 'rest' ? '#f59e0b' : phase === 'active' ? (isGym ? '#14b8a6' : '#6366f1') : '#ffffff'
+  
+  const restProgress = phase === 'rest' && ex.restSeconds 
+    ? ((ex.restSeconds - countdown) / ex.restSeconds) * 100 
+    : 0
 
   return (
-    <div className="fixed inset-0 z-[100] bg-[#0a0a0f] overflow-hidden select-none">
+    <div className="fixed inset-0 z-[100] bg-[var(--background)] overflow-hidden select-none">
 
       {/* ── FULL-SCREEN EXERCISE IMAGE ─────────────────────────── */}
       <AnimatePresence mode="wait">
         <motion.div
           key={ex.id}
-          initial={{ opacity: 0, scale: 1.04 }}
+          initial={{ opacity: 0, scale: 1.02 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.97 }}
-          transition={{ duration: 0.45 }}
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="absolute inset-0"
         >
           <img
@@ -174,34 +169,33 @@ export default function ActiveWorkoutContent() {
             alt={ex.name}
             className="w-full h-full object-cover"
           />
-          {/* Dark gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/50" />
+          {/* Deep Cinematic Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)]/80 via-transparent to-[var(--background)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/40 to-transparent" />
         </motion.div>
       </AnimatePresence>
 
       {/* ── TOP BAR ───────────────────────────────────────────── */}
-      <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 pt-safe pt-4">
+      <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-6 pt-safe pt-6">
         {/* Back */}
         <button
           onClick={() => router.push('/workout')}
-          className="bg-black/50 backdrop-blur-md border border-white/20 rounded-full p-2.5"
+          className="glass-panel rounded-full p-3 hover:bg-white/10 transition-colors"
         >
           <ChevronLeft className="w-5 h-5 text-white" />
         </button>
 
         {/* Title */}
-        <div className="flex-1 text-center mx-3">
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl px-4 py-2 inline-block shadow-2xl">
-            <div className="text-[11px] font-black text-slate-900 tracking-tight leading-tight">
-              {programTitle}
-            </div>
-          </div>
+        <div className="glass-panel rounded-full px-5 py-2">
+          <span className="text-[10px] font-black text-white tracking-widest uppercase">
+            {programTitle}
+          </span>
         </div>
 
         {/* Audio toggle */}
         <button
           onClick={() => setAudioOn(p => !p)}
-          className="bg-black/50 backdrop-blur-md border border-white/20 rounded-full p-2.5"
+          className="glass-panel rounded-full p-3 hover:bg-white/10 transition-colors"
         >
           {audioOn
             ? <Volume2 className="w-5 h-5 text-white" />
@@ -210,269 +204,146 @@ export default function ActiveWorkoutContent() {
         </button>
       </div>
 
-      {/* ── FLOATING NEXT-EXERCISE CARD (top-right BetterMe style) ─ */}
-      <div className="absolute top-20 right-4 z-30 w-[140px]">
-        <div className="bg-white/95 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl border border-white/30">
-
-          {/* Next exercise thumbnail */}
-          <div className="relative h-[80px] bg-slate-100">
+      {/* ── FLOATING NEXT-EXERCISE CARD ───────────────────────── */}
+      <div className="absolute top-24 right-6 z-30 w-36 hidden md:block">
+        <div className="glass-panel rounded-3xl overflow-hidden p-3 shadow-2xl">
+          <div className="relative h-20 rounded-2xl overflow-hidden mb-3">
             {nextEx ? (
-              <img
-                src={nextEx.image}
-                alt={nextEx.name}
-                className="w-full h-full object-cover"
-              />
+              <img src={nextEx.image} alt={nextEx.name} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-100 to-cyan-100">
-                <Trophy className="w-8 h-8 text-amber-500" />
+              <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                <Trophy className="w-6 h-6 text-amber-500" />
               </div>
             )}
-            {nextEx && (
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-            )}
           </div>
-
-          {/* Set progress dots */}
-          <div className="px-2.5 pt-2 pb-1">
-            <div className="flex flex-wrap gap-0.5">
-              {setDots.map((done, i) => (
-                <div
-                  key={i}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    done
-                      ? 'bg-red-500'
-                      : 'bg-slate-200'
-                  }`}
-                  style={{ width: `${Math.min(100 / totalSets - 2, 14)}%`, minWidth: 8 }}
-                />
-              ))}
-              {/* Remaining sets from future exercises — show as grey */}
-              {Array.from({ length: Math.min(8 - totalSets, 6) }).map((_, i) => (
-                <div key={`r-${i}`} className="h-1.5 rounded-full bg-slate-100" style={{ width: 8 }} />
-              ))}
-            </div>
-
-            {/* Timers */}
-            <div className="flex items-center justify-between mt-1.5">
-              <div>
-                <div className="text-[8px] text-slate-400 font-bold uppercase">ELAPSED</div>
-                <div className="text-[11px] font-black text-slate-800 font-mono">{fmt(elapsed)}</div>
-              </div>
-              <div className="text-right">
-                <div className="text-[8px] text-slate-400 font-bold uppercase">
-                  {phase === 'rest' ? 'REST' : 'SET'}
-                </div>
-                <div
-                  className="text-[11px] font-black font-mono"
-                  style={{ color: phaseColor === '#ffffff' ? '#1e293b' : phaseColor }}
-                >
-                  {phase === 'ready' ? '--:--' : fmt(countdown)}
-                </div>
-              </div>
-            </div>
-
-            {/* PREV / NEXT */}
-            <div className="flex gap-1 mt-2 mb-1">
-              <button
-                onClick={goPrev}
-                disabled={exIdx === 0}
-                className="flex-1 py-1.5 bg-slate-100 rounded-lg text-[10px] font-black text-slate-600 disabled:opacity-30"
-              >
-                PREV
-              </button>
-              <button
-                onClick={goNext}
-                disabled={exIdx === exercises.length - 1}
-                className="flex-1 py-1.5 bg-slate-800 rounded-lg text-[10px] font-black text-white disabled:opacity-30"
-              >
-                NEXT
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Next exercise name */}
-        {nextEx && (
-          <div className="mt-1.5 text-center">
-            <div className="text-[9px] text-white/60 font-bold uppercase tracking-wider">UP NEXT</div>
-            <div className="text-[10px] text-white font-black leading-tight">{nextEx.name}</div>
-          </div>
-        )}
-      </div>
-
-      {/* ── BOTTOM OVERLAY — Exercise info + controls ─────────── */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 px-5 pb-10">
-
-        {/* Exercise name + sets badge */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={ex.id + '-label'}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.35 }}
-          >
-            {/* Category badge */}
-            <div className="mb-2">
-              <span
-                className="text-[10px] font-black px-3 py-1 rounded-full border uppercase tracking-widest"
-                style={{
-                  color: isGym ? '#14b8a6' : '#818cf8',
-                  borderColor: isGym ? 'rgba(20,184,166,0.4)' : 'rgba(129,140,248,0.4)',
-                  backgroundColor: isGym ? 'rgba(20,184,166,0.15)' : 'rgba(129,140,248,0.15)',
-                }}
-              >
-                {ex.category === 'warmup' ? '🔥 Warm Up' :
-                 ex.category === 'core' ? '💪 Core' :
-                 ex.category === 'cardio' ? '❤️ Cardio' :
-                 ex.category === 'cool_down' ? '❄️ Cool Down' : '🏋️ Strength'}
-              </span>
-            </div>
-
-            {/* Exercise name */}
-            <h2 className="text-4xl font-black text-white leading-none tracking-tight mb-1 drop-shadow-2xl">
-              {ex.name.toUpperCase()}
-            </h2>
-
-            {/* Sets × Reps + muscles */}
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-lg font-black text-white bg-black/50 backdrop-blur rounded-xl px-3 py-1">
-                {ex.setsReps}
-              </span>
-              <span className="text-xs text-white/70 font-medium">
-                {ex.muscles.join(' · ')}
-              </span>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Phase status bar */}
-        <div className="flex items-center gap-2 mb-4">
-          <div
-            className="text-xs font-black px-3 py-1.5 rounded-full"
-            style={{ color: phaseColor, backgroundColor: 'rgba(0,0,0,0.5)', border: `1px solid ${phaseColor}40` }}
-          >
-            {phaseLabel}
-          </div>
-          {phase === 'rest' && countdown > 0 && (
-            <div className="text-2xl font-black text-amber-400 font-mono">
-              {countdown}s
-            </div>
-          )}
-          {phase === 'active' && countdown > 0 && (
-            <div className="text-2xl font-black font-mono" style={{ color: isGym ? '#14b8a6' : '#818cf8' }}>
-              {fmt(countdown)}
-            </div>
-          )}
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex items-center gap-3">
-          {/* Tip button */}
-          <button
-            onClick={() => setShowTip(p => !p)}
-            className="bg-black/50 backdrop-blur-md border border-white/20 rounded-2xl p-3.5"
-          >
-            <Info className="w-5 h-5 text-white" />
-          </button>
-
-          {/* Main action: Start / Pause / Resume */}
-          {phase === 'ready' ? (
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={handleStart}
-              className="flex-1 py-4 rounded-2xl font-black text-slate-950 text-base flex items-center justify-center gap-2.5 shadow-2xl"
-              style={{
-                background: isGym
-                  ? 'linear-gradient(135deg, #14b8a6, #06b6d4)'
-                  : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-              }}
-            >
-              <Play className="w-5 h-5 fill-slate-950" />
-              START · {ex.setsReps}
-            </motion.button>
-          ) : phase === 'active' || phase === 'rest' ? (
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsPaused(p => !p)}
-              className="flex-1 py-4 rounded-2xl font-black text-white text-base flex items-center justify-center gap-2.5 bg-black/60 backdrop-blur-md border border-white/20 shadow-xl"
-            >
-              {isPaused
-                ? <><Play className="w-5 h-5 fill-white" /> RESUME</>
-                : <><Pause className="w-5 h-5" /> PAUSE</>
-              }
-            </motion.button>
-          ) : null}
-
-          {/* Skip / Done set */}
-          {(phase === 'active' || phase === 'rest') && (
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => { setCountdown(0); handlePhaseComplete() }}
-              className="bg-black/50 backdrop-blur-md border border-white/20 rounded-2xl p-3.5"
-            >
-              <CheckCircle className="w-5 h-5 text-teal-400" />
-            </motion.button>
-          )}
-
-          {/* Next exercise (ready state) */}
-          {phase === 'ready' && exIdx < exercises.length - 1 && (
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={goNext}
-              className="bg-black/50 backdrop-blur-md border border-white/20 rounded-2xl p-3.5"
-            >
-              <ChevronRight className="w-5 h-5 text-white" />
-            </motion.button>
-          )}
-        </div>
-
-        {/* Progress bar — total workout */}
-        <div className="mt-4 flex items-center gap-2">
-          <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
-            <motion.div
-              animate={{ width: `${(doneDots / totalDots) * 100}%` }}
-              className="h-full rounded-full"
-              style={{
-                background: isGym
-                  ? 'linear-gradient(90deg, #14b8a6, #06b6d4)'
-                  : 'linear-gradient(90deg, #6366f1, #8b5cf6)',
-              }}
-            />
-          </div>
-          <span className="text-[9px] text-white/50 font-bold">
-            {exIdx + 1}/{exercises.length}
-          </span>
+          <div className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Up Next</div>
+          <div className="text-xs font-bold text-white truncate">{nextEx ? nextEx.name : 'Finish'}</div>
         </div>
       </div>
 
-      {/* ── TIP CARD ─────────────────────────────────────────── */}
+      {/* ── REST TIMER OVERLAY ────────────────────────────────── */}
       <AnimatePresence>
-        {showTip && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="absolute bottom-44 left-4 right-4 z-40 bg-slate-900/95 backdrop-blur-2xl border border-white/15 rounded-3xl p-5 shadow-2xl"
+        {phase === 'rest' && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
           >
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-amber-400" />
-                <span className="text-xs font-black text-amber-400 uppercase tracking-widest">Form Tip</span>
+            <div className="relative w-64 h-64 flex items-center justify-center">
+              <svg className="w-full h-full transform -rotate-90">
+                <circle cx="128" cy="128" r="120" stroke="rgba(255,255,255,0.05)" strokeWidth="8" fill="none" />
+                <motion.circle 
+                  cx="128" cy="128" r="120" 
+                  stroke="var(--accent-warning)" 
+                  strokeWidth="8" 
+                  strokeDasharray="754" 
+                  initial={{ strokeDashoffset: 754 }}
+                  animate={{ strokeDashoffset: 754 - (754 * restProgress) / 100 }}
+                  transition={{ duration: 1, ease: 'linear' }}
+                  strokeLinecap="round" 
+                  fill="none" 
+                  className="drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--accent-warning)] mb-1">Rest</span>
+                <span className="text-7xl font-bold text-white tracking-tighter tabular-nums">{countdown}</span>
               </div>
-              <button onClick={() => setShowTip(false)}>
-                <X className="w-4 h-4 text-slate-400" />
-              </button>
-            </div>
-            <p className="text-sm text-white font-medium leading-relaxed">{ex.tip}</p>
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {ex.muscles.map(m => (
-                <span key={m} className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-slate-300">{m}</span>
-              ))}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── BOTTOM OVERLAY — Controls ─────────────────────────── */}
+      <div className="absolute bottom-0 left-0 right-0 z-30 px-6 pb-safe pb-8">
+        
+        <div className="max-w-2xl mx-auto w-full">
+          {/* Exercise Info */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={ex.id + '-label'}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className={`mb-8 ${phase === 'rest' ? 'opacity-30' : 'opacity-100'} transition-opacity duration-500`}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <span className="px-3 py-1 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-full backdrop-blur-md">
+                  Set {currentSet} of {totalSets}
+                </span>
+                <span className="text-xs text-slate-400 font-medium">
+                  {ex.muscles.join(' · ')}
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-2">
+                {ex.name}
+              </h2>
+              <div className="text-xl font-medium text-slate-300">
+                {ex.setsReps}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Controls Bar */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={goPrev}
+              disabled={exIdx === 0}
+              className="glass-panel p-4 rounded-2xl disabled:opacity-30 hover:bg-white/10 transition-colors"
+            >
+              <ChevronLeft className="w-6 h-6 text-white" />
+            </button>
+
+            {phase === 'ready' ? (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleStart}
+                className="flex-1 py-5 rounded-2xl font-bold text-slate-950 text-lg flex items-center justify-center gap-2 shadow-[0_0_30px_var(--accent-primary-glow)] bg-[var(--accent-primary)] hover:brightness-110 transition-all"
+              >
+                <Play className="w-6 h-6 fill-slate-950" /> Start Set
+              </motion.button>
+            ) : phase === 'active' || phase === 'rest' ? (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsPaused(p => !p)}
+                className="flex-1 py-5 rounded-2xl font-bold text-white text-lg flex items-center justify-center gap-2 glass-panel hover:bg-white/10 transition-colors"
+              >
+                {isPaused
+                  ? <><Play className="w-6 h-6 fill-white" /> Resume</>
+                  : <><Pause className="w-6 h-6 fill-white" /> Pause</>
+                }
+              </motion.button>
+            ) : null}
+
+            {(phase === 'active' || phase === 'rest') ? (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => { setCountdown(0); handlePhaseComplete() }}
+                className="glass-panel p-4 rounded-2xl hover:bg-white/10 transition-colors"
+              >
+                <CheckCircle className="w-6 h-6 text-[var(--accent-success)]" />
+              </motion.button>
+            ) : (
+              <button
+                onClick={goNext}
+                disabled={exIdx === exercises.length - 1}
+                className="glass-panel p-4 rounded-2xl disabled:opacity-30 hover:bg-white/10 transition-colors"
+              >
+                <ChevronRight className="w-6 h-6 text-white" />
+              </button>
+            )}
+          </div>
+
+          {/* Progress bar */}
+          <div className="mt-6 h-1 bg-white/10 rounded-full overflow-hidden">
+            <motion.div
+              animate={{ width: `${(doneDots / totalDots) * 100}%` }}
+              className="h-full bg-[var(--accent-primary)] rounded-full"
+            />
+          </div>
+        </div>
+      </div>
 
       {/* ── WORKOUT COMPLETE OVERLAY ──────────────────────────── */}
       <AnimatePresence>
@@ -480,61 +351,28 @@ export default function ActiveWorkoutContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-[200] bg-slate-950/98 backdrop-blur-2xl flex items-center justify-center p-6"
+            className="fixed inset-0 z-[200] bg-[var(--background)]/90 backdrop-blur-3xl flex items-center justify-center p-6"
           >
             <motion.div
-              initial={{ scale: 0.8, opacity: 0, y: 30 }}
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, type: 'spring', stiffness: 200, damping: 20 }}
-              className="bg-slate-900 border border-white/10 rounded-3xl p-8 max-w-sm w-full text-center space-y-5 shadow-2xl"
+              className="glass-card rounded-[2rem] p-8 max-w-sm w-full text-center"
             >
-              {/* Trophy */}
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1, rotate: [0, -10, 10, 0] }}
-                transition={{ delay: 0.3, type: 'spring' }}
-                className="w-20 h-20 bg-gradient-to-tr from-amber-400 to-yellow-300 rounded-full flex items-center justify-center mx-auto shadow-2xl shadow-amber-500/40"
-              >
-                <Trophy className="w-10 h-10 text-slate-900" />
-              </motion.div>
-
-              <div>
-                <h2 className="text-3xl font-black text-white tracking-tight">WORKOUT DONE!</h2>
-                <p className="text-slate-400 text-sm font-medium mt-1">
-                  {exercises.length} exercises · {fmt(elapsed)}
-                </p>
+              <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Trophy className="w-10 h-10 text-amber-500" />
               </div>
+              
+              <h2 className="text-3xl font-bold text-white mb-2">Workout Complete</h2>
+              <p className="text-slate-400 font-medium mb-8">
+                {exercises.length} exercises · {fmt(elapsed)}
+              </p>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-white/5 rounded-2xl p-3">
-                  <div className="text-lg font-black text-teal-400">{exercises.length}</div>
-                  <div className="text-[9px] text-slate-400 font-bold mt-0.5">EXERCISES</div>
-                </div>
-                <div className="bg-white/5 rounded-2xl p-3">
-                  <div className="text-lg font-black text-amber-400">{fmt(elapsed)}</div>
-                  <div className="text-[9px] text-slate-400 font-bold mt-0.5">TIME</div>
-                </div>
-                <div className="bg-white/5 rounded-2xl p-3">
-                  <div className="text-lg font-black text-rose-400">
-                    {exercises.reduce((a, e) => a + e.sets, 0)}
-                  </div>
-                  <div className="text-[9px] text-slate-400 font-bold mt-0.5">SETS</div>
-                </div>
-              </div>
-
-              <div className="space-y-2.5">
-                <button
-                  onClick={() => router.push('/workout')}
-                  className="w-full py-4 bg-gradient-to-r from-teal-400 to-cyan-400 text-slate-950 font-black rounded-2xl shadow-xl shadow-teal-500/20"
-                >
-                  Back to Programs
-                </button>
+              <div className="space-y-3">
                 <button
                   onClick={() => router.push('/dashboard')}
-                  className="w-full py-3 bg-white/5 border border-white/10 text-slate-300 font-bold rounded-2xl flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-[var(--accent-primary)] text-slate-950 font-bold rounded-2xl hover:brightness-110 transition-all shadow-[0_0_20px_var(--accent-primary-glow)]"
                 >
-                  <Home className="w-4 h-4" /> Go to Dashboard
+                  Return Home
                 </button>
               </div>
             </motion.div>
