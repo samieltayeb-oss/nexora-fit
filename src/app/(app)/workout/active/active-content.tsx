@@ -5,101 +5,156 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ChevronLeft, ChevronRight, Pause, Play, Trophy,
-  Volume2, VolumeX, Info, X, Home, CheckCircle, Zap
+  Volume2, VolumeX, CheckCircle, RefreshCw, X
 } from 'lucide-react'
 import { CALISTHENICS_SESSION, GYM_SESSION, WorkoutExercise } from '@/lib/workout-session-data'
 import { soundEngine } from '@/lib/utils/sound-engine'
 import { triggerCelebrationConfetti } from '@/components/ui/celebration'
+import { useWorkoutPersistence, WorkoutSetState } from '@/hooks/use-workout-persistence'
 
-// ─────────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────────
 function fmt(s: number) {
+  if (s < 0) s = 0
   const m = Math.floor(s / 60).toString().padStart(2, '0')
   const sec = (s % 60).toString().padStart(2, '0')
-  return `${m}:${s < 0 ? '00' : sec}`
+  return `${m}:${sec}`
 }
 
-// ─────────────────────────────────────────────────────────────────
-// Component
-// ─────────────────────────────────────────────────────────────────
 export default function ActiveWorkoutContent() {
   const router = useRouter()
   const params = useSearchParams()
   const isGym = params.get('type') !== 'calisthenics'
+  const sessionId = isGym ? 'gym-session' : 'calisthenics-session'
 
   const exercises: WorkoutExercise[] = isGym ? GYM_SESSION : CALISTHENICS_SESSION
   const programTitle = isGym ? 'Gym Strength' : 'Calisthenics'
 
-  // ── Core state ──────────────────────────────────────────────────
-  const [exIdx,       setExIdx]       = useState(0)
-  const [currentSet,  setCurrentSet]  = useState(1)
-  const [completedSets, setCompletedSets] = useState<boolean[]>([])   // dots
-  const [phase,       setPhase]       = useState<'ready' | 'active' | 'rest' | 'done'>('ready')
-  const [countdown,   setCountdown]   = useState(0)
-  const [elapsed,     setElapsed]     = useState(0)          // total session time
-  const [isPaused,    setIsPaused]    = useState(false)
-  const [audioOn,     setAudioOn]     = useState(true)
-  const [showTip,     setShowTip]     = useState(false)
-  const [showDone,    setShowDone]    = useState(false)
+  const { saveState, loadState, clearState, isReady } = useWorkoutPersistence(sessionId, 'v1')
+
+  const [hasPromptedResume, setHasPromptedResume] = useState(false)
+  const [showResumeDialog, setShowResumeDialog] = useState(false)
+  const [savedStateCache, setSavedStateCache] = useState<any>(null)
+
+  // Core state
+  const [exIdx, setExIdx] = useState(0)
+  const [completedSets, setCompletedSets] = useState<WorkoutSetState[]>([])
+  const [phase, setPhase] = useState<'ready' | 'active' | 'rest' | 'done'>('ready')
+  const [audioOn, setAudioOn] = useState(true)
   const [audioUnlocked, setAudioUnlocked] = useState(false)
 
-  const ex      = exercises[exIdx]
-  const nextEx  = exercises[exIdx + 1] ?? null
+  // Timestamps
+  const [startTimestamp, setStartTimestamp] = useState<number | null>(null)
+  const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<number>(Date.now())
+  const [isPaused, setIsPaused] = useState(false)
+  const [accumulatedPauseMs, setAccumulatedPauseMs] = useState(0)
+  const [lastPauseTimestamp, setLastPauseTimestamp] = useState<number | null>(null)
+  
+  const [restStartTimestamp, setRestStartTimestamp] = useState<number | null>(null)
+  const [restDurationSeconds, setRestDurationSeconds] = useState(0)
+
+  // UI Tick for timers
+  const [tick, setTick] = useState(0)
+
+  const ex = exercises[exIdx]
+  const nextEx = exercises[exIdx + 1] ?? null
   const totalSets = ex.sets
+  
+  // Calculate current set from completedSets for THIS exercise
+  const currentExCompletedSets = completedSets.length
+  const currentSet = Math.min(currentExCompletedSets + 1, totalSets)
 
-  // Total dots = totalSets × all exercises
-  const totalDots = exercises.reduce((a, e) => a + e.sets, 0)
-  const doneDots  = exercises.slice(0, exIdx).reduce((a, e) => a + e.sets, 0) + (currentSet - 1)
+  // Calculate elapsed time dynamically
+  let elapsedSeconds = 0
+  if (startTimestamp) {
+    let activeTime = Date.now() - startTimestamp - accumulatedPauseMs
+    if (isPaused && lastPauseTimestamp) {
+      activeTime -= (Date.now() - lastPauseTimestamp)
+    }
+    elapsedSeconds = Math.floor(activeTime / 1000)
+  }
 
-  // ── Elapsed timer ────────────────────────────────────────────────
+  // Calculate rest countdown dynamically
+  let restCountdown = 0
+  if (phase === 'rest' && restStartTimestamp) {
+    const elapsedRest = Math.floor((Date.now() - restStartTimestamp) / 1000)
+    restCountdown = Math.max(0, restDurationSeconds - elapsedRest)
+  }
+
+  // Check for saved state on mount
   useEffect(() => {
-    if (phase === 'ready' || isPaused || phase === 'done') return
-    const t = setInterval(() => setElapsed(p => p + 1), 1000)
-    return () => clearInterval(t)
+    if (!isReady || hasPromptedResume) return
+    const saved = loadState()
+    if (saved) {
+      setSavedStateCache(saved)
+      setShowResumeDialog(true)
+    }
+    setHasPromptedResume(true)
+  }, [isReady, hasPromptedResume, loadState])
+
+  // Timer Tick Loop
+  useEffect(() => {
+    if (phase === 'ready' || phase === 'done' || isPaused) return
+    const interval = setInterval(() => {
+      setTick(t => t + 1)
+    }, 1000)
+    return () => clearInterval(interval)
   }, [phase, isPaused])
 
-  // ── Phase countdown timer ─────────────────────────────────────────
+  // Rest Phase Auto-Advance
   useEffect(() => {
-    if (phase === 'ready' || phase === 'done' || isPaused || countdown <= 0) return
-    const t = setInterval(() => {
-      setCountdown(p => {
-        if (p <= 1) {
-          clearInterval(t)
-          handlePhaseComplete()
-          return 0
-        }
-        // Voice at 3s
-        if (p === 4 && audioOn && audioUnlocked) {
-          soundEngine.playCountdownTickSound?.()
-        }
-        return p - 1
-      })
-    }, 1000)
-    return () => clearInterval(t)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, isPaused, countdown])
+    if (phase === 'rest' && restCountdown <= 0 && restStartTimestamp !== null) {
+      handlePhaseComplete()
+    } else if (phase === 'rest' && restCountdown === 3 && audioOn && audioUnlocked) {
+      soundEngine.playCountdownTickSound?.()
+    }
+  }, [phase, restCountdown, restStartTimestamp, audioOn, audioUnlocked])
+
+  // Save state effect wrapper
+  const triggerSave = useCallback(() => {
+    if (!startTimestamp) return
+    saveState({
+      current_exercise_index: exIdx,
+      completed_sets: completedSets,
+      start_timestamp: startTimestamp,
+      last_updated_timestamp: Date.now(),
+      pause_state: {
+        is_paused: isPaused,
+        accumulated_pause_ms: accumulatedPauseMs,
+        last_pause_timestamp: lastPauseTimestamp
+      },
+      rest_timer: {
+        is_resting: phase === 'rest',
+        rest_start_timestamp: restStartTimestamp,
+        rest_duration_seconds: restDurationSeconds
+      }
+    })
+  }, [saveState, exIdx, completedSets, startTimestamp, isPaused, accumulatedPauseMs, lastPauseTimestamp, phase, restStartTimestamp, restDurationSeconds])
+
+  // Trigger save whenever meaningful state changes
+  useEffect(() => {
+    if (startTimestamp && !showResumeDialog) {
+      triggerSave()
+    }
+  }, [triggerSave, exIdx, completedSets, isPaused, phase])
 
   const handlePhaseComplete = useCallback(() => {
     if (phase === 'active') {
-      // Mark this set done
-      setCompletedSets(p => [...p, true])
+      // Complete Set
+      const newSet: WorkoutSetState = { reps: ex.setsReps.includes('Reps') ? 10 : 0, load: 0 } // Defaults, UI can update later
+      setCompletedSets(prev => [...prev, newSet])
       soundEngine.playSetCompleteSound?.()
+      
       if (currentSet < totalSets) {
-        // Rest before next set
         setPhase('rest')
-        setCountdown(ex.restSeconds || 60)
+        setRestStartTimestamp(Date.now())
+        setRestDurationSeconds(ex.restSeconds || 60)
         if (audioOn && audioUnlocked)
           soundEngine.speakText?.(`Set ${currentSet} done. Rest for ${ex.restSeconds} seconds.`)
       } else {
-        // Move to next exercise
         advanceExercise()
       }
     } else if (phase === 'rest') {
-      // Start next set
-      setCurrentSet(p => p + 1)
       setPhase('active')
-      setCountdown(ex.durationSeconds)
+      setRestStartTimestamp(null)
       if (audioOn && audioUnlocked)
         soundEngine.speakText?.(`Rest over. Begin set ${currentSet + 1}.`)
     }
@@ -107,54 +162,92 @@ export default function ActiveWorkoutContent() {
 
   const advanceExercise = useCallback(() => {
     if (exIdx + 1 >= exercises.length) {
-      // Workout done!
       soundEngine.playVictoryFanfareSound?.()
       triggerCelebrationConfetti()
       setPhase('done')
-      setShowDone(true)
+      clearState() // Clear persistence on success
       return
     }
     const next = exercises[exIdx + 1]
     setExIdx(p => p + 1)
-    setCurrentSet(1)
+    setCompletedSets([])
     setPhase('ready')
-    setCountdown(0)
     if (audioOn && audioUnlocked)
       soundEngine.speakText?.(`Next: ${next.name}. ${next.tip}`)
-  }, [exIdx, exercises, audioOn, audioUnlocked])
+  }, [exIdx, exercises, audioOn, audioUnlocked, clearState])
 
-  // ── Start / unlock audio ─────────────────────────────────────────
   const handleStart = () => {
     soundEngine.unlockAudio?.()
     setAudioUnlocked(true)
+    if (!startTimestamp) {
+      setStartTimestamp(Date.now())
+    }
     setPhase('active')
-    setCountdown(ex.durationSeconds)
-    if (audioOn)
-      soundEngine.speakText?.(`Starting ${ex.name}. ${ex.tip}`)
+    if (audioOn) soundEngine.speakText?.(`Starting ${ex.name}. ${ex.tip}`)
   }
 
-  // ── Manual PREV / NEXT ───────────────────────────────────────────
-  const goNext = () => {
-    if (exIdx + 1 < exercises.length) {
-      setExIdx(p => p + 1); setCurrentSet(1); setPhase('ready'); setCountdown(0)
-    }
-  }
-  const goPrev = () => {
-    if (exIdx > 0) {
-      setExIdx(p => p - 1); setCurrentSet(1); setPhase('ready'); setCountdown(0)
+  const togglePause = () => {
+    if (isPaused) {
+      if (lastPauseTimestamp) {
+        setAccumulatedPauseMs(p => p + (Date.now() - lastPauseTimestamp))
+      }
+      setIsPaused(false)
+      setLastPauseTimestamp(null)
+    } else {
+      setIsPaused(true)
+      setLastPauseTimestamp(Date.now())
     }
   }
 
-  const setDots = Array.from({ length: totalSets }, (_, i) => i < currentSet - 1 || (phase === 'done'))
-  
-  const restProgress = phase === 'rest' && ex.restSeconds 
-    ? ((ex.restSeconds - countdown) / ex.restSeconds) * 100 
+  const resumeSavedSession = () => {
+    if (!savedStateCache) return
+    setExIdx(savedStateCache.current_exercise_index)
+    setCompletedSets(savedStateCache.completed_sets)
+    setStartTimestamp(savedStateCache.start_timestamp)
+    setIsPaused(savedStateCache.pause_state.is_paused)
+    setAccumulatedPauseMs(savedStateCache.pause_state.accumulated_pause_ms)
+    setLastPauseTimestamp(savedStateCache.pause_state.last_pause_timestamp)
+    setRestStartTimestamp(savedStateCache.rest_timer.rest_start_timestamp)
+    setRestDurationSeconds(savedStateCache.rest_timer.rest_duration_seconds)
+    setPhase(savedStateCache.rest_timer.is_resting ? 'rest' : 'active')
+    setShowResumeDialog(false)
+  }
+
+  const discardSavedSession = () => {
+    clearState()
+    setShowResumeDialog(false)
+  }
+
+  const totalDots = exercises.reduce((a, e) => a + e.sets, 0)
+  const doneDots = exercises.slice(0, exIdx).reduce((a, e) => a + e.sets, 0) + completedSets.length
+  const restProgress = phase === 'rest' && restDurationSeconds > 0 
+    ? ((restDurationSeconds - restCountdown) / restDurationSeconds) * 100 
     : 0
 
   return (
     <div className="fixed inset-0 z-[100] bg-[var(--background)] overflow-hidden select-none">
+      
+      {/* Resume Dialog */}
+      <AnimatePresence>
+        {showResumeDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6"
+          >
+            <div className="glass-card p-6 max-w-sm w-full rounded-[2rem] text-center border-white/10">
+              <RefreshCw className="w-12 h-12 text-[var(--accent-primary)] mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">Resume Workout?</h3>
+              <p className="text-slate-400 mb-6 text-sm">We found an active workout session in progress. Would you like to resume where you left off?</p>
+              <div className="flex flex-col gap-3">
+                <button onClick={resumeSavedSession} className="w-full py-3 bg-[var(--accent-primary)] text-slate-950 font-bold rounded-xl">Resume Session</button>
+                <button onClick={discardSavedSession} className="w-full py-3 bg-white/5 text-white font-bold rounded-xl hover:bg-white/10">Discard & Start Fresh</button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* ── FULL-SCREEN EXERCISE IMAGE ─────────────────────────── */}
       <AnimatePresence mode="wait">
         <motion.div
           key={ex.id}
@@ -164,64 +257,24 @@ export default function ActiveWorkoutContent() {
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           className="absolute inset-0"
         >
-          <img
-            src={ex.image}
-            alt={ex.name}
-            className="w-full h-full object-cover"
-          />
-          {/* Deep Cinematic Gradient Overlay */}
+          <img src={ex.image} alt={ex.name} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)]/80 via-transparent to-[var(--background)]" />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/40 to-transparent" />
         </motion.div>
       </AnimatePresence>
 
-      {/* ── TOP BAR ───────────────────────────────────────────── */}
       <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-6 pt-safe pt-6">
-        {/* Back */}
-        <button
-          onClick={() => router.push('/workout')}
-          className="glass-panel rounded-full p-3 hover:bg-white/10 transition-colors"
-        >
+        <button onClick={() => router.push('/workout')} className="glass-panel rounded-full p-3 hover:bg-white/10 transition-colors">
           <ChevronLeft className="w-5 h-5 text-white" />
         </button>
-
-        {/* Title */}
         <div className="glass-panel rounded-full px-5 py-2">
-          <span className="text-[10px] font-black text-white tracking-widest uppercase">
-            {programTitle}
-          </span>
+          <span className="text-[10px] font-black text-white tracking-widest uppercase">{programTitle}</span>
         </div>
-
-        {/* Audio toggle */}
-        <button
-          onClick={() => setAudioOn(p => !p)}
-          className="glass-panel rounded-full p-3 hover:bg-white/10 transition-colors"
-        >
-          {audioOn
-            ? <Volume2 className="w-5 h-5 text-white" />
-            : <VolumeX className="w-5 h-5 text-slate-400" />
-          }
+        <button onClick={() => setAudioOn(p => !p)} className="glass-panel rounded-full p-3 hover:bg-white/10 transition-colors">
+          {audioOn ? <Volume2 className="w-5 h-5 text-white" /> : <VolumeX className="w-5 h-5 text-slate-400" />}
         </button>
       </div>
 
-      {/* ── FLOATING NEXT-EXERCISE CARD ───────────────────────── */}
-      <div className="absolute top-24 right-6 z-30 w-36 hidden md:block">
-        <div className="glass-panel backdrop-blur-3xl rounded-3xl overflow-hidden p-3 shadow-2xl border-white/20">
-          <div className="relative h-20 rounded-2xl overflow-hidden mb-3">
-            {nextEx ? (
-              <img src={nextEx.image} alt={nextEx.name} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full bg-white/5 flex items-center justify-center">
-                <Trophy className="w-6 h-6 text-amber-500" />
-              </div>
-            )}
-          </div>
-          <div className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Up Next</div>
-          <div className="text-xs font-bold text-white truncate">{nextEx ? nextEx.name : 'Finish'}</div>
-        </div>
-      </div>
-
-      {/* ── REST TIMER OVERLAY ────────────────────────────────── */}
       <AnimatePresence>
         {phase === 'rest' && (
           <motion.div 
@@ -248,17 +301,15 @@ export default function ActiveWorkoutContent() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center drop-shadow-2xl">
                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--accent-warning)] mb-1 drop-shadow-md">Rest</span>
-                <span className="text-7xl font-bold text-white tracking-tighter tabular-nums drop-shadow-2xl">{countdown}</span>
+                <span className="text-7xl font-bold text-white tracking-tighter tabular-nums drop-shadow-2xl">{restCountdown}</span>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* ── BOTTOM CONTROLS (One-Thumb Ergonomics) ────────────── */}
       <div className="absolute bottom-0 left-0 right-0 z-30 px-6 pt-12 pb-safe mb-4 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/90 to-transparent">
         <div className="max-w-md mx-auto w-full">
-          {/* Exercise Info */}
           <AnimatePresence mode="wait">
             <motion.div
               key={ex.id + '-label'}
@@ -271,23 +322,19 @@ export default function ActiveWorkoutContent() {
                 <span className="px-3 py-1 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-full backdrop-blur-md">
                   Set {currentSet} of {totalSets}
                 </span>
-                <span className="text-xs text-slate-400 font-medium drop-shadow">
-                  {ex.muscles.join(' · ')}
-                </span>
+                <span className="text-xs text-slate-400 font-medium drop-shadow">{ex.muscles.join(' · ')}</span>
+                {elapsedSeconds > 0 && (
+                  <span className="text-xs text-slate-300 font-medium tabular-nums ml-auto">{fmt(elapsedSeconds)}</span>
+                )}
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-2 drop-shadow-2xl">
-                {ex.name}
-              </h2>
-              <div className="text-xl font-medium text-slate-300 drop-shadow-md">
-                {ex.setsReps}
-              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-2 drop-shadow-2xl">{ex.name}</h2>
+              <div className="text-xl font-medium text-slate-300 drop-shadow-md">{ex.setsReps}</div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Controls Bar */}
           <div className="flex items-center gap-4">
             <button
-              onClick={goPrev}
+              onClick={() => { if (exIdx > 0) { setExIdx(p => p - 1); setCompletedSets([]); setPhase('ready') } }}
               disabled={exIdx === 0}
               className="glass-panel p-4 rounded-2xl disabled:opacity-30 hover:bg-white/10 transition-colors"
             >
@@ -302,32 +349,29 @@ export default function ActiveWorkoutContent() {
               >
                 <div className="absolute inset-0 rounded-2xl bg-[var(--accent-primary)] animate-ping opacity-20 group-hover:opacity-0" />
                 <Play className="w-6 h-6 fill-slate-950 relative z-10" /> 
-                <span className="relative z-10">Start Set</span>
+                <span className="relative z-10">Start</span>
               </motion.button>
             ) : phase === 'active' || phase === 'rest' ? (
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setIsPaused(p => !p)}
+                onClick={togglePause}
                 className="flex-1 py-5 rounded-2xl font-bold text-white text-lg flex items-center justify-center gap-2 glass-panel hover:bg-white/10 transition-colors"
               >
-                {isPaused
-                  ? <><Play className="w-6 h-6 fill-white" /> Resume</>
-                  : <><Pause className="w-6 h-6 fill-white" /> Pause</>
-                }
+                {isPaused ? <><Play className="w-6 h-6 fill-white" /> Resume</> : <><Pause className="w-6 h-6 fill-white" /> Pause</>}
               </motion.button>
             ) : null}
 
             {(phase === 'active' || phase === 'rest') ? (
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => { setCountdown(0); handlePhaseComplete() }}
+                onClick={() => { setRestStartTimestamp(0); handlePhaseComplete() }}
                 className="glass-panel p-4 rounded-2xl hover:bg-white/10 transition-colors"
               >
                 <CheckCircle className="w-6 h-6 text-[var(--accent-success)]" />
               </motion.button>
             ) : (
               <button
-                onClick={goNext}
+                onClick={() => { if (exIdx + 1 < exercises.length) { setExIdx(p => p + 1); setCompletedSets([]); setPhase('ready') } }}
                 disabled={exIdx === exercises.length - 1}
                 className="glass-panel p-4 rounded-2xl disabled:opacity-30 hover:bg-white/10 transition-colors"
               >
@@ -336,7 +380,6 @@ export default function ActiveWorkoutContent() {
             )}
           </div>
 
-          {/* Progress bar */}
           <div className="mt-6 h-1 bg-white/10 rounded-full overflow-hidden">
             <motion.div
               animate={{ width: `${(doneDots / totalDots) * 100}%` }}
@@ -346,9 +389,8 @@ export default function ActiveWorkoutContent() {
         </div>
       </div>
 
-      {/* ── WORKOUT COMPLETE OVERLAY ──────────────────────────── */}
       <AnimatePresence>
-        {showDone && (
+        {phase === 'done' && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -362,21 +404,17 @@ export default function ActiveWorkoutContent() {
               <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Trophy className="w-10 h-10 text-amber-500" />
               </div>
-              
               <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 mb-2 drop-shadow-lg">Goal Reached</h2>
               <h3 className="text-xl font-bold text-white mb-2">Protocol Complete</h3>
               <p className="text-slate-400 font-medium mb-8">
-                {exercises.length} exercises · {fmt(elapsed)}
+                {exercises.length} exercises · {fmt(elapsedSeconds)}
               </p>
-
-              <div className="space-y-3">
-                <button
-                  onClick={() => router.push('/dashboard')}
-                  className="w-full py-4 bg-[var(--accent-primary)] text-slate-950 font-bold rounded-2xl hover:brightness-110 transition-all shadow-[0_0_20px_var(--accent-primary-glow)] active:scale-95"
-                >
-                  Return Home
-                </button>
-              </div>
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="w-full py-4 bg-[var(--accent-primary)] text-slate-950 font-bold rounded-2xl hover:brightness-110 shadow-[0_0_20px_var(--accent-primary-glow)] active:scale-95"
+              >
+                Return Home
+              </button>
             </motion.div>
           </motion.div>
         )}
