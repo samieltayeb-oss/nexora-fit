@@ -112,7 +112,7 @@ export default function ProgressPage() {
         <button 
           onClick={fetchProgress}
           disabled={isLoading}
-          className="glass-panel hover:bg-white/5 text-[var(--accent-primary)] text-xs font-bold px-4 py-2 rounded-2xl flex items-center gap-2 transition-all active:scale-95"
+          className="glass-panel hover:bg-white/5 hover:shadow-[0_0_15px_var(--accent-primary-glow)] text-[var(--accent-primary)] text-xs font-bold px-4 py-2 rounded-2xl flex items-center gap-2 transition-all active:scale-95"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> 
           <span className="hidden md:inline">{isLoading ? 'Syncing...' : 'Sync Scale'}</span>
@@ -126,8 +126,8 @@ export default function ProgressPage() {
         <div className="flex justify-between items-start mb-6 relative z-10">
           <div>
             <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Current Weight</h2>
-            <div className="text-5xl md:text-6xl font-bold text-[var(--foreground)] tracking-tighter mt-1 flex items-baseline gap-2">
-              <NumberCounter value={weight} decimals={2} /> <span className="text-xl text-slate-400 font-medium">kg</span>
+            <div className="text-6xl md:text-7xl font-bold text-[var(--foreground)] tracking-tighter mt-1 flex items-baseline gap-2">
+              <NumberCounter value={weight} decimals={2} /> <span className="text-2xl text-slate-400 font-medium tracking-normal">kg</span>
             </div>
           </div>
           <div className="flex items-center gap-1.5 text-[var(--accent-success)] bg-[var(--accent-success)]/10 px-4 py-2 rounded-2xl text-xs font-bold">
@@ -149,10 +149,10 @@ export default function ProgressPage() {
             <Activity className="w-5 h-5 text-[var(--accent-primary)]" /> Core Indicators
           </h3>
           <div className="space-y-4">
-            <MetricRow icon={<Activity />} label="BMI" value={bmi} suffix="" status="High" statusColor="amber" />
-            <MetricRow icon={<Flame />} label="Body Fat" value={bodyFat} suffix="%" status="Standard" statusColor="teal" />
-            <MetricRow icon={<Zap />} label="Visceral Fat" value={visceralFat} suffix="" status="Standard" statusColor="teal" />
-            <MetricRow icon={<Activity />} label="Subcutaneous Fat" value={subcutFat} suffix="%" status="High" statusColor="amber" />
+            <MetricRow icon={<Activity />} label="BMI" value={bmi} suffix="" status="High" statusColor="amber" index={0} />
+            <MetricRow icon={<Flame />} label="Body Fat" value={bodyFat} suffix="%" status="Standard" statusColor="teal" index={1} />
+            <MetricRow icon={<Zap />} label="Visceral Fat" value={visceralFat} suffix="" status="Standard" statusColor="teal" index={2} />
+            <MetricRow icon={<Activity />} label="Subcutaneous Fat" value={subcutFat} suffix="%" status="High" statusColor="amber" index={3} />
           </div>
         </section>
 
@@ -162,10 +162,10 @@ export default function ProgressPage() {
             <Dumbbell className="w-5 h-5 text-[var(--accent-primary)]" /> Composition
           </h3>
           <div className="space-y-4">
-            <MetricRow icon={<Dumbbell />} label="Muscle Mass" value={muscleMass} suffix=" kg" status="Standard" statusColor="teal" />
-            <MetricRow icon={<Dumbbell />} label="Skeletal Muscle" value={skeletalMuscle} suffix="%" status="Standard" statusColor="teal" />
-            <MetricRow icon={<Activity />} label="Bone Mass" value={boneMass} suffix=" kg" status="Standard" statusColor="teal" />
-            <MetricRow icon={<Droplets />} label="Body Water" value={bodyWater} suffix="%" status="Standard" statusColor="teal" />
+            <MetricRow icon={<Dumbbell />} label="Muscle Mass" value={muscleMass} suffix=" kg" status="Standard" statusColor="teal" index={2} />
+            <MetricRow icon={<Dumbbell />} label="Skeletal Muscle" value={skeletalMuscle} suffix="%" status="Standard" statusColor="teal" index={3} />
+            <MetricRow icon={<Activity />} label="Bone Mass" value={boneMass} suffix=" kg" status="Standard" statusColor="teal" index={4} />
+            <MetricRow icon={<Droplets />} label="Body Water" value={bodyWater} suffix="%" status="Standard" statusColor="teal" index={5} />
           </div>
         </section>
 
@@ -175,10 +175,10 @@ export default function ProgressPage() {
             <Flame className="w-5 h-5 text-[var(--accent-warning)]" /> Metabolic Profile
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-            <MetricRow icon={<Activity />} label="Protein" value={protein} suffix="%" status="Standard" statusColor="teal" />
-            <MetricRow icon={<Flame />} label="Basal Metabolic Rate" value={bmr} suffix=" kcal" status="Standard" statusColor="teal" />
-            <MetricRow icon={<Activity />} label="Fat-Free Weight" value={62.23} suffix=" kg" status="Standard" statusColor="teal" />
-            <MetricRow icon={<Activity />} label="Metabolic Age" value={metabolicAge} suffix=" yrs" status="High" statusColor="amber" />
+            <MetricRow icon={<Activity />} label="Protein" value={protein} suffix="%" status="Standard" statusColor="teal" index={4} />
+            <MetricRow icon={<Flame />} label="Basal Metabolic Rate" value={bmr} suffix=" kcal" status="Standard" statusColor="teal" index={5} />
+            <MetricRow icon={<Activity />} label="Fat-Free Weight" value={62.23} suffix=" kg" status="Standard" statusColor="teal" index={6} />
+            <MetricRow icon={<Activity />} label="Metabolic Age" value={metabolicAge} suffix=" yrs" status="High" statusColor="amber" index={7} />
           </div>
         </section>
       </div>
@@ -188,9 +188,9 @@ export default function ProgressPage() {
 }
 
 function MetricRow({ 
-  icon, label, value, suffix, status, statusColor 
+  icon, label, value, suffix, status, statusColor, index = 0
 }: { 
-  icon: React.ReactNode, label: string, value: number, suffix: string, status: string, statusColor: 'teal' | 'amber' 
+  icon: React.ReactNode, label: string, value: number, suffix: string, status: string, statusColor: 'teal' | 'amber', index?: number 
 }) {
   const colorMap = {
     teal: 'text-[var(--accent-success)] bg-[var(--accent-success)]/10',
@@ -198,7 +198,12 @@ function MetricRow({
   }
   
   return (
-    <div className="flex items-center justify-between py-2 border-b border-white/5 last:border-0 group hover:bg-white/[0.02] -mx-2 px-2 rounded-xl transition-colors">
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05 + 0.1, duration: 0.4 }}
+      className="flex items-center justify-between py-2 border-b border-white/5 last:border-0 group hover:bg-white/[0.02] -mx-2 px-2 rounded-xl transition-colors"
+    >
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-white transition-colors">
           {icon}
@@ -214,6 +219,6 @@ function MetricRow({
           {status}
         </span>
       </div>
-    </div>
+    </motion.div>
   )
 }

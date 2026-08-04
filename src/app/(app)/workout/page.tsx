@@ -6,7 +6,7 @@ import { Dumbbell, PersonStanding, ChevronRight, Flame, Clock, Trophy, Star } fr
 
 export default function WorkoutHubPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white pb-32">
+    <div className="min-h-screen bg-[var(--background)] text-white pb-32">
       {/* Header */}
       <div className="px-5 pt-10 pb-6">
         <p className="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] mb-1">SAM FIT</p>
@@ -24,7 +24,7 @@ export default function WorkoutHubPage() {
         <Link href="/workout/program?type=gym">
           <motion.div
             whileTap={{ scale: 0.97 }}
-            className="relative rounded-3xl overflow-hidden border border-teal-400/30 shadow-2xl shadow-teal-500/20"
+            className="relative rounded-3xl overflow-hidden glass-card hover:shadow-[0_0_30px_var(--accent-primary-glow)] transition-shadow duration-500"
             style={{ minHeight: 200 }}
           >
             {/* Background Image */}
@@ -34,8 +34,8 @@ export default function WorkoutHubPage() {
                 alt="Gym Workout"
                 className="w-full h-full object-cover opacity-40"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0d1f1c]/95 via-[#0d1f1c]/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f]/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[var(--surface)]/95 via-[var(--surface)]/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/80 via-transparent to-transparent" />
             </div>
 
             {/* Content */}
@@ -90,7 +90,7 @@ export default function WorkoutHubPage() {
         <Link href="/workout/program?type=calisthenics">
           <motion.div
             whileTap={{ scale: 0.97 }}
-            className="relative rounded-3xl overflow-hidden border border-indigo-400/30 shadow-2xl shadow-indigo-500/20"
+            className="relative rounded-3xl overflow-hidden glass-card hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] transition-shadow duration-500"
             style={{ minHeight: 200 }}
           >
             {/* Background Image */}
@@ -101,7 +101,7 @@ export default function WorkoutHubPage() {
                 className="w-full h-full object-cover opacity-40"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#12101f]/95 via-[#12101f]/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f]/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/80 via-transparent to-transparent" />
             </div>
 
             {/* Content */}
@@ -154,17 +154,17 @@ export default function WorkoutHubPage() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-3 mt-2">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+          <div className="glass-panel hover:bg-white/10 transition-colors cursor-pointer rounded-2xl p-4 text-center">
             <div className="text-xl font-black text-teal-400">56</div>
             <div className="text-[10px] text-slate-400 font-bold mt-0.5">Total Days</div>
           </div>
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+          <div className="glass-panel hover:bg-white/10 transition-colors cursor-pointer rounded-2xl p-4 text-center">
             <div className="text-xl font-black text-amber-400">22</div>
             <div className="text-[10px] text-slate-400 font-bold mt-0.5">Exercises</div>
           </div>
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+          <div className="glass-panel hover:bg-white/10 transition-colors cursor-pointer rounded-2xl p-4 text-center">
             <div className="text-xl font-black text-rose-400">
-              <Star className="w-5 h-5 mx-auto fill-rose-400" />
+              <Star className="w-5 h-5 mx-auto fill-rose-400 drop-shadow-[0_0_8px_rgba(251,113,133,0.6)]" />
             </div>
             <div className="text-[10px] text-slate-400 font-bold mt-0.5">Premium</div>
           </div>
@@ -172,17 +172,17 @@ export default function WorkoutHubPage() {
 
         {/* Exercise Library Link */}
         <Link href="/workout/library">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+          <div className="glass-panel hover:bg-white/10 transition-colors rounded-2xl p-4 flex items-center justify-between group">
             <div className="flex items-center gap-3">
-              <div className="bg-slate-700 rounded-xl p-2.5">
-                <Dumbbell className="w-4 h-4 text-slate-300" />
+              <div className="bg-slate-700/50 group-hover:bg-[var(--accent-primary)]/20 transition-colors rounded-xl p-2.5">
+                <Dumbbell className="w-4 h-4 text-slate-300 group-hover:text-[var(--accent-primary)] transition-colors" />
               </div>
               <div>
-                <div className="text-sm font-bold text-white">Exercise Library</div>
+                <div className="text-sm font-bold text-white group-hover:text-[var(--accent-primary)] transition-colors">Exercise Library</div>
                 <div className="text-[11px] text-slate-400 font-medium">Form guides · Machine setup · Tips</div>
               </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-500" />
+            <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-[var(--accent-primary)] transition-colors" />
           </div>
         </Link>
       </div>

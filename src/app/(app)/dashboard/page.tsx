@@ -82,7 +82,7 @@ export default function DashboardPage() {
       {/* ── TOP HEADER ────────────────────────────────────────────────────────── */}
       <header className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[var(--foreground)]">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-slate-100 to-slate-400">
             Good morning, Sam
           </h1>
           <p className="text-slate-400 mt-1 font-medium">
@@ -93,10 +93,10 @@ export default function DashboardPage() {
         <motion.div 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="w-12 h-12 rounded-full overflow-hidden border border-[var(--surface-border)] shadow-lg cursor-pointer"
+          className="w-12 h-12 rounded-full overflow-hidden shadow-[0_0_15px_var(--accent-primary-glow)] cursor-pointer p-[1px] bg-gradient-to-b from-white/20 to-transparent"
         >
-          {/* Subtle placeholder avatar */}
-          <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-400">
+          {/* Mesh gradient avatar */}
+          <div className="w-full h-full bg-gradient-to-tr from-[var(--accent-primary)] via-cyan-400 to-indigo-500 flex items-center justify-center text-slate-950 font-black text-lg">
             S
           </div>
         </motion.div>
@@ -236,14 +236,14 @@ export default function DashboardPage() {
               </div>
 
               <div>
-                <h3 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
+                <h3 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-3 drop-shadow-md">
                   Full Body Foundation
                 </h3>
-                <p className="text-slate-300 text-sm md:text-base font-medium max-w-md mb-6 leading-relaxed">
+                <p className="text-slate-300 text-sm md:text-base font-medium max-w-md mb-6 leading-relaxed drop-shadow">
                   Cardio Warm-Up + 3 Primary Gym Machines. Establish the baseline safely.
                 </p>
                 
-                <div className="inline-flex items-center gap-3 bg-[var(--foreground)] text-[var(--background)] px-6 py-3.5 rounded-2xl font-bold text-sm hover:bg-slate-200 transition-colors shadow-xl">
+                <div className="inline-flex items-center gap-3 glass-panel px-6 py-3.5 rounded-2xl font-bold text-sm text-white hover:bg-white/10 transition-colors shadow-2xl active:scale-95">
                   <Dumbbell className="w-4 h-4" /> Start Workout <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -296,7 +296,13 @@ export default function DashboardPage() {
                 <Watch className="w-5 h-5 text-slate-300" />
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-[var(--foreground)]">Apple Watch</h4>
+                <h4 className="font-semibold text-sm text-[var(--foreground)] flex items-center gap-2">
+                  Apple Watch
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-success)] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent-success)]"></span>
+                  </span>
+                </h4>
                 <p className="text-xs text-slate-400 font-medium">Last synced just now</p>
               </div>
             </div>

@@ -206,7 +206,7 @@ export default function ActiveWorkoutContent() {
 
       {/* ── FLOATING NEXT-EXERCISE CARD ───────────────────────── */}
       <div className="absolute top-24 right-6 z-30 w-36 hidden md:block">
-        <div className="glass-panel rounded-3xl overflow-hidden p-3 shadow-2xl">
+        <div className="glass-panel backdrop-blur-3xl rounded-3xl overflow-hidden p-3 shadow-2xl border-white/20">
           <div className="relative h-20 rounded-2xl overflow-hidden mb-3">
             {nextEx ? (
               <img src={nextEx.image} alt={nextEx.name} className="w-full h-full object-cover" />
@@ -246,9 +246,9 @@ export default function ActiveWorkoutContent() {
                   className="drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]"
                 />
               </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--accent-warning)] mb-1">Rest</span>
-                <span className="text-7xl font-bold text-white tracking-tighter tabular-nums">{countdown}</span>
+              <div className="absolute inset-0 flex flex-col items-center justify-center drop-shadow-2xl">
+                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--accent-warning)] mb-1 drop-shadow-md">Rest</span>
+                <span className="text-7xl font-bold text-white tracking-tighter tabular-nums drop-shadow-2xl">{countdown}</span>
               </div>
             </div>
           </motion.div>
@@ -268,18 +268,18 @@ export default function ActiveWorkoutContent() {
               exit={{ opacity: 0, y: -10 }}
               className={`mb-8 ${phase === 'rest' ? 'opacity-30' : 'opacity-100'} transition-opacity duration-500`}
             >
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center gap-3 mb-3 drop-shadow-md">
                 <span className="px-3 py-1 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-full backdrop-blur-md">
                   Set {currentSet} of {totalSets}
                 </span>
-                <span className="text-xs text-slate-400 font-medium">
+                <span className="text-xs text-slate-400 font-medium drop-shadow">
                   {ex.muscles.join(' · ')}
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-2">
+              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-2 drop-shadow-2xl">
                 {ex.name}
               </h2>
-              <div className="text-xl font-medium text-slate-300">
+              <div className="text-xl font-medium text-slate-300 drop-shadow-md">
                 {ex.setsReps}
               </div>
             </motion.div>
@@ -299,9 +299,11 @@ export default function ActiveWorkoutContent() {
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleStart}
-                className="flex-1 py-5 rounded-2xl font-bold text-slate-950 text-lg flex items-center justify-center gap-2 shadow-[0_0_30px_var(--accent-primary-glow)] bg-[var(--accent-primary)] hover:brightness-110 transition-all"
+                className="relative flex-1 py-5 rounded-2xl font-bold text-slate-950 text-lg flex items-center justify-center gap-2 shadow-[0_0_30px_var(--accent-primary-glow)] bg-[var(--accent-primary)] hover:brightness-110 transition-all group"
               >
-                <Play className="w-6 h-6 fill-slate-950" /> Start Set
+                <div className="absolute inset-0 rounded-2xl bg-[var(--accent-primary)] animate-ping opacity-20 group-hover:opacity-0" />
+                <Play className="w-6 h-6 fill-slate-950 relative z-10" /> 
+                <span className="relative z-10">Start Set</span>
               </motion.button>
             ) : phase === 'active' || phase === 'rest' ? (
               <motion.button
