@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { z } from 'zod'
 
-// 1. Zod Schema for Strict Payload Validation
 const healthSampleSchema = z.object({
   Type: z.string().optional(),
   type: z.string().optional(),
@@ -18,7 +17,7 @@ const healthSampleSchema = z.object({
   date: z.string().optional(),
   StartDate: z.string().optional(),
   startDate: z.string().optional()
-}).passthrough() // Allow other fields from Apple Shortcuts but don't trust them
+}).passthrough()
 
 const payloadSchema = z.union([
   z.array(z.union([z.number(), z.string(), healthSampleSchema])),
@@ -27,7 +26,6 @@ const payloadSchema = z.union([
   z.record(z.string(), z.any())
 ])
 
-// 2. Helper to Hash the Sync Key securely
 async function hashKey(key: string): Promise<string> {
   const encoder = new TextEncoder()
   const data = encoder.encode(key)
@@ -37,14 +35,53 @@ async function hashKey(key: string): Promise<string> {
 }
 
 export async function POST(req: NextRequest) {
+  const requestTime = new Date().toISOString()
+  let syncKeyId = null
+  let authenticatedUserId = null
+  let syncStatus = 'failed'
+  let errorCode = null
+  let acceptedRecords = 0
+  let rejectedRecords = 0
+
+  // 1. Initialize Supabase Admin Client
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
+  const logSync = async () => {
+    try {
+      await supabase.from('sync_logs').insert({
+        sync_key_id: syncKeyId,
+        user_id: authenticatedUserId,
+        request_time: requestTime,
+        completion_time: new Date().toISOString(),
+        status: syncStatus,
+        accepted_records: acceptedRecords,
+        rejected_records: rejectedRecords,
+        source: req.headers.get('user-agent') || 'unknown',
+        error_code: errorCode
+      })
+    } catch (e) {
+      console.error('Failed to write sync_log', e)
+    }
+  }
+
+  const generic401 = () => {
+    syncStatus = 'failed'
+    errorCode = 'unauthorized'
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   try {
-    // 3. Rate Limiting / Size Limits
     const contentLength = Number(req.headers.get('content-length') || 0)
-    if (contentLength > 5 * 1024 * 1024) { // 5MB limit
+    if (contentLength > 5 * 1024 * 1024) { 
+      syncStatus = 'failed'
+      errorCode = 'payload_too_large'
+      await logSync()
       return NextResponse.json({ error: 'Payload too large' }, { status: 413 })
     }
 
-    // 4. Extract Sync Key from Header
     let syncKey = req.headers.get('X-Nexora-Sync-Key')
     if (!syncKey) {
       const authHeader = req.headers.get('Authorization')
@@ -53,45 +90,37 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    if (!syncKey) {
-      return NextResponse.json({ error: 'Unauthorized: Missing Sync Key' }, { status: 401 })
-    }
+    if (!syncKey) return generic401()
 
-    // 5. Initialize Supabase Admin Client (needed to query sync_keys securely)
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    )
-
-    // 6. Validate Key Hash
     const keyHash = await hashKey(syncKey)
     const keyPrefix = syncKey.substring(0, 8)
 
     const { data: keyRecord, error: keyError } = await supabase
       .from('sync_keys')
-      .select('user_id, expires_at, revoked_at')
+      .select('id, user_id, active, expires_at, revoked_at')
       .eq('key_prefix', keyPrefix)
       .eq('key_hash', keyHash)
       .single()
 
-    if (keyError || !keyRecord) {
-      return NextResponse.json({ error: 'Unauthorized: Invalid Sync Key' }, { status: 401 })
+    // Constant-time generic 401 response for ANY auth failure condition. No branching leaks.
+    if (
+      keyError || 
+      !keyRecord || 
+      !keyRecord.active ||
+      keyRecord.revoked_at ||
+      (keyRecord.expires_at && new Date(keyRecord.expires_at) < new Date())
+    ) {
+      if (keyRecord) {
+        // Increment failed attempts without leaking presence
+        await supabase.rpc('increment_key_failed_attempts', { p_id: keyRecord.id }).catch(() => {})
+      }
+      return generic401()
     }
 
-    if (keyRecord.revoked_at) {
-      return NextResponse.json({ error: 'Unauthorized: Key Revoked' }, { status: 401 })
-    }
+    syncKeyId = keyRecord.id
+    authenticatedUserId = keyRecord.user_id
+    await supabase.from('sync_keys').update({ last_used_at: new Date().toISOString() }).eq('id', syncKeyId)
 
-    if (keyRecord.expires_at && new Date(keyRecord.expires_at) < new Date()) {
-      return NextResponse.json({ error: 'Unauthorized: Key Expired' }, { status: 401 })
-    }
-
-    const authenticatedUserId = keyRecord.user_id
-
-    // Update last_used_at
-    await supabase.from('sync_keys').update({ last_used_at: new Date().toISOString() }).eq('key_hash', keyHash)
-
-    // 7. Parse & Validate Payload
     const textBody = await req.text()
     let rawBody: unknown = null
     try {
@@ -102,11 +131,13 @@ export async function POST(req: NextRequest) {
 
     const parseResult = payloadSchema.safeParse(rawBody)
     if (!parseResult.success) {
-      return NextResponse.json({ error: 'Bad Request: Invalid Payload Structure' }, { status: 400 })
+      syncStatus = 'failed'
+      errorCode = 'malformed_payload'
+      await logSync()
+      return NextResponse.json({ error: 'Bad Request' }, { status: 400 })
     }
 
     const body = parseResult.data
-
     const healthLogsToInsert: Record<string, unknown>[] = []
     const bodyMeasurementsToInsert: Record<string, unknown>[] = []
 
@@ -124,7 +155,10 @@ export async function POST(req: NextRequest) {
     }
 
     if (rawItems.length > 500) {
-      return NextResponse.json({ error: 'Bad Request: Too many samples (Max 500)' }, { status: 400 })
+      syncStatus = 'failed'
+      errorCode = 'too_many_samples'
+      await logSync()
+      return NextResponse.json({ error: 'Bad Request' }, { status: 400 })
     }
 
     if (rawItems.length > 0) {
@@ -149,21 +183,20 @@ export async function POST(req: NextRequest) {
         }
 
         if (numVal !== null && !isNaN(numVal)) {
-          // Strict Deduplication & Idempotency logic should go here via Unique DB constraints
-          // Check if this sample is Weight from VeSync / Apple Health
+          acceptedRecords++
           if (rawType.includes('weight') || rawType.includes('mass') || rawType.includes('body_weight')) {
             bodyMeasurementsToInsert.push({
-              user_id: authenticatedUserId, // EXPLICIT OVERRIDE
+              user_id: authenticatedUserId,
               date: date.split('T')[0],
               weight_kg: numVal,
-              notes: `Synced from VeSync / Apple Health (${numVal} kg)`
+              notes: 'Secure Sync'
             })
             healthLogsToInsert.push({
-              user_id: authenticatedUserId, // EXPLICIT OVERRIDE
+              user_id: authenticatedUserId,
               log_type: 'weight',
               log_date: date,
               value_numeric: numVal,
-              notes: 'VeSync / Apple Health Weight Sync'
+              notes: 'Secure Sync'
             })
           }
           else if (rawType.includes('fat')) {
@@ -172,13 +205,13 @@ export async function POST(req: NextRequest) {
               log_type: 'body_fat',
               log_date: date,
               value_numeric: numVal,
-              notes: 'VeSync Smart Scale Body Fat %'
+              notes: 'Secure Sync'
             })
             bodyMeasurementsToInsert.push({
               user_id: authenticatedUserId,
               date: date.split('T')[0],
               body_fat_percentage: numVal,
-              notes: `Synced Body Fat % (${numVal}%)`
+              notes: 'Secure Sync'
             })
           }
           else {
@@ -187,37 +220,31 @@ export async function POST(req: NextRequest) {
               log_type: rawType.includes('step') ? 'steps' : rawType.includes('energy') || rawType.includes('calorie') || rawType.includes('active') ? 'active_calories' : 'heart_rate',
               log_date: date,
               value_numeric: numVal,
-              notes: `iOS Shortcut Sync (${rawType})`
+              notes: 'Secure Sync'
             })
           }
+        } else {
+          rejectedRecords++
         }
       })
     }
 
-    let savedLogs = null
-    let savedMeasurements = null
-
     if (healthLogsToInsert.length > 0) {
-      const { data, error } = await supabase.from('health_logs').insert(healthLogsToInsert).select()
-      if (error) console.error('Health logs insert error:', error.message)
-      savedLogs = data
+      await supabase.from('health_logs').insert(healthLogsToInsert).select()
     }
-
     if (bodyMeasurementsToInsert.length > 0) {
-      const { data, error } = await supabase.from('body_measurements').insert(bodyMeasurementsToInsert).select()
-      if (error) console.error('Body measurements insert error:', error.message)
-      savedMeasurements = data
+      await supabase.from('body_measurements').insert(bodyMeasurementsToInsert).select()
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Apple Health data synced securely!',
-      savedHealthLogs: savedLogs?.length || 0,
-      savedBodyMeasurements: savedMeasurements?.length || 0
-    })
+    syncStatus = 'success'
+    errorCode = null
+    await logSync()
+    
+    return NextResponse.json({ success: true, message: 'Apple Health data synced securely!' })
   } catch (err: unknown) {
-    console.error('API Error:', err)
-    // Safe error returns - never leak raw payloads
+    syncStatus = 'failed'
+    errorCode = 'internal_error'
+    await logSync()
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

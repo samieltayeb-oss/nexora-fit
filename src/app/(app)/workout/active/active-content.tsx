@@ -241,7 +241,8 @@ export default function ActiveWorkoutContent() {
               <p className="text-slate-400 mb-6 text-sm">We found an active workout session in progress. Would you like to resume where you left off?</p>
               <div className="flex flex-col gap-3">
                 <button onClick={resumeSavedSession} className="w-full py-3 bg-[var(--accent-primary)] text-slate-950 font-bold rounded-xl">Resume Session</button>
-                <button onClick={discardSavedSession} className="w-full py-3 bg-white/5 text-white font-bold rounded-xl hover:bg-white/10">Discard & Start Fresh</button>
+                <button onClick={discardSavedSession} className="w-full py-3 bg-white/10 text-white font-bold rounded-xl hover:bg-white/20">Start New Workout</button>
+                <button onClick={discardSavedSession} className="w-full py-3 bg-transparent text-slate-400 font-bold rounded-xl hover:text-white">Discard Saved Workout</button>
               </div>
             </div>
           </motion.div>

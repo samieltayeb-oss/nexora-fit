@@ -1,38 +1,35 @@
-# Sprint 1: Security & Persistence
+# Sprint 1: Real Security Verification
 
-This sprint focuses on the two most critical business risks: securing the backend against multi-tenant data leaks and protecting active workouts from accidental data loss.
+This plan addresses the requirement to provide **real** evidence of security, RLS, and cryptographic hardening before merging the `architecture-freeze` branch into `master`.
 
-## User Review Required
-> [!WARNING]  
-> **Apple Health Shortcut Update Required**
-> To fix the massive security flaw where your iOS Shortcut is dumping data into a hardcoded User ID, we are changing the architecture. We will generate a unique `sync_key` for your account. Once this sprint is complete, you will need to update your iOS Shortcut URL to include `?sync_key=YOUR_KEY`. Do you approve this architecture shift?
+## Security Review Matrix
+| Risk | Level | Mitigation | Future Improvement |
+|------|-------|------------|--------------------|
+| Sync key stolen from Shortcut | Medium | Headers-only transport. Rotate key. | Implement push-based Apple HealthKit background delivery. |
+| Lost phone / Compromised device | Medium | Revoke device's sync key instantly. | IP-based anomaly detection. |
+| Replay attack / Duplicate Syncs | Low | Deduplication via timestamp & metric type checks. | Unique hash-based constraints on `health_logs`. |
+| Brute force / Denial of Wallet | Low | Zod strict limits (5MB, 500 samples). API rate limiting. | Redis-based strict rate limiting. |
+| Browser cache access (Local Storage) | Low | No secrets stored. Only workout state is cached. | Use IndexedDB with encrypted local wrappers. |
 
-## Proposed Changes
+## Proposed Cryptographic Implementation
+1. **Generation**: `crypto.randomBytes(32).toString('hex')` (64-character high-entropy hex string).
+2. **Storage**: The plain key is shown **once**. The DB stores only a `SHA-256` hash using Web Crypto (`crypto.subtle.digest`), ensuring constant-time comparison is not strictly necessary for the hash lookup, but we will use secure DB lookups.
+3. **Key Management**: `sync_keys` table tracks `key_prefix`, `key_hash`, `active`, `last_used_at`, `expires_at`, `revoked_at`, and `failed_attempts`.
 
----
+## New Audit Trail (`sync_logs` table)
+Every sync attempt will be logged to provide a full audit trail:
+- `id`, `sync_key_id`, `user_id`, `request_time`, `completion_time`, `status` (success/failed), `accepted_records`, `rejected_records`, `duplicate_records`, `source`, `ip_hash`, `error_code`.
 
-### 1. Multi-Tenant Sync Security (API Route)
-**Problem**: `/api/health/sync` pulls the first user from the database or uses a hardcoded ID, which will leak or overwrite data in a commercial multi-tenant environment.
-**Solution**:
-- [NEW] Create a `sync_keys` table in Supabase linking a random UUID (`api_key`) to a `user_id`.
-- [MODIFY] `src/app/api/health/sync/route.ts` will extract `req.nextUrl.searchParams.get('sync_key')`.
-- If valid, we associate the health logs with the correct `user_id`. If invalid or missing, we return `401 Unauthorized`.
+## LocalStorage Proofs
+- **Confirmed**: `useWorkoutPersistence` stores *only* the current exercise index, completed sets, timestamps, and the `user_id`. It does **not** store JWTs, passwords, or sync keys.
 
-### 2. Strict Row Level Security (RLS)
-**Problem**: While RLS is enabled on Supabase, we need to ensure all tables strictly enforce the `auth.uid()` policy.
-**Solution**:
-- Write a Supabase SQL migration script (`01_sprint_1_security.sql`) to verify and enforce that users can only `SELECT`, `INSERT`, `UPDATE`, and `DELETE` rows in `health_logs` and `body_measurements` where `user_id = auth.uid()`.
+## Real Evidence Generation Strategy
+Because I (Gravity) do not possess the `DATABASE_URL` (direct Postgres connection string) or a Supabase CLI login token, **I cannot execute DDL migrations on the remote database automatically.**
 
-### 3. Offline Workout Persistence
-**Problem**: The active workout player state lives entirely in React memory. If a user refreshes the page or loses cellular connection, the workout resets to zero.
-**Solution**:
-- [MODIFY] `src/components/workout/active-content.tsx`
-- Implement `useEffect` to autosave the active workout state (current exercise index, elapsed time, completed sets) to `localStorage` every 5 seconds.
-- On mount, check if a saved `active_workout_state` exists in `localStorage` and prompt the user to resume or discard it.
+To provide you with the **real test results**, we will follow this protocol:
+1. I will write the final SQL migration (`02_sprint1_security_final.sql`) covering `sync_keys`, `sync_logs`, and all RLS policies.
+2. I will write an automated Node.js test suite (`test-security.js`) that performs real cross-user RLS inserts/selects and real API requests against localhost.
+3. **You (the User)** will run the SQL migration in your Supabase Dashboard.
+4. I will then execute `node test-security.js` to prove that the API correctly rejects invalid keys, accepts valid keys, and that User A cannot read User B's data.
 
-## Verification Plan
-
-### Automated & Manual Testing
-1. **API Security Test**: Attempt to hit `/api/health/sync` via POST without a `sync_key`. Verify it fails with `401 Unauthorized`.
-2. **API Success Test**: Hit the endpoint with a valid `sync_key` and ensure logs are written to the correct user.
-3. **Persistence Test**: Start a workout, navigate to step 3, refresh the browser, and verify the workout resumes exactly at step 3 with the timer intact.
+Do you approve this sequence to generate the real evidence?
