@@ -3,7 +3,8 @@ import { createClient } from '@supabase/supabase-js'
 
 export async function POST(req: NextRequest) {
   try {
-    let body: unknown = null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let body: any = null
     const textBody = await req.text()
 
     try {

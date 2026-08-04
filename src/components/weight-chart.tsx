@@ -12,7 +12,7 @@ const data = [
   { date: 'Jul 31', weight: 81.05 },
 ]
 
-const CustomTooltip = ({ active, payload, label }: { active?: boolean, payload?: Record<string, unknown>[], label?: string }) => {
+const CustomTooltip = ({ active, payload, label }: { active?: boolean, payload?: Array<{ value: number | string }>, label?: string }) => {
   if (active && payload && payload.length) {
     return (
       <div className="glass-panel p-3 rounded-2xl shadow-2xl border-white/10 backdrop-blur-xl">
