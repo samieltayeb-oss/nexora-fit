@@ -43,8 +43,9 @@ export default function OnboardingWizard() {
       } else {
         router.push('/dashboard')
       }
-    } catch (err) {
-      setError('An unexpected error occurred.')
+    } catch (err: unknown) {
+      console.error(err)
+      setError('Failed to update profile. Please try again.')
       setLoading(false)
     }
   }
@@ -70,7 +71,7 @@ export default function OnboardingWizard() {
             
             <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4">
               <p className="text-slate-300 text-sm leading-relaxed italic">
-                "I understand that this application provides general fitness planning and does not replace my physician, cardiologist, diabetes team or pharmacist. Because of my cardiovascular and diabetes history, I will confirm that my clinician has cleared me to begin or progress resistance and cardiovascular training."
+                &quot;I understand that this application provides general fitness planning and does not replace my physician, cardiologist, diabetes team or pharmacist. Because of my cardiovascular and diabetes history, I will confirm that my clinician has cleared me to begin or progress resistance and cardiovascular training.&quot;
               </p>
             </div>
 
@@ -100,7 +101,7 @@ export default function OnboardingWizard() {
               <Activity className="text-teal-400 w-6 h-6" />
             </div>
             <h2 className="text-2xl font-bold text-white tracking-tight">Your Profile</h2>
-            <p className="text-slate-400">Let's set up your starting metrics for SAM FIT.</p>
+            <p className="text-slate-400">Let&apos;s set up your starting metrics for SAM FIT.</p>
             
             <div className="space-y-4">
               <div>

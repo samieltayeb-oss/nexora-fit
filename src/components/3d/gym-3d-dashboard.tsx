@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Sparkles, Activity, ShieldCheck, Dumbbell, Flame, Target } from 'lucide-react'
+import { Dumbbell, Flame, Target } from 'lucide-react'
 
 export function Gym3DDashboard() {
   const [isHovered, setIsHovered] = useState(false)
@@ -54,7 +54,7 @@ export function Gym3DDashboard() {
       <div className="absolute bottom-4 left-4 right-4 z-10 backdrop-blur-2xl bg-slate-950/80 p-4 rounded-2xl border border-white/10 flex justify-between items-end shadow-2xl">
         <div>
           <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest flex items-center gap-1">
-            <Target className="w-3 h-3 text-teal-400" /> Today's Muscle Focus
+            <Target className="w-3 h-3 text-teal-400" /> Today&apos;s Muscle Focus
           </div>
           <div className="text-base font-black text-white tracking-tight mt-0.5 flex items-center gap-2">
             Chest & Quads <span className="text-xs text-teal-400 font-bold px-2 py-0.5 bg-teal-500/10 border border-teal-500/30 rounded-full">RPE 5-6 Limit</span>

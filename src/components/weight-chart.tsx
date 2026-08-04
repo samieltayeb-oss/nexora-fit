@@ -12,6 +12,20 @@ const data = [
   { date: 'Jul 31', weight: 81.05 },
 ]
 
+const CustomTooltip = ({ active, payload, label }: { active?: boolean, payload?: Record<string, unknown>[], label?: string }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="glass-panel p-3 rounded-2xl shadow-2xl border-white/10 backdrop-blur-xl">
+        <p className="text-[10px] font-black uppercase text-slate-400 mb-1">{label}</p>
+        <p className="text-lg font-bold text-white flex items-baseline gap-1">
+          {payload[0].value} <span className="text-xs text-slate-400 font-medium tracking-normal">kg</span>
+        </p>
+      </div>
+    )
+  }
+  return null
+}
+
 export function WeightChart({ goalWeight = 75.0 }: { goalWeight?: number }) {
   if (!data || data.length === 0) {
     return (
@@ -27,19 +41,6 @@ export function WeightChart({ goalWeight = 75.0 }: { goalWeight?: number }) {
     )
   }
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="glass-panel p-3 rounded-2xl shadow-2xl border-white/10 backdrop-blur-xl">
-          <p className="text-[10px] font-black uppercase text-slate-400 mb-1">{label}</p>
-          <p className="text-lg font-bold text-white flex items-baseline gap-1">
-            {payload[0].value} <span className="text-xs text-slate-400 font-medium tracking-normal">kg</span>
-          </p>
-        </div>
-      )
-    }
-    return null
-  }
   return (
     <div className="h-[250px] w-full mt-4 -ml-4 md:ml-0">
       <ResponsiveContainer width="100%" height="100%">

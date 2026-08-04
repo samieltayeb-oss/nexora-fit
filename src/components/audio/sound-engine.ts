@@ -8,7 +8,8 @@ class SoundEngine {
   public unlockAudio() {
     if (typeof window === 'undefined') return
     if (!this.ctx) {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext
+      const w = window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext }
+      const AudioCtx = w.AudioContext || w.webkitAudioContext
       if (AudioCtx) {
         this.ctx = new AudioCtx()
       }

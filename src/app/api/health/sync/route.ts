@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 
 export async function POST(req: NextRequest) {
   try {
-    let body: any = null
+    let body: unknown = null
     const textBody = await req.text()
 
     try {
@@ -25,11 +25,11 @@ export async function POST(req: NextRequest) {
       targetUserId = usersData.users[0].id
     }
 
-    const healthLogsToInsert: any[] = []
-    const bodyMeasurementsToInsert: any[] = []
+    const healthLogsToInsert: Record<string, unknown>[] = []
+    const bodyMeasurementsToInsert: Record<string, unknown>[] = []
 
     // Helper to extract items from any shape (array, object, primitive number, string, nested data)
-    let rawItems: any[] = []
+    let rawItems: unknown[] = []
 
     if (Array.isArray(body)) {
       rawItems = body
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (rawItems.length > 0) {
-      rawItems.forEach((item: any) => {
+      rawItems.forEach((item: unknown) => {
         let numVal: number | null = null
         let rawType = 'steps'
         let date = new Date().toISOString()
@@ -59,9 +59,11 @@ export async function POST(req: NextRequest) {
         } 
         // Case B: Health Sample Object
         else if (typeof item === 'object' && item !== null) {
-          const val = item.Qty ?? item.qty ?? item.Value ?? item.value ?? item.avg ?? item.Count ?? item.count ?? item.Quantity ?? item.quantity ?? item.Amount ?? item.amount ?? item.val ?? item.num
-          rawType = (item.Type || item.type || item.SampleType || item.sampleType || item.Name || item.name || item['Health Sample Type'] || 'steps').toString().toLowerCase()
-          date = item.Date || item.date || item.StartDate || item.startDate || new Date().toISOString()
+          const typedItem = item as Record<string, unknown>
+          const val = typedItem.Qty ?? typedItem.qty ?? typedItem.Value ?? typedItem.value ?? typedItem.avg ?? typedItem.Count ?? typedItem.count ?? typedItem.Quantity ?? typedItem.quantity ?? typedItem.Amount ?? typedItem.amount ?? typedItem.val ?? typedItem.num
+          rawType = (typedItem.Type || typedItem.type || typedItem.SampleType || typedItem.sampleType || typedItem.Name || typedItem.name || typedItem['Health Sample Type'] || 'steps').toString().toLowerCase()
+          const itemDate = typedItem.Date || typedItem.date || typedItem.StartDate || typedItem.startDate
+          date = typeof itemDate === 'string' ? itemDate : new Date().toISOString()
           if (val !== undefined && val !== null && !isNaN(Number(val))) {
             numVal = Number(val)
           }
@@ -140,7 +142,8 @@ export async function POST(req: NextRequest) {
         bodyMeasurements: savedMeasurements
       }
     })
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 })
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err)
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
