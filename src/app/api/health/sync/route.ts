@@ -97,12 +97,12 @@ export async function POST(req: NextRequest) {
 
     const { data: keyRecord, error: keyError } = await supabase
       .from('sync_keys')
-      .select('id, user_id, active, expires_at, revoked_at')
+      .select('id, user_id, active, expires_at, revoked_at, failed_attempts')
       .eq('key_prefix', keyPrefix)
       .eq('key_hash', keyHash)
       .single()
 
-    // Constant-time generic 401 response for ANY auth failure condition. No branching leaks.
+    // Constant-time generic 401 response for ANY auth failure condition
     if (
       keyError || 
       !keyRecord || 
@@ -111,8 +111,10 @@ export async function POST(req: NextRequest) {
       (keyRecord.expires_at && new Date(keyRecord.expires_at) < new Date())
     ) {
       if (keyRecord) {
-        // Increment failed attempts without leaking presence
-        await supabase.rpc('increment_key_failed_attempts', { p_id: keyRecord.id }).catch(() => {})
+        // Direct Service Role update of failed attempts
+        await supabase.from('sync_keys').update({ 
+          failed_attempts: (keyRecord.failed_attempts || 0) + 1 
+        }).eq('id', keyRecord.id)
       }
       return generic401()
     }
