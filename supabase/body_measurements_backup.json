@@ -1,0 +1,74 @@
+[
+  {
+    "id": "14544805-4b25-4080-8c38-20844e7a2f3d",
+    "user_id": "7caf9e4c-f5cf-4fe3-b27e-532e9b463284",
+    "date": "2026-07-31",
+    "weight_kg": 80.5,
+    "waist_cm": null,
+    "body_fat_percentage": null,
+    "muscle_mass_kg": null,
+    "visceral_fat_rating": null,
+    "notes": "Synced from VeSync / Apple Health Scale",
+    "created_at": "2026-07-31T21:14:36.357226+00:00"
+  },
+  {
+    "id": "fe33be70-60c2-4585-9e23-9d3ad0e731d3",
+    "user_id": "7caf9e4c-f5cf-4fe3-b27e-532e9b463284",
+    "date": "2026-07-31",
+    "weight_kg": 81.45,
+    "waist_cm": null,
+    "body_fat_percentage": 23.6,
+    "muscle_mass_kg": 59.06,
+    "visceral_fat_rating": 10,
+    "notes": "Actual VeSync Scale Reading (81.45 kg)",
+    "created_at": "2026-07-31T21:17:33.80254+00:00"
+  },
+  {
+    "id": "2bdc53cd-3aad-4f0b-a24b-5f55ff52eb81",
+    "user_id": "7caf9e4c-f5cf-4fe3-b27e-532e9b463284",
+    "date": "2026-07-31",
+    "weight_kg": 82.1,
+    "waist_cm": null,
+    "body_fat_percentage": null,
+    "muscle_mass_kg": null,
+    "visceral_fat_rating": null,
+    "notes": "Fresh VeSync Scale Reading (82.10 kg)",
+    "created_at": "2026-07-31T21:28:26.354096+00:00"
+  },
+  {
+    "id": "fde9db79-c546-4c41-8208-623d774bd894",
+    "user_id": "7caf9e4c-f5cf-4fe3-b27e-532e9b463284",
+    "date": "2026-08-01",
+    "weight_kg": 142,
+    "waist_cm": null,
+    "body_fat_percentage": null,
+    "muscle_mass_kg": null,
+    "visceral_fat_rating": null,
+    "notes": "Synced from VeSync / Apple Health (142 kg)",
+    "created_at": "2026-08-01T01:04:36.859011+00:00"
+  },
+  {
+    "id": "361fe466-57e5-421c-bb8b-49de8299b824",
+    "user_id": "7caf9e4c-f5cf-4fe3-b27e-532e9b463284",
+    "date": "2026-08-01",
+    "weight_kg": 81.75,
+    "waist_cm": null,
+    "body_fat_percentage": null,
+    "muscle_mass_kg": null,
+    "visceral_fat_rating": null,
+    "notes": "Synced from VeSync / Apple Health (81.75 kg)",
+    "created_at": "2026-08-01T01:04:38.43155+00:00"
+  },
+  {
+    "id": "a842af65-9dcf-49a0-9ea3-e8e65d72f07c",
+    "user_id": "7caf9e4c-f5cf-4fe3-b27e-532e9b463284",
+    "date": "2026-08-04",
+    "weight_kg": 81.55,
+    "waist_cm": null,
+    "body_fat_percentage": null,
+    "muscle_mass_kg": null,
+    "visceral_fat_rating": null,
+    "notes": "Synced from VeSync / Apple Health (81.55 kg)",
+    "created_at": "2026-08-04T22:07:08.645509+00:00"
+  }
+]

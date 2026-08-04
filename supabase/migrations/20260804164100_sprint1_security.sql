@@ -1,4 +1,4 @@
--- Sprint 1: Real Security Verification - Final (Corrected)
+-- Sprint 1: Real Security Verification - Final (Corrected & Hardened)
 
 -- 1. Create secure API sync keys table (Idempotent)
 CREATE TABLE IF NOT EXISTS public.sync_keys (
@@ -27,18 +27,32 @@ CREATE INDEX IF NOT EXISTS idx_sync_keys_prefix ON public.sync_keys (key_prefix)
 
 -- RLS: sync_keys (Protected write access)
 ALTER TABLE public.sync_keys ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "Users can view own keys" ON public.sync_keys;
-CREATE POLICY "Users can view own keys" 
-ON public.sync_keys FOR SELECT 
-TO authenticated 
-USING (auth.uid() = user_id);
 
+-- Revoke ALL client access to the base table to protect key_hash
+DROP POLICY IF EXISTS "Users can view own keys" ON public.sync_keys;
 DROP POLICY IF EXISTS "Users can delete own keys" ON public.sync_keys;
-CREATE POLICY "Users can delete own keys" 
-ON public.sync_keys FOR DELETE 
-TO authenticated 
-USING (auth.uid() = user_id);
--- (INSERT and UPDATE are handled exclusively by protected server routes)
+REVOKE ALL ON public.sync_keys FROM authenticated;
+REVOKE ALL ON public.sync_keys FROM anon;
+REVOKE ALL ON public.sync_keys FROM PUBLIC;
+
+-- Safe View for Metadata
+CREATE OR REPLACE VIEW public.sync_key_metadata AS
+SELECT 
+  id,
+  user_id,
+  key_prefix,
+  name,
+  active,
+  failed_attempts,
+  created_at,
+  last_used_at,
+  expires_at,
+  revoked_at
+FROM public.sync_keys;
+
+GRANT SELECT ON public.sync_key_metadata TO authenticated;
+
+-- (INSERT, UPDATE, DELETE are handled exclusively by protected server routes via service role)
 
 -- 2. Create sync_logs Audit Trail Table (Idempotent)
 CREATE TABLE IF NOT EXISTS public.sync_logs (
@@ -64,8 +78,6 @@ TO authenticated
 USING (auth.uid() = user_id);
 
 -- 3. Exhaustive RLS Audit & Enforcement for ALL user-owned tables
--- (Assuming tables exist; wrapped in safe DO blocks if necessary, but we enforce policies directly)
--- NOTE: We use IF EXISTS wrapper to prevent failure if a table doesn't exist yet in development.
 
 DO $$ 
 BEGIN 
@@ -84,7 +96,7 @@ BEGIN
     DROP POLICY IF EXISTS "Users can manage their own health profiles" ON public.health_profiles;
     CREATE POLICY "Users can manage their own health profiles" 
     ON public.health_profiles FOR ALL TO authenticated 
-    USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+    USING (auth.uid() = id) WITH CHECK (auth.uid() = id); -- Uses id based on initial_schema
   END IF;
 
   -- health_logs
@@ -114,12 +126,13 @@ BEGIN
     USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
   END IF;
 
-  -- workout_sets
+  -- workout_sets (Note: workout_sets uses session_id to map to workout_sessions, not user_id directly)
   IF EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'workout_sets') THEN
     ALTER TABLE public.workout_sets ENABLE ROW LEVEL SECURITY;
     DROP POLICY IF EXISTS "Users can manage their own workout sets" ON public.workout_sets;
     CREATE POLICY "Users can manage their own workout sets" 
     ON public.workout_sets FOR ALL TO authenticated 
-    USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+    USING (EXISTS (SELECT 1 FROM public.workout_sessions ws WHERE ws.id = session_id AND ws.user_id = auth.uid()))
+    WITH CHECK (EXISTS (SELECT 1 FROM public.workout_sessions ws WHERE ws.id = session_id AND ws.user_id = auth.uid()));
   END IF;
 END $$;

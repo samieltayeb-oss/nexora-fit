@@ -36,10 +36,10 @@ async function hashKey(key: string): Promise<string> {
 
 export async function POST(req: NextRequest) {
   const requestTime = new Date().toISOString()
-  let syncKeyId = null
-  let authenticatedUserId = null
+  let syncKeyId: string | null = null
+  let authenticatedUserId: string | null = null
   let syncStatus = 'failed'
-  let errorCode = null
+  let errorCode: string | null = null
   let acceptedRecords = 0
   let rejectedRecords = 0
 

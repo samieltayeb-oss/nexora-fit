@@ -24,7 +24,7 @@ ALTER TABLE public.exercises ADD COLUMN IF NOT EXISTS content_version INTEGER DE
 
 -- 2. Create exercise_media table for multi-view image management
 CREATE TABLE IF NOT EXISTS public.exercise_media (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     exercise_id UUID REFERENCES public.exercises(id) ON DELETE CASCADE NOT NULL,
     media_type TEXT NOT NULL DEFAULT 'image', -- image, video
     view_type TEXT NOT NULL, -- start, finish, form_view, mistake
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS public.exercise_media (
 
 -- 3. Create exercise_alternatives mapping table
 CREATE TABLE IF NOT EXISTS public.exercise_alternatives (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     exercise_id UUID REFERENCES public.exercises(id) ON DELETE CASCADE NOT NULL,
     alternative_exercise_id UUID REFERENCES public.exercises(id) ON DELETE CASCADE NOT NULL,
     reason TEXT NOT NULL, -- machine_unavailable, knee_discomfort, shoulder_discomfort, back_discomfort, balance_difficulty, home_workout
