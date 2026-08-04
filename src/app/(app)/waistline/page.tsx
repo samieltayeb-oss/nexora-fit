@@ -9,9 +9,9 @@ import {
   Footprints, Utensils, Moon, RefreshCw, Trophy, Scale, Info, Sliders, Dumbbell, Play, Maximize2, X
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { NumberCounter } from '@/components/motion/number-counter'
-import { AnimatedCard } from '@/components/motion/animated-card'
-import { triggerCelebrationConfetti } from '@/components/motion/celebration'
+import { NumberCounter } from '@/components/ui/number-counter'
+import { AnimatedCard } from '@/components/ui/animated-card'
+import { triggerCelebrationConfetti } from '@/components/ui/celebration'
 
 export default function WaistlineCoachPage() {
   const router = useRouter()

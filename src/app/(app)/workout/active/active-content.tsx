@@ -8,8 +8,8 @@ import {
   Volume2, VolumeX, Info, X, Home, CheckCircle, Zap
 } from 'lucide-react'
 import { CALISTHENICS_SESSION, GYM_SESSION, WorkoutExercise } from '@/lib/workout-session-data'
-import { soundEngine } from '@/components/audio/sound-engine'
-import { triggerCelebrationConfetti } from '@/components/motion/celebration'
+import { soundEngine } from '@/lib/utils/sound-engine'
+import { triggerCelebrationConfetti } from '@/components/ui/celebration'
 
 // ─────────────────────────────────────────────────────────────────
 // Helpers
