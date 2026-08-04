@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { CalendarDays, Dumbbell, TrendingUp, HeartPulse, Menu } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { PageTransition } from '@/design/components/page-transition'
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
@@ -21,17 +22,9 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       {/* Main Content Area */}
       <main className="flex-1 w-full mx-auto md:ml-[88px] relative pb-[100px] md:pb-8 pt-safe px-safe">
         <div className="max-w-5xl mx-auto w-full pt-4 md:pt-10 px-4 md:px-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={pathname}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
+          <PageTransition>
+            {children}
+          </PageTransition>
         </div>
       </main>
 
@@ -90,7 +83,7 @@ function NavItem({ href, icon, label }: { href: string; icon: React.ReactNode; l
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
         />
       )}
-      <div className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-[var(--accent-primary)]' : 'text-slate-500 group-hover:text-slate-300'}`}>
+      <div className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-[var(--accent-primary)]' : 'text-slate-500 group-hover:text-foreground/90'}`}>
         {icon}
       </div>
       <span className={`text-[10px] font-semibold mt-1 relative z-10 transition-colors duration-300 ${isActive ? 'text-[var(--foreground)]' : 'text-slate-500'}`}>
@@ -110,12 +103,12 @@ function SidebarRailItem({ href, icon, label }: { href: string; icon: React.Reac
         className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${
           isActive 
             ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] shadow-[inset_0_0_0_1px_var(--accent-primary-glow)]' 
-            : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'
+            : 'text-slate-500 hover:text-foreground hover:bg-white/5'
         }`}
       >
         {icon}
       </div>
-      <span className={`text-[11px] font-medium transition-colors ${isActive ? 'text-[var(--foreground)]' : 'text-slate-500 opacity-0 group-hover:opacity-100 absolute left-14 bg-slate-800 px-2 py-1 rounded shadow-lg pointer-events-none'}`}>
+      <span className={`text-[11px] font-medium transition-colors ${isActive ? 'text-[var(--foreground)]' : 'text-slate-500 opacity-0 group-hover:opacity-100 absolute left-14 bg-surface px-2 py-1 rounded shadow-lg pointer-events-none'}`}>
         {isActive ? label : label}
       </span>
     </Link>

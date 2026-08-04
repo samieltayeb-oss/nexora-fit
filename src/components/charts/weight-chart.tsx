@@ -16,9 +16,9 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean, payload?:
   if (active && payload && payload.length) {
     return (
       <div className="glass-panel p-3 rounded-2xl shadow-2xl border-white/10 backdrop-blur-xl">
-        <p className="text-[10px] font-black uppercase text-slate-400 mb-1">{label}</p>
-        <p className="text-lg font-bold text-white flex items-baseline gap-1">
-          {payload[0].value} <span className="text-xs text-slate-400 font-medium tracking-normal">kg</span>
+        <p className="text-[10px] font-black uppercase text-foreground/70 mb-1">{label}</p>
+        <p className="text-lg font-bold text-foreground flex items-baseline gap-1">
+          {payload[0].value} <span className="text-xs text-foreground/70 font-medium tracking-normal">kg</span>
         </p>
       </div>
     )
@@ -29,11 +29,11 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean, payload?:
 export function WeightChart({ goalWeight = 75.0 }: { goalWeight?: number }) {
   if (!data || data.length === 0) {
     return (
-      <div className="h-[250px] w-full mt-4 flex flex-col items-center justify-center border border-dashed border-slate-700/50 rounded-3xl bg-white/[0.01]">
+      <div className="h-[250px] w-full mt-4 flex flex-col items-center justify-center border border-dashed border-border-subtle/50 rounded-3xl bg-white/[0.01]">
         <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-3">
           <Scale className="w-5 h-5 text-slate-500" />
         </div>
-        <p className="text-sm font-semibold text-slate-300">No data yet</p>
+        <p className="text-sm font-semibold text-foreground/90">No data yet</p>
         <p className="text-xs font-medium text-slate-500 mt-1 max-w-[200px] text-center">
           Step on your smart scale to see your weight journey mapped here.
         </p>

@@ -86,7 +86,7 @@ export default function DashboardPage() {
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-slate-100 to-slate-400">
             Good morning, Sam
           </h1>
-          <p className="text-slate-400 mt-1 font-medium">
+          <p className="text-foreground/70 mt-1 font-medium">
             Friday, July 31 • Week 1 Phase 1
           </p>
         </div>
@@ -114,16 +114,16 @@ export default function DashboardPage() {
           <div className="relative z-10 flex flex-col md:flex-row justify-between gap-8 h-full">
             <div className="flex flex-col justify-between h-full">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-slate-300 mb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-foreground/90 mb-4">
                   <Target className="w-3.5 h-3.5 text-[var(--accent-primary)]" /> Trajectory Focus
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl md:text-6xl font-bold tracking-tighter">
                     <NumberCounter value={weight} decimals={2} />
                   </span>
-                  <span className="text-xl text-slate-400 font-medium">kg</span>
+                  <span className="text-xl text-foreground/70 font-medium">kg</span>
                 </div>
-                <p className="text-sm text-slate-400 mt-2 font-medium flex items-center gap-1.5">
+                <p className="text-sm text-foreground/70 mt-2 font-medium flex items-center gap-1.5">
                   <TrendingDown className="w-4 h-4 text-[var(--accent-success)]" />
                   <span className="text-[var(--accent-success)]">{(startWeight - weight).toFixed(2)}kg lost</span>
                   <span className="mx-1">•</span>
@@ -137,7 +137,7 @@ export default function DashboardPage() {
                   <span>Start: {startWeight}kg</span>
                   <span>Goal: {goalWeight}kg</span>
                 </div>
-                <div className="h-2 bg-slate-800/50 rounded-full overflow-hidden backdrop-blur-sm">
+                <div className="h-2 bg-surface/50 rounded-full overflow-hidden backdrop-blur-sm">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${progressPercent}%` }}
@@ -173,7 +173,7 @@ export default function DashboardPage() {
                 <span className="text-2xl font-bold text-[var(--foreground)] tracking-tight">
                   <NumberCounter value={progressPercent} decimals={0} />%
                 </span>
-                <span className="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">There</span>
+                <span className="text-xs text-foreground/70 font-medium uppercase tracking-wider mt-1">There</span>
               </div>
             </div>
           </div>
@@ -188,7 +188,7 @@ export default function DashboardPage() {
               <Zap className="w-3.5 h-3.5" /> High Readiness
             </div>
             <h3 className="text-3xl font-bold tracking-tight text-[var(--foreground)] mb-2">Prime</h3>
-            <p className="text-sm text-slate-400 font-medium leading-relaxed">
+            <p className="text-sm text-foreground/70 font-medium leading-relaxed">
               Your recovery is optimal today. You have the green light to push intensity in the gym.
             </p>
           </div>
@@ -196,7 +196,7 @@ export default function DashboardPage() {
           <div className="mt-6 flex gap-2">
             <div className="h-1.5 flex-1 bg-[var(--accent-success)] rounded-full shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
             <div className="h-1.5 flex-1 bg-[var(--accent-success)] rounded-full shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
-            <div className="h-1.5 flex-1 bg-slate-800 rounded-full" />
+            <div className="h-1.5 flex-1 bg-surface rounded-full" />
           </div>
         </div>
       </section>
@@ -237,14 +237,14 @@ export default function DashboardPage() {
               </div>
 
               <div>
-                <h3 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-3 drop-shadow-md">
+                <h3 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-3 drop-shadow-md">
                   Full Body Foundation
                 </h3>
-                <p className="text-slate-300 text-sm md:text-base font-medium max-w-md mb-6 leading-relaxed drop-shadow">
+                <p className="text-foreground/90 text-sm md:text-base font-medium max-w-md mb-6 leading-relaxed drop-shadow">
                   Cardio Warm-Up + 3 Primary Gym Machines. Establish the baseline safely.
                 </p>
                 
-                <div className="inline-flex items-center gap-3 glass-panel px-6 py-3.5 rounded-2xl font-bold text-sm text-white hover:bg-white/10 transition-colors shadow-2xl active:scale-95">
+                <div className="inline-flex items-center gap-3 glass-panel px-6 py-3.5 rounded-2xl font-bold text-sm text-foreground hover:bg-white/10 transition-colors shadow-2xl active:scale-95">
                   <Dumbbell className="w-4 h-4" /> Start Workout <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -263,7 +263,7 @@ export default function DashboardPage() {
             className={`text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
               showSyncSuccess 
                 ? 'bg-[var(--accent-success)]/20 text-[var(--accent-success)] shadow-[0_0_10px_var(--accent-success)]'
-                : 'glass-panel text-slate-400 hover:text-[var(--foreground)] active:scale-95'
+                : 'glass-panel text-foreground/70 hover:text-[var(--foreground)] active:scale-95'
             }`}
           >
             {showSyncSuccess ? (
@@ -280,7 +280,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {/* Signal Card: Steps */}
           <div className="glass-panel rounded-2xl p-5 relative overflow-hidden group">
-            <div className="text-slate-400 mb-2">
+            <div className="text-foreground/70 mb-2">
               <Activity className="w-5 h-5" />
             </div>
             <div className="text-2xl font-bold tracking-tight text-[var(--foreground)]">

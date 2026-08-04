@@ -1,14 +1,14 @@
-# SAM Fit - Full System Audit Report & Apple Watch Automated Integration Guide
+# NEXORA FIT - Full System Audit Report & Apple Watch Automated Integration Guide
 
 **Date**: July 31, 2026  
-**Application**: SAM FIT — Personal Health-Safe Weight-Loss & Gym Coach  
-**Live Production URL**: [https://sam-fit-five.vercel.app](https://sam-fit-five.vercel.app)  
+**Application**: NEXORA FIT — Personal Health-Safe Weight-Loss & Gym Coach  
+**Live Production URL**: [https://NEXORA-FIT-five.vercel.app](https://NEXORA-FIT-five.vercel.app)  
 
 ---
 
 ## 📋 1. EXECUTIVE SUMMARY & PRIMARY OBJECTIVE
 
-SAM FIT is a production-ready, full-stack personal fitness and health-coaching web application engineered to guide a beginner safely through a sustainable 12-week weight-loss and gym-training routine.
+NEXORA FIT is a production-ready, full-stack personal fitness and health-coaching web application engineered to guide a beginner safely through a sustainable 12-week weight-loss and gym-training routine.
 
 ### Primary Goals Achieved:
 - Target Weight Loss Trajectory: **81.05 kg → 75.0 kg**.
@@ -57,9 +57,9 @@ While the core personal system is 100% complete and fully usable in the gym toda
 
 ---
 
-## ⌚ 4. HOW TO SYNC APPLE WATCH DATA AUTOMATICALLY TO SAM FIT
+## ⌚ 4. HOW TO SYNC APPLE WATCH DATA AUTOMATICALLY TO NEXORA FIT
 
-To get your **Apple Watch data** (Heart Rate, Active Calories, Steps, Workouts, Sleep, Resting HR, Weight) into SAM FIT **100% automatically** without typing anything manually, follow this technical architecture.
+To get your **Apple Watch data** (Heart Rate, Active Calories, Steps, Workouts, Sleep, Resting HR, Weight) into NEXORA FIT **100% automatically** without typing anything manually, follow this technical architecture.
 
 ---
 
@@ -78,7 +78,7 @@ To get your **Apple Watch data** (Heart Rate, Active Calories, Steps, Workouts, 
 [ Supabase Edge Function / API Endpoint ] ──► Stores in `public.health_logs` & `public.body_measurements`
       │
       ▼
-[ SAM Fit Dashboard (Live Watch Cards) ]
+[ NEXORA FIT Dashboard (Live Watch Cards) ]
 ```
 
 ---
@@ -102,7 +102,7 @@ To get your **Apple Watch data** (Heart Rate, Active Calories, Steps, Workouts, 
 3. **Configure REST API Webhook**:
    - Go to **REST API / Webhooks** in the app settings.
    - Tap **Add Automation**.
-   - **URL**: `https://bozfnkutkppxjonukkad.supabase.co/functions/v1/health-sync` (or your SAM FIT API route `/api/health/sync`).
+   - **URL**: `https://bozfnkutkppxjonukkad.supabase.co/functions/v1/health-sync` (or your NEXORA FIT API route `/api/health/sync`).
    - **Method**: `POST`
    - **Headers**:
      - `Content-Type`: `application/json`
@@ -110,13 +110,13 @@ To get your **Apple Watch data** (Heart Rate, Active Calories, Steps, Workouts, 
    - **Cadence**: Set to **Every 15 Minutes** (or **After Workout Complete**).
 
 4. **Test Connection**:
-   - Tap **Trigger Test Sync**. Your Apple Watch metrics will immediately push to SAM FIT!
+   - Tap **Trigger Test Sync**. Your Apple Watch metrics will immediately push to NEXORA FIT!
 
 ---
 
 ### STEP 2: BACKEND SUPABASE ENGINE FOR APPLE WATCH DATA
 
-Below is the ready-to-deploy Supabase Edge Function / Next.js API route that parses the incoming Apple HealthKit JSON payload and saves it directly into your SAM FIT database:
+Below is the ready-to-deploy Supabase Edge Function / Next.js API route that parses the incoming Apple HealthKit JSON payload and saves it directly into your NEXORA FIT database:
 
 #### [NEW] [src/app/api/health/sync/route.ts](file:///C:/Users/mcreg/Desktop/SAM%20Fit/src/app/api/health/sync/route.ts)
 
@@ -203,7 +203,7 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### What Gets Automatically Updated on SAM FIT Dashboard:
+### What Gets Automatically Updated on NEXORA FIT Dashboard:
 1. **Heart Rate Card**: Shows live average/resting heart rate recorded by Apple Watch.
 2. **Active Burned Calories**: Live daily caloric expenditure.
 3. **Daily Step Count**: Automatically updates your physical activity tracker.
@@ -213,7 +213,7 @@ export async function POST(req: NextRequest) {
 
 ## 📌 SUMMARY & VERIFICATION
 
-- **Live Application**: [https://sam-fit-five.vercel.app](https://sam-fit-five.vercel.app)
-- **Active Workout Player**: [https://sam-fit-five.vercel.app/workout/active](https://sam-fit-five.vercel.app/workout/active)
-- **Exercise Library**: [https://sam-fit-five.vercel.app/workout/library](https://sam-fit-five.vercel.app/workout/library)
-- **Admin Review Dashboard**: [https://sam-fit-five.vercel.app/admin/exercises](https://sam-fit-five.vercel.app/admin/exercises)
+- **Live Application**: [https://NEXORA-FIT-five.vercel.app](https://NEXORA-FIT-five.vercel.app)
+- **Active Workout Player**: [https://NEXORA-FIT-five.vercel.app/workout/active](https://NEXORA-FIT-five.vercel.app/workout/active)
+- **Exercise Library**: [https://NEXORA-FIT-five.vercel.app/workout/library](https://NEXORA-FIT-five.vercel.app/workout/library)
+- **Admin Review Dashboard**: [https://NEXORA-FIT-five.vercel.app/admin/exercises](https://NEXORA-FIT-five.vercel.app/admin/exercises)

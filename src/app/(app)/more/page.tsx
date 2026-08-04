@@ -22,23 +22,23 @@ export default function MorePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            More <Sparkles className="w-6 h-6 text-teal-400 animate-pulse" />
+          <h1 className="text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2">
+            More <Sparkles className="w-6 h-6 text-primary animate-pulse" />
           </h1>
-          <p className="text-slate-400 text-sm mt-1">App settings, Apple Watch connection & profile</p>
+          <p className="text-foreground/70 text-sm mt-1">App settings, Apple Watch connection & profile</p>
         </div>
       </div>
 
       {/* User Profile Card */}
-      <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950/40 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-xl">
+      <div className="bg-gradient-to-br from-background via-background to-teal-950/40 border border-border rounded-3xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-xl">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 bg-gradient-to-tr from-teal-500 to-cyan-400 rounded-2xl flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg shadow-teal-500/20">
             S
           </div>
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-white tracking-tight">Sami El-Tayeb</h2>
-            <p className="text-xs text-slate-400 mt-0.5">sami.eltayeb@gmail.com</p>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-500/10 border border-teal-500/30 rounded-full text-[11px] font-semibold text-teal-400 mt-2">
+            <h2 className="text-xl font-bold text-foreground tracking-tight">Sami El-Tayeb</h2>
+            <p className="text-xs text-foreground/70 mt-0.5">sami.eltayeb@gmail.com</p>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/30 rounded-full text-[11px] font-semibold text-primary mt-2">
               <ShieldCheck className="w-3.5 h-3.5" /> Medical Safety Cleared
             </div>
           </div>
@@ -47,9 +47,9 @@ export default function MorePage() {
 
       {/* Section 1: Integrations & Hardware */}
       <div className="space-y-3">
-        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Hardware & Sync</h3>
+        <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-wider px-1">Hardware & Sync</h3>
         
-        <div className="bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-xl backdrop-blur-md divide-y divide-slate-800/60">
+        <div className="bg-background/90 border border-border rounded-3xl overflow-hidden shadow-xl backdrop-blur-md divide-y divide-slate-800/60">
           <MenuLink 
             href="/dashboard"
             icon={<Watch className="w-5 h-5 text-rose-400" />}
@@ -59,7 +59,7 @@ export default function MorePage() {
           />
           <MenuLink 
             href="/admin/exercises"
-            icon={<Dumbbell className="w-5 h-5 text-teal-400" />}
+            icon={<Dumbbell className="w-5 h-5 text-primary" />}
             title="Exercise Visuals Admin"
             subtitle="Inspect photorealistic 24-image library & prompts"
           />
@@ -68,9 +68,9 @@ export default function MorePage() {
 
       {/* Section 2: Account & Settings */}
       <div className="space-y-3">
-        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Settings & Preferences</h3>
+        <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-wider px-1">Settings & Preferences</h3>
         
-        <div className="bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-xl backdrop-blur-md divide-y divide-slate-800/60">
+        <div className="bg-background/90 border border-border rounded-3xl overflow-hidden shadow-xl backdrop-blur-md divide-y divide-slate-800/60">
           <MenuLink 
             href="/onboarding"
             icon={<User className="w-5 h-5 text-amber-400" />}
@@ -94,19 +94,19 @@ export default function MorePage() {
 
       {/* Section 3: Support & Web App Info */}
       <div className="space-y-3">
-        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Support & Application</h3>
+        <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-wider px-1">Support & Application</h3>
         
-        <div className="bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-xl backdrop-blur-md divide-y divide-slate-800/60">
+        <div className="bg-background/90 border border-border rounded-3xl overflow-hidden shadow-xl backdrop-blur-md divide-y divide-slate-800/60">
           <MenuLink 
-            href="https://sam-fit-five.vercel.app"
+            href="https://NEXORA-FIT-five.vercel.app"
             external
             icon={<Smartphone className="w-5 h-5 text-cyan-400" />}
             title="Production Deployment"
-            subtitle="sam-fit-five.vercel.app"
+            subtitle="NEXORA-FIT-five.vercel.app"
           />
           <MenuLink 
             href="#"
-            icon={<HelpCircle className="w-5 h-5 text-slate-400" />}
+            icon={<HelpCircle className="w-5 h-5 text-foreground/70" />}
             title="Help & Exercise Guide"
             subtitle="Step-by-step gym machine tutorial"
           />
@@ -124,7 +124,7 @@ export default function MorePage() {
       </form>
 
       <p className="text-center text-xs text-slate-500 font-medium">
-        SAM FIT v1.0.0 • Production Build
+        NEXORA FIT v1.0.0 • Production Build
       </p>
     </div>
   )
@@ -146,25 +146,25 @@ function MenuLink({
   external?: boolean 
 }) {
   const content = (
-    <div className="p-4 flex items-center gap-4 hover:bg-slate-800/40 transition-colors group cursor-pointer">
-      <div className="p-3 bg-slate-950 border border-slate-800 rounded-2xl group-hover:border-teal-500/40 transition-colors">
+    <div className="p-4 flex items-center gap-4 hover:bg-surface/40 transition-colors group cursor-pointer">
+      <div className="p-3 bg-background border border-border rounded-2xl group-hover:border-primary/40 transition-colors">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <h4 className="text-sm font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors">{title}</h4>
+          <h4 className="text-sm font-bold text-foreground tracking-tight group-hover:text-primary transition-colors">{title}</h4>
           {badge && (
-            <span className="px-2 py-0.5 bg-teal-500/20 border border-teal-500/30 text-teal-400 text-[10px] font-bold rounded-full">
+            <span className="px-2 py-0.5 bg-primary/20 border border-primary/30 text-primary text-[10px] font-bold rounded-full">
               {badge}
             </span>
           )}
         </div>
-        <p className="text-xs text-slate-400 truncate mt-0.5">{subtitle}</p>
+        <p className="text-xs text-foreground/70 truncate mt-0.5">{subtitle}</p>
       </div>
       {external ? (
-        <ExternalLink className="w-4 h-4 text-slate-500 group-hover:text-teal-400 transition-colors" />
+        <ExternalLink className="w-4 h-4 text-slate-500 group-hover:text-primary transition-colors" />
       ) : (
-        <ChevronRight className="w-5 h-5 text-slate-600 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-all" />
+        <ChevronRight className="w-5 h-5 text-slate-600 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
       )}
     </div>
   )

@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "NEXORA_FIT": "C:\\Users\\mcreg\\Desktop\\SAM Fit",
+    "NEXORA_DESIGN_SYSTEM": "C:\\Users\\mcreg\\Desktop\\NEXORA work\\NEXORA\\core",
+    "NEXORA_BRAND_SYSTEM": "C:\\Users\\mcreg\\Desktop\\NEXORA work\\NEXORA\\brand-system"
+  },
+  "remote": {
+    "github": "nexora-fit",
+    "vercel": "nexora-fit",
+    "domains": ["app.nexorafit.com", "fit.nexora.ai", "fit.nexorayyc.io"]
+  }
+}

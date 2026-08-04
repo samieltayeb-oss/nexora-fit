@@ -5,7 +5,7 @@ import WorkoutProgramContent from './program-content'
 
 export default function WorkoutProgramPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center"><div className="text-teal-400 font-black">Loading...</div></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center"><div className="text-primary font-black">Loading...</div></div>}>
       <WorkoutProgramContent />
     </Suspense>
   )

@@ -51,7 +51,7 @@ export default function WaistlineCoachPage() {
   const habitScore = Math.round((Object.values(habits).filter(Boolean).length / 7) * 100)
 
   return (
-    <div className="p-4 md:p-8 space-y-8 max-w-2xl mx-auto font-sans text-slate-100 pb-32 md:pb-16 selection:bg-teal-500 selection:text-slate-950">
+    <div className="p-4 md:p-8 space-y-8 max-w-2xl mx-auto font-sans text-slate-100 pb-32 md:pb-16 selection:bg-primary selection:text-slate-950">
       
       {/* Module Header */}
       <motion.div 
@@ -62,14 +62,14 @@ export default function WaistlineCoachPage() {
       >
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 bg-gradient-to-r from-teal-500/20 to-cyan-500/20 border border-teal-400/30 text-teal-300 text-[11px] font-black uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg">
-              <Target className="w-3.5 h-3.5 text-teal-400" /> FLAGSHIP FEATURE
+            <span className="px-3 py-1 bg-gradient-to-r from-teal-500/20 to-cyan-500/20 border border-primary/30 text-primary text-[11px] font-black uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg">
+              <Target className="w-3.5 h-3.5 text-primary" /> FLAGSHIP FEATURE
             </span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight mt-2 flex items-center gap-2 drop-shadow-md">
-            Core & Waistline Coach <Sparkles className="w-6 h-6 text-teal-400 animate-pulse" />
+          <h1 className="text-3xl md:text-4xl font-black text-foreground tracking-tight mt-2 flex items-center gap-2 drop-shadow-md">
+            Core & Waistline Coach <Sparkles className="w-6 h-6 text-primary animate-pulse" />
           </h1>
-          <p className="text-slate-400 text-xs md:text-sm font-medium mt-0.5">Evidence-Based Waist Circumference & Body Composition Engine</p>
+          <p className="text-foreground/70 text-xs md:text-sm font-medium mt-0.5">Evidence-Based Waist Circumference & Body Composition Engine</p>
         </div>
 
         {/* Prominent Start Guided Training Session Button */}
@@ -86,12 +86,12 @@ export default function WaistlineCoachPage() {
       {/* Scientific Education Disclaimer Banner */}
       <AnimatedCard delay={0.1}>
         <div className="p-4 flex items-start gap-3.5 relative overflow-hidden">
-          <div className="p-2.5 bg-teal-500/10 border border-teal-500/20 rounded-2xl text-teal-400 flex-shrink-0 mt-0.5">
+          <div className="p-2.5 bg-primary/10 border border-primary/20 rounded-2xl text-primary flex-shrink-0 mt-0.5">
             <Info className="w-5 h-5" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-xs font-black text-white uppercase tracking-wider">The Science of Waistline Reduction</h3>
-            <p className="text-xs text-slate-300 leading-relaxed font-medium">
+            <h3 className="text-xs font-black text-foreground uppercase tracking-wider">The Science of Waistline Reduction</h3>
+            <p className="text-xs text-foreground/90 leading-relaxed font-medium">
               Spot fat reduction is a myth. You cannot burn abdominal fat with ab exercises alone. Fat loss occurs across your entire body via a sustained energy deficit. Core exercises strengthen your postural pillar while overall fat loss shrinks your waist.
             </p>
           </div>
@@ -103,24 +103,24 @@ export default function WaistlineCoachPage() {
         <div className="p-6 space-y-6 relative overflow-hidden">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <span className="text-xs font-black text-teal-400 uppercase tracking-widest">Current Waistline Status</span>
-              <div className="text-4xl md:text-5xl font-black text-white tracking-tight mt-1 flex items-baseline gap-2">
-                <NumberCounter value={currentWaist} decimals={0} /> <span className="text-xl text-slate-400 font-bold">cm</span>
+              <span className="text-xs font-black text-primary uppercase tracking-widest">Current Waistline Status</span>
+              <div className="text-4xl md:text-5xl font-black text-foreground tracking-tight mt-1 flex items-baseline gap-2">
+                <NumberCounter value={currentWaist} decimals={0} /> <span className="text-xl text-foreground/70 font-bold">cm</span>
               </div>
-              <p className="text-xs text-slate-400 font-medium mt-0.5">Goal Waist: {goalWaist} cm • {(currentWaist - goalWaist).toFixed(1)} cm to target</p>
+              <p className="text-xs text-foreground/70 font-medium mt-0.5">Goal Waist: {goalWaist} cm • {(currentWaist - goalWaist).toFixed(1)} cm to target</p>
             </div>
 
             <div className="flex flex-col items-end gap-1.5">
-              <span className="px-4 py-1.5 bg-gradient-to-r from-teal-500/20 to-cyan-500/20 border border-teal-400/40 text-teal-300 font-black text-sm rounded-full shadow-lg">
+              <span className="px-4 py-1.5 bg-gradient-to-r from-teal-500/20 to-cyan-500/20 border border-primary/40 text-primary font-black text-sm rounded-full shadow-lg">
                 Belly Score: 8.7 / 10
               </span>
-              <span className="text-[11px] text-slate-400 font-medium">82% Consistency Rating</span>
+              <span className="text-[11px] text-foreground/70 font-medium">82% Consistency Rating</span>
             </div>
           </div>
 
           {/* Waist Reduction Progress Bar */}
           <div className="space-y-2">
-            <div className="h-4 w-full bg-slate-950/80 rounded-full overflow-hidden p-0.5 border border-white/[0.06] shadow-inner">
+            <div className="h-4 w-full bg-background/80 rounded-full overflow-hidden p-0.5 border border-white/[0.06] shadow-inner">
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: `${Math.max(0, Math.min(100, ((105 - currentWaist) / (105 - goalWaist)) * 100))}%` }}
@@ -128,28 +128,28 @@ export default function WaistlineCoachPage() {
                 className="h-full bg-gradient-to-r from-teal-400 via-cyan-400 to-indigo-500 rounded-full relative shadow-[0_0_20px_rgba(20,184,166,0.5)]"
               />
             </div>
-            <div className="flex justify-between text-xs text-slate-400 font-bold">
+            <div className="flex justify-between text-xs text-foreground/70 font-bold">
               <span>Start: 105 cm</span>
-              <span className="text-teal-400 font-black">Target: {goalWaist} cm</span>
+              <span className="text-primary font-black">Target: {goalWaist} cm</span>
             </div>
           </div>
 
           {/* Quick Metrics Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Est. Body Fat</span>
-              <div className="text-lg font-black text-white">23.4%</div>
+            <div className="bg-background/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Est. Body Fat</span>
+              <div className="text-lg font-black text-foreground">23.4%</div>
             </div>
-            <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Core Strength</span>
-              <div className="text-lg font-black text-teal-400">B+ Rating</div>
+            <div className="bg-background/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Core Strength</span>
+              <div className="text-lg font-black text-primary">B+ Rating</div>
             </div>
-            <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Posture</span>
+            <div className="bg-background/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Posture</span>
               <div className="text-lg font-black text-emerald-400">Good</div>
             </div>
-            <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Consistency</span>
+            <div className="bg-background/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Consistency</span>
               <div className="text-lg font-black text-cyan-400">82%</div>
             </div>
           </div>
@@ -165,8 +165,8 @@ export default function WaistlineCoachPage() {
                 <Sliders className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-black text-white uppercase tracking-wider">Belly Goal Simulator</h3>
-                <p className="text-xs text-slate-400 font-medium">Projected waist & fit as weight decreases</p>
+                <h3 className="text-sm font-black text-foreground uppercase tracking-wider">Belly Goal Simulator</h3>
+                <p className="text-xs text-foreground/70 font-medium">Projected waist & fit as weight decreases</p>
               </div>
             </div>
             <span className="text-xs font-black text-cyan-400 px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-full">
@@ -175,10 +175,10 @@ export default function WaistlineCoachPage() {
           </div>
 
           {/* Interactive Weight Slider */}
-          <div className="space-y-3 bg-slate-950/90 p-5 rounded-2xl border border-white/5 shadow-inner">
+          <div className="space-y-3 bg-background/90 p-5 rounded-2xl border border-white/5 shadow-inner">
             <div className="flex justify-between items-center text-sm font-bold">
-              <span className="text-slate-400">Simulated Weight:</span>
-              <span className="text-2xl font-black text-teal-400">{simulatedWeight.toFixed(1)} kg</span>
+              <span className="text-foreground/70">Simulated Weight:</span>
+              <span className="text-2xl font-black text-primary">{simulatedWeight.toFixed(1)} kg</span>
             </div>
 
             <input 
@@ -188,7 +188,7 @@ export default function WaistlineCoachPage() {
               step="0.5"
               value={simulatedWeight}
               onChange={(e) => setSimulatedWeight(parseFloat(e.target.value))}
-              className="w-full h-3 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-teal-400"
+              className="w-full h-3 bg-background rounded-lg appearance-none cursor-pointer accent-teal-400"
             />
 
             <div className="flex justify-between text-xs font-bold text-slate-500">
@@ -199,27 +199,27 @@ export default function WaistlineCoachPage() {
 
           {/* Projected Outcomes Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-slate-950/80 p-4 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Est. Waist</span>
-              <div className="text-xl font-black text-teal-300">{estimatedWaistSim} cm</div>
-              <span className="text-[10px] text-teal-400 font-bold">-{ (currentWaist - parseFloat(estimatedWaistSim)).toFixed(1) } cm change</span>
+            <div className="bg-background/80 p-4 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Est. Waist</span>
+              <div className="text-xl font-black text-primary">{estimatedWaistSim} cm</div>
+              <span className="text-[10px] text-primary font-bold">-{ (currentWaist - parseFloat(estimatedWaistSim)).toFixed(1) } cm change</span>
             </div>
-            <div className="bg-slate-950/80 p-4 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Est. BMI</span>
-              <div className="text-xl font-black text-white">{estimatedBmiSim}</div>
-              <span className="text-[10px] text-slate-400 font-bold">Normal Range</span>
+            <div className="bg-background/80 p-4 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Est. BMI</span>
+              <div className="text-xl font-black text-foreground">{estimatedBmiSim}</div>
+              <span className="text-[10px] text-foreground/70 font-bold">Normal Range</span>
             </div>
-            <div className="bg-slate-950/80 p-4 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Est. Body Fat</span>
+            <div className="bg-background/80 p-4 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Est. Body Fat</span>
               <div className="text-xl font-black text-cyan-300">{estimatedBodyFatSim}%</div>
               <span className="text-[10px] text-cyan-400 font-bold">-{ (23.4 - parseFloat(estimatedBodyFatSim)).toFixed(1) }% fat loss</span>
             </div>
-            <div className="bg-slate-950/80 p-4 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Belt Notch</span>
+            <div className="bg-background/80 p-4 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Belt Notch</span>
               <div className="text-xs font-black text-amber-400 mt-1">
                 {simulatedWeight <= 77.0 ? 'Notch 1 (Tighter)' : 'Notch 2'}
               </div>
-              <span className="text-[10px] text-slate-400 font-bold">Looser Fit</span>
+              <span className="text-[10px] text-foreground/70 font-bold">Looser Fit</span>
             </div>
           </div>
         </div>
@@ -228,10 +228,10 @@ export default function WaistlineCoachPage() {
       {/* SECTION 4: Best Safe Core Exercises with 3D Generated Renderings */}
       <section className="space-y-4">
         <div className="flex items-center justify-between px-1">
-          <h2 className="text-sm font-black text-slate-200 uppercase tracking-wider flex items-center gap-2">
-            <Dumbbell className="w-4 h-4 text-teal-400" /> Safe Core & Training Routines
+          <h2 className="text-sm font-black text-foreground uppercase tracking-wider flex items-center gap-2">
+            <Dumbbell className="w-4 h-4 text-primary" /> Safe Core & Training Routines
           </h2>
-          <span className="text-[11px] text-teal-400 font-bold px-2.5 py-0.5 bg-teal-500/10 border border-teal-500/30 rounded-full">
+          <span className="text-[11px] text-primary font-bold px-2.5 py-0.5 bg-primary/10 border border-primary/30 rounded-full">
             3D Renderings & Guides
           </span>
         </div>
@@ -281,8 +281,8 @@ export default function WaistlineCoachPage() {
                 <Footprints className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-black text-white uppercase tracking-wider">Progressive Walking Planner</h3>
-                <p className="text-xs text-slate-400 font-medium">Daily steps for fat loss without joint stress</p>
+                <h3 className="text-sm font-black text-foreground uppercase tracking-wider">Progressive Walking Planner</h3>
+                <p className="text-xs text-foreground/70 font-medium">Daily steps for fat loss without joint stress</p>
               </div>
             </div>
             <span className="text-xs font-black text-emerald-400 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
@@ -291,24 +291,24 @@ export default function WaistlineCoachPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Week 1</span>
-              <div className="text-base font-black text-white">15 Min/Day</div>
-              <span className="text-[10px] text-teal-400 font-bold">Completed ✓</span>
+            <div className="bg-background/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Week 1</span>
+              <div className="text-base font-black text-foreground">15 Min/Day</div>
+              <span className="text-[10px] text-primary font-bold">Completed ✓</span>
             </div>
-            <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-white/5 space-y-1 ring-1 ring-teal-400/40">
-              <span className="text-[10px] font-bold text-teal-400 uppercase">Week 2 (Active)</span>
-              <div className="text-base font-black text-teal-300">20 Min/Day</div>
-              <span className="text-[10px] text-teal-400 font-bold">In Progress</span>
+            <div className="bg-background/80 p-3.5 rounded-2xl border border-white/5 space-y-1 ring-1 ring-teal-400/40">
+              <span className="text-[10px] font-bold text-primary uppercase">Week 2 (Active)</span>
+              <div className="text-base font-black text-primary">20 Min/Day</div>
+              <span className="text-[10px] text-primary font-bold">In Progress</span>
             </div>
-            <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Week 3</span>
-              <div className="text-base font-black text-slate-300">25 Min/Day</div>
+            <div className="bg-background/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Week 3</span>
+              <div className="text-base font-black text-foreground/90">25 Min/Day</div>
               <span className="text-[10px] text-slate-500 font-bold">Upcoming</span>
             </div>
-            <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">Week 4</span>
-              <div className="text-base font-black text-slate-300">30 Min/Day</div>
+            <div className="bg-background/80 p-3.5 rounded-2xl border border-white/5 space-y-1">
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Week 4</span>
+              <div className="text-base font-black text-foreground/90">30 Min/Day</div>
               <span className="text-[10px] text-slate-500 font-bold">Upcoming</span>
             </div>
           </div>
@@ -324,8 +324,8 @@ export default function WaistlineCoachPage() {
                 <Utensils className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-black text-white uppercase tracking-wider">Nutrition Habit Checklist</h3>
-                <p className="text-xs text-slate-400 font-medium">Daily habits supporting waistline reduction</p>
+                <h3 className="text-sm font-black text-foreground uppercase tracking-wider">Nutrition Habit Checklist</h3>
+                <p className="text-xs text-foreground/70 font-medium">Daily habits supporting waistline reduction</p>
               </div>
             </div>
             <span className="text-xs font-black text-amber-400 px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full">
@@ -352,8 +352,8 @@ export default function WaistlineCoachPage() {
               <HelpCircle className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-black text-white uppercase tracking-wider">AI Waistline Coach Q&A</h3>
-              <p className="text-xs text-slate-400 font-medium">Evidence-based answers tailored to your data</p>
+              <h3 className="text-sm font-black text-foreground uppercase tracking-wider">AI Waistline Coach Q&A</h3>
+              <p className="text-xs text-foreground/70 font-medium">Evidence-based answers tailored to your data</p>
             </div>
           </div>
 
@@ -385,14 +385,14 @@ export default function WaistlineCoachPage() {
 
       {/* SECTION 11: Milestone Celebration Banner */}
       <AnimatedCard delay={0.6}>
-        <div className="p-6 bg-gradient-to-r from-teal-500/20 via-cyan-500/20 to-indigo-500/20 border border-teal-400/40 rounded-3xl flex items-center justify-between backdrop-blur-2xl">
+        <div className="p-6 bg-gradient-to-r from-teal-500/20 via-cyan-500/20 to-indigo-500/20 border border-primary/40 rounded-3xl flex items-center justify-between backdrop-blur-2xl">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-tr from-teal-400 to-cyan-400 text-slate-950 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg">
               <Trophy className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-black text-white">Waist Milestone Reached!</h4>
-              <p className="text-xs text-teal-300 font-medium mt-0.5">-1.3 cm reduction achieved this week!</p>
+              <h4 className="text-sm font-black text-foreground">Waist Milestone Reached!</h4>
+              <p className="text-xs text-primary font-medium mt-0.5">-1.3 cm reduction achieved this week!</p>
             </div>
           </div>
 
@@ -409,10 +409,10 @@ export default function WaistlineCoachPage() {
 
       {/* Image Lightbox Modal */}
       {lightboxImage && (
-        <div className="fixed inset-0 bg-slate-950/95 z-[200] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-background/95 z-[200] flex items-center justify-center p-4">
           <button 
             onClick={() => setLightboxImage(null)}
-            className="absolute top-4 right-4 p-3 bg-slate-900 border border-slate-800 text-slate-300 hover:text-white rounded-full"
+            className="absolute top-4 right-4 p-3 bg-background border border-border text-foreground/90 hover:text-foreground rounded-full"
           >
             <X className="w-6 h-6" />
           </button>
@@ -420,7 +420,7 @@ export default function WaistlineCoachPage() {
           <img 
             src={lightboxImage} 
             alt="3D Exercise Render" 
-            className="max-w-full max-h-[85vh] object-contain rounded-2xl border border-slate-800 shadow-2xl"
+            className="max-w-full max-h-[85vh] object-contain rounded-2xl border border-border shadow-2xl"
           />
         </div>
       )}
@@ -431,31 +431,31 @@ export default function WaistlineCoachPage() {
 
 function ExerciseCardWith3D({ title, desc, tag, imageSrc, onOpenImage, onStart }: { title: string; desc: string; tag: string; imageSrc: string; onOpenImage: () => void; onStart: () => void }) {
   return (
-    <div className="bg-slate-900/80 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-xl hover:border-slate-700 transition-all flex flex-col justify-between">
-      <div className="aspect-[4/3] bg-slate-950 relative overflow-hidden group cursor-pointer" onClick={onOpenImage}>
+    <div className="bg-background/80 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-xl hover:border-border-subtle transition-all flex flex-col justify-between">
+      <div className="aspect-[4/3] bg-background relative overflow-hidden group cursor-pointer" onClick={onOpenImage}>
         <Image 
           src={imageSrc} 
           alt={title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute top-3 left-3 bg-slate-950/80 backdrop-blur px-2.5 py-1 rounded-full text-[10px] font-black text-teal-300 border border-white/10">
+        <div className="absolute top-3 left-3 bg-background/80 backdrop-blur px-2.5 py-1 rounded-full text-[10px] font-black text-primary border border-white/10">
           {tag}
         </div>
-        <button className="absolute top-3 right-3 p-2 bg-slate-950/80 text-slate-300 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button className="absolute top-3 right-3 p-2 bg-background/80 text-foreground/90 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
           <Maximize2 className="w-3.5 h-3.5" />
         </button>
       </div>
 
       <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
         <div>
-          <h4 className="text-sm font-black text-white">{title}</h4>
-          <p className="text-xs text-slate-400 leading-relaxed font-medium mt-1">{desc}</p>
+          <h4 className="text-sm font-black text-foreground">{title}</h4>
+          <p className="text-xs text-foreground/70 leading-relaxed font-medium mt-1">{desc}</p>
         </div>
 
         <button 
           onClick={onStart}
-          className="w-full py-2.5 bg-slate-800 hover:bg-slate-750 text-teal-300 font-bold text-xs rounded-xl border border-white/5 transition-colors flex items-center justify-center gap-1.5"
+          className="w-full py-2.5 bg-surface hover:bg-slate-750 text-primary font-bold text-xs rounded-xl border border-white/5 transition-colors flex items-center justify-center gap-1.5"
         >
           <Play className="w-3.5 h-3.5 fill-teal-300" /> Start Guided Routine
         </button>
@@ -470,12 +470,12 @@ function HabitItem({ label, checked, onClick }: { label: string; checked: boolea
       onClick={onClick}
       className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all text-left ${
         checked 
-          ? 'bg-teal-950/20 border-teal-400/40 text-white shadow-md' 
-          : 'bg-slate-950/80 border-white/5 text-slate-400'
+          ? 'bg-teal-950/20 border-primary/40 text-foreground shadow-md' 
+          : 'bg-background/80 border-white/5 text-foreground/70'
       }`}
     >
       <span className="font-bold">{label}</span>
-      <CheckCircle2 className={`w-4 h-4 ${checked ? 'text-teal-400' : 'text-slate-600'}`} />
+      <CheckCircle2 className={`w-4 h-4 ${checked ? 'text-primary' : 'text-slate-600'}`} />
     </button>
   )
 }
@@ -484,13 +484,13 @@ function AiAccordion({ index, activeIdx, setActiveIdx, question, answer }: { ind
   const isOpen = activeIdx === index
 
   return (
-    <div className="border border-white/10 rounded-2xl overflow-hidden bg-slate-950/80">
+    <div className="border border-white/10 rounded-2xl overflow-hidden bg-background/80">
       <button 
         onClick={() => setActiveIdx(isOpen ? null : index)}
-        className="w-full p-3.5 text-left font-bold text-slate-200 flex justify-between items-center hover:bg-white/5 transition-colors"
+        className="w-full p-3.5 text-left font-bold text-foreground flex justify-between items-center hover:bg-white/5 transition-colors"
       >
         <span>{question}</span>
-        <ChevronRight className={`w-4 h-4 text-teal-400 transition-transform ${isOpen ? 'rotate-90' : ''}`} />
+        <ChevronRight className={`w-4 h-4 text-primary transition-transform ${isOpen ? 'rotate-90' : ''}`} />
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -498,7 +498,7 @@ function AiAccordion({ index, activeIdx, setActiveIdx, question, answer }: { ind
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="p-3.5 border-t border-white/5 text-slate-300 leading-relaxed bg-slate-900/40 font-medium"
+            className="p-3.5 border-t border-white/5 text-foreground/90 leading-relaxed bg-background/40 font-medium"
           >
             {answer}
           </motion.div>

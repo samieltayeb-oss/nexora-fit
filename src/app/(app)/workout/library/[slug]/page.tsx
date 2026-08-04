@@ -39,7 +39,7 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
       
       {/* Top Nav */}
       <div className="flex items-center justify-between">
-        <Link href="/workout/library" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm font-semibold">
+        <Link href="/workout/library" className="flex items-center gap-2 text-foreground/70 hover:text-foreground transition-colors text-sm font-semibold">
           <ChevronLeft className="w-4 h-4" /> Back to Library
         </Link>
         
@@ -47,8 +47,8 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
           onClick={() => handleReadAloud(`${exercise.name}. ${exercise.shortDescription}. Starting setup: ${exercise.setupSteps.join('. ')}. Breathing: ${exercise.breathingInstructions}`)}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-semibold transition-all ${
             isSpeaking 
-              ? 'bg-teal-500/20 border-teal-500/50 text-teal-400 animate-pulse' 
-              : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white'
+              ? 'bg-primary/20 border-primary/50 text-primary animate-pulse' 
+              : 'bg-background border-border text-foreground/90 hover:text-foreground'
           }`}
         >
           {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -57,12 +57,12 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
       </div>
 
       {/* A. Exercise Summary Header */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
+      <div className="bg-background border border-border rounded-3xl p-6 shadow-2xl space-y-4">
         <div className="flex flex-wrap gap-2">
-          <span className="bg-teal-500/20 text-teal-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+          <span className="bg-primary/20 text-primary text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
             {exercise.movementPattern} Pattern
           </span>
-          <span className="bg-slate-800 text-slate-300 text-xs font-semibold px-3 py-1 rounded-full">
+          <span className="bg-surface text-foreground/90 text-xs font-semibold px-3 py-1 rounded-full">
             {exercise.difficulty}
           </span>
           <span className="bg-indigo-500/20 text-indigo-300 text-xs font-semibold px-3 py-1 rounded-full">
@@ -70,31 +70,31 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
           </span>
         </div>
 
-        <h1 className="text-3xl font-bold text-white tracking-tight">{exercise.name}</h1>
-        <p className="text-slate-300 text-sm leading-relaxed">{exercise.fullDescription}</p>
+        <h1 className="text-3xl font-bold text-foreground tracking-tight">{exercise.name}</h1>
+        <p className="text-foreground/90 text-sm leading-relaxed">{exercise.fullDescription}</p>
 
-        <div className="grid sm:grid-cols-3 gap-3 pt-2 text-xs border-t border-slate-800">
+        <div className="grid sm:grid-cols-3 gap-3 pt-2 text-xs border-t border-border">
           <div>
             <span className="text-slate-500 block uppercase font-semibold text-[10px]">Primary Muscles</span>
-            <span className="text-white font-bold">{exercise.primaryMuscles.join(', ')}</span>
+            <span className="text-foreground font-bold">{exercise.primaryMuscles.join(', ')}</span>
           </div>
           <div>
             <span className="text-slate-500 block uppercase font-semibold text-[10px]">Secondary Muscles</span>
-            <span className="text-slate-300 font-medium">{exercise.secondaryMuscles.join(', ')}</span>
+            <span className="text-foreground/90 font-medium">{exercise.secondaryMuscles.join(', ')}</span>
           </div>
           <div>
             <span className="text-slate-500 block uppercase font-semibold text-[10px]">Equipment</span>
-            <span className="text-slate-300 font-medium">{exercise.equipment}</span>
+            <span className="text-foreground/90 font-medium">{exercise.equipment}</span>
           </div>
         </div>
       </div>
 
       {/* Photorealistic Multi-Position Image Gallery */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl space-y-4 p-5">
-        <h2 className="text-sm font-bold text-slate-300 uppercase tracking-wider">Photorealistic Visual Guidance</h2>
+      <div className="bg-background border border-border rounded-3xl overflow-hidden shadow-2xl space-y-4 p-5">
+        <h2 className="text-sm font-bold text-foreground/90 uppercase tracking-wider">Photorealistic Visual Guidance</h2>
         
         {/* Main Display Frame */}
-        <div className="aspect-[16/10] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 relative">
+        <div className="aspect-[16/10] bg-background rounded-2xl overflow-hidden border border-border relative">
           {/* eslint-disable-next-next/no-img-element */}
           <img 
             src={selectedImage} 
@@ -109,15 +109,15 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
             <button
               key={mediaItem.id}
               onClick={() => setSelectedImage(mediaItem.url)}
-              className={`rounded-xl overflow-hidden border-2 transition-all p-1 text-left bg-slate-950 ${
-                selectedImage === mediaItem.url ? 'border-teal-500 shadow-lg shadow-teal-500/20' : 'border-slate-800 hover:border-slate-700'
+              className={`rounded-xl overflow-hidden border-2 transition-all p-1 text-left bg-background ${
+                selectedImage === mediaItem.url ? 'border-primary shadow-lg shadow-teal-500/20' : 'border-border hover:border-border-subtle'
               }`}
             >
               <div className="aspect-video rounded-lg overflow-hidden mb-1">
                 {/* eslint-disable-next-next/no-img-element */}
                 <img src={mediaItem.url} alt={mediaItem.altText} className="w-full h-full object-cover" />
               </div>
-              <span className="text-[10px] font-bold text-slate-300 capitalize block truncate px-1">
+              <span className="text-[10px] font-bold text-foreground/90 capitalize block truncate px-1">
                 {mediaItem.viewType.replace('_', ' ')}
               </span>
             </button>
@@ -129,25 +129,25 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
       <div className="space-y-6">
 
         {/* B. Before You Start */}
-        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-3 shadow-xl">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <Info className="w-5 h-5 text-teal-400" /> B. Before You Start
+        <section className="bg-background border border-border rounded-3xl p-6 space-y-3 shadow-xl">
+          <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+            <Info className="w-5 h-5 text-primary" /> B. Before You Start
           </h2>
-          <div className="grid md:grid-cols-2 gap-4 text-xs text-slate-300">
-            <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-              <span className="font-bold text-teal-400 block mb-1">Equipment Setup:</span>
+          <div className="grid md:grid-cols-2 gap-4 text-xs text-foreground/90">
+            <div className="p-3 bg-background rounded-2xl border border-border">
+              <span className="font-bold text-primary block mb-1">Equipment Setup:</span>
               <p>{exercise.beforeYouStart.equipmentSetup}</p>
             </div>
-            <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-              <span className="font-bold text-teal-400 block mb-1">Seat Adjustment:</span>
+            <div className="p-3 bg-background rounded-2xl border border-border">
+              <span className="font-bold text-primary block mb-1">Seat Adjustment:</span>
               <p>{exercise.beforeYouStart.seatAdjustment}</p>
             </div>
-            <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-              <span className="font-bold text-teal-400 block mb-1">Posture Alignment:</span>
+            <div className="p-3 bg-background rounded-2xl border border-border">
+              <span className="font-bold text-primary block mb-1">Posture Alignment:</span>
               <p>{exercise.beforeYouStart.posture}</p>
             </div>
-            <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-              <span className="font-bold text-teal-400 block mb-1">Foot Placement:</span>
+            <div className="p-3 bg-background rounded-2xl border border-border">
+              <span className="font-bold text-primary block mb-1">Foot Placement:</span>
               <p>{exercise.beforeYouStart.placement}</p>
             </div>
           </div>
@@ -155,18 +155,18 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
 
         {/* C. Starting Position & D. Movement Steps */}
         <div className="grid md:grid-cols-2 gap-6">
-          <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-3 shadow-xl">
-            <h2 className="text-lg font-bold text-white">C. Starting Position</h2>
-            <ol className="list-decimal list-inside space-y-2 text-xs text-slate-300">
+          <section className="bg-background border border-border rounded-3xl p-6 space-y-3 shadow-xl">
+            <h2 className="text-lg font-bold text-foreground">C. Starting Position</h2>
+            <ol className="list-decimal list-inside space-y-2 text-xs text-foreground/90">
               {exercise.setupSteps.map((step, i) => (
                 <li key={i} className="leading-relaxed">{step}</li>
               ))}
             </ol>
           </section>
 
-          <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-3 shadow-xl">
-            <h2 className="text-lg font-bold text-white">D. Movement Steps</h2>
-            <ol className="list-decimal list-inside space-y-2 text-xs text-slate-300">
+          <section className="bg-background border border-border rounded-3xl p-6 space-y-3 shadow-xl">
+            <h2 className="text-lg font-bold text-foreground">D. Movement Steps</h2>
+            <ol className="list-decimal list-inside space-y-2 text-xs text-foreground/90">
               {exercise.movementSteps.map((step, i) => (
                 <li key={i} className="leading-relaxed">{step}</li>
               ))}
@@ -175,43 +175,43 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
         </div>
 
         {/* E, F, G, H: Parameters & Breathing */}
-        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
-          <h2 className="text-lg font-bold text-white">E-H. Breathing, Tempo & Prescriptions</h2>
+        <section className="bg-background border border-border rounded-3xl p-6 space-y-4 shadow-xl">
+          <h2 className="text-lg font-bold text-foreground">E-H. Breathing, Tempo & Prescriptions</h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-            <div className="p-4 bg-teal-950/40 border border-teal-500/20 rounded-2xl">
-              <span className="text-[10px] uppercase font-bold text-teal-400 block mb-1">Breathing</span>
+            <div className="p-4 bg-teal-950/40 border border-primary/20 rounded-2xl">
+              <span className="text-[10px] uppercase font-bold text-primary block mb-1">Breathing</span>
               <p className="text-teal-100">{exercise.breathingInstructions}</p>
             </div>
 
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Tempo</span>
-              <p className="text-slate-200">{exercise.tempoGuidance}</p>
+            <div className="p-4 bg-background border border-border rounded-2xl">
+              <span className="text-[10px] uppercase font-bold text-foreground/70 block mb-1">Tempo</span>
+              <p className="text-foreground">{exercise.tempoGuidance}</p>
             </div>
 
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Range of Motion</span>
-              <p className="text-slate-200">{exercise.rangeOfMotion}</p>
+            <div className="p-4 bg-background border border-border rounded-2xl">
+              <span className="text-[10px] uppercase font-bold text-foreground/70 block mb-1">Range of Motion</span>
+              <p className="text-foreground">{exercise.rangeOfMotion}</p>
             </div>
 
             <div className="p-4 bg-amber-950/30 border border-amber-500/20 rounded-2xl">
               <span className="text-[10px] uppercase font-bold text-amber-400 block mb-1">Prescription</span>
               <p className="text-amber-200 font-bold">{exercise.prescribedSets} • {exercise.prescribedReps}</p>
-              <p className="text-slate-400 text-[10px] mt-0.5">{exercise.rpeTarget}</p>
+              <p className="text-foreground/70 text-[10px] mt-0.5">{exercise.rpeTarget}</p>
             </div>
           </div>
         </section>
 
         {/* I. What You Should Feel */}
-        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-3 shadow-xl">
-          <h2 className="text-lg font-bold text-white">I. What You Should Feel</h2>
+        <section className="bg-background border border-border rounded-3xl p-6 space-y-3 shadow-xl">
+          <h2 className="text-lg font-bold text-foreground">I. What You Should Feel</h2>
           <div className="grid md:grid-cols-3 gap-3 text-xs">
-            <div className="p-3.5 bg-slate-950 rounded-2xl border border-slate-800">
-              <span className="font-bold text-teal-400 block mb-1">Working Muscles</span>
-              <p className="text-slate-300">{exercise.whatToFeel.workingMuscles}</p>
+            <div className="p-3.5 bg-background rounded-2xl border border-border">
+              <span className="font-bold text-primary block mb-1">Working Muscles</span>
+              <p className="text-foreground/90">{exercise.whatToFeel.workingMuscles}</p>
             </div>
-            <div className="p-3.5 bg-slate-950 rounded-2xl border border-slate-800">
-              <span className="font-bold text-slate-300 block mb-1">Normal Effort</span>
-              <p className="text-slate-400">{exercise.whatToFeel.normalEffort}</p>
+            <div className="p-3.5 bg-background rounded-2xl border border-border">
+              <span className="font-bold text-foreground/90 block mb-1">Normal Effort</span>
+              <p className="text-foreground/70">{exercise.whatToFeel.normalEffort}</p>
             </div>
             <div className="p-3.5 bg-red-950/20 border border-red-500/20 rounded-2xl">
               <span className="font-bold text-red-400 block mb-1">Should NOT Feel</span>
@@ -221,14 +221,14 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
         </section>
 
         {/* J. Common Mistakes */}
-        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
-          <h2 className="text-lg font-bold text-white">J. Common Mistakes</h2>
+        <section className="bg-background border border-border rounded-3xl p-6 space-y-4 shadow-xl">
+          <h2 className="text-lg font-bold text-foreground">J. Common Mistakes</h2>
           <div className="space-y-3 text-xs">
             {exercise.commonMistakes.map((mistake, i) => (
-              <div key={i} className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-1">
+              <div key={i} className="p-4 bg-background border border-border rounded-2xl space-y-1">
                 <span className="font-bold text-amber-400 text-sm block">{mistake.name}</span>
-                <p className="text-slate-300">{mistake.description}</p>
-                <p className="text-teal-400 font-semibold text-[11px] pt-1">💡 Coaching Cue: {mistake.avoidCue}</p>
+                <p className="text-foreground/90">{mistake.description}</p>
+                <p className="text-primary font-semibold text-[11px] pt-1">💡 Coaching Cue: {mistake.avoidCue}</p>
               </div>
             ))}
           </div>
@@ -241,8 +241,8 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
           </h2>
           <div className="grid md:grid-cols-2 gap-4 text-xs">
             <div>
-              <span className="font-bold text-slate-200 uppercase block mb-2">Safety Notes</span>
-              <ul className="list-disc list-inside space-y-1 text-slate-300">
+              <span className="font-bold text-foreground uppercase block mb-2">Safety Notes</span>
+              <ul className="list-disc list-inside space-y-1 text-foreground/90">
                 {exercise.safetyNotes.map((note, i) => (
                   <li key={i}>{note}</li>
                 ))}
@@ -260,24 +260,24 @@ export default function ExerciseDetailPage({ params }: { params: Promise<{ slug:
         </section>
 
         {/* M, N, O, P. Alternatives & Progression */}
-        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
-          <h2 className="text-lg font-bold text-white">M-P. Variations, Alternatives & Progression</h2>
+        <section className="bg-background border border-border rounded-3xl p-6 space-y-4 shadow-xl">
+          <h2 className="text-lg font-bold text-foreground">M-P. Variations, Alternatives & Progression</h2>
           <div className="grid sm:grid-cols-2 gap-4 text-xs">
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl">
-              <span className="font-bold text-teal-400 block mb-1">Easier Variation</span>
-              <p className="text-slate-300">{exercise.easierVariation}</p>
+            <div className="p-4 bg-background border border-border rounded-2xl">
+              <span className="font-bold text-primary block mb-1">Easier Variation</span>
+              <p className="text-foreground/90">{exercise.easierVariation}</p>
             </div>
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl">
+            <div className="p-4 bg-background border border-border rounded-2xl">
               <span className="font-bold text-indigo-400 block mb-1">Machine Alternative</span>
-              <p className="text-slate-300">{exercise.machineAlternative}</p>
+              <p className="text-foreground/90">{exercise.machineAlternative}</p>
             </div>
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl">
+            <div className="p-4 bg-background border border-border rounded-2xl">
               <span className="font-bold text-amber-400 block mb-1">Home Alternative</span>
-              <p className="text-slate-300">{exercise.homeAlternative}</p>
+              <p className="text-foreground/90">{exercise.homeAlternative}</p>
             </div>
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl">
+            <div className="p-4 bg-background border border-border rounded-2xl">
               <span className="font-bold text-emerald-400 block mb-1">Progression Rule</span>
-              <p className="text-slate-300">{exercise.progressionGuidance}</p>
+              <p className="text-foreground/90">{exercise.progressionGuidance}</p>
             </div>
           </div>
         </section>

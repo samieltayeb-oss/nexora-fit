@@ -110,7 +110,7 @@ export default function WorkoutProgramContent() {
   const completedCount = completed.length
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white pb-32">
+    <div className="min-h-screen bg-[#0a0a0f] text-foreground pb-32">
 
       {/* Header */}
       <div className={`relative overflow-hidden bg-gradient-to-b ${isGym ? 'from-[#0d1f1c]' : 'from-[#12101f]'} to-[#0a0a0f]`}>
@@ -120,39 +120,39 @@ export default function WorkoutProgramContent() {
           {/* Back */}
           <button
             onClick={() => router.push('/workout')}
-            className="flex items-center gap-1.5 text-xs font-bold text-slate-400 mb-5"
+            className="flex items-center gap-1.5 text-xs font-bold text-foreground/70 mb-5"
           >
             <ChevronLeft className="w-4 h-4" /> Back to Programs
           </button>
 
           {/* Badge */}
           <div className="flex items-center gap-2 mb-2">
-            <div className={`${isGym ? 'bg-teal-400/20 border-teal-400/40' : 'bg-indigo-400/20 border-indigo-400/40'} border rounded-xl p-1.5`}>
+            <div className={`${isGym ? 'bg-primary/20 border-primary/40' : 'bg-indigo-400/20 border-indigo-400/40'} border rounded-xl p-1.5`}>
               {isGym
-                ? <Dumbbell className="w-4 h-4 text-teal-400" />
+                ? <Dumbbell className="w-4 h-4 text-primary" />
                 : <PersonStanding className="w-4 h-4 text-indigo-400" />
               }
             </div>
-            <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${isGym ? 'text-teal-400' : 'text-indigo-400'}`}>
+            <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${isGym ? 'text-primary' : 'text-indigo-400'}`}>
               {isGym ? '28-Day Gym Program' : '28-Day Calisthenics Program'}
             </span>
           </div>
 
-          <h1 className="text-2xl font-black tracking-tight text-white leading-tight mb-1">{title}</h1>
-          <p className="text-xs text-slate-400 font-medium mb-5">{subtitle}</p>
+          <h1 className="text-2xl font-black tracking-tight text-foreground leading-tight mb-1">{title}</h1>
+          <p className="text-xs text-foreground/70 font-medium mb-5">{subtitle}</p>
 
           {/* Stats Row */}
           <div className="grid grid-cols-2 gap-3 mb-5">
             <div className="bg-white/5 border border-white/10 rounded-2xl p-3">
-              <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Main Goal</div>
-              <div className="text-xs font-black text-white flex items-center gap-1">
-                <Target className="w-3 h-3 text-teal-400" />
+              <div className="text-[10px] text-foreground/70 font-bold uppercase tracking-wider mb-0.5">Main Goal</div>
+              <div className="text-xs font-black text-foreground flex items-center gap-1">
+                <Target className="w-3 h-3 text-primary" />
                 Lose Fat · Build Muscle
               </div>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-2xl p-3">
-              <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Your Weight</div>
-              <div className="text-xs font-black text-white flex items-center gap-1">
+              <div className="text-[10px] text-foreground/70 font-bold uppercase tracking-wider mb-0.5">Your Weight</div>
+              <div className="text-xs font-black text-foreground flex items-center gap-1">
                 <Flame className="w-3 h-3 text-orange-400" />
                 85 kg → 75 kg
               </div>
@@ -161,8 +161,8 @@ export default function WorkoutProgramContent() {
 
           {/* Progress Bar */}
           <div className="mb-1 flex items-center justify-between">
-            <span className="text-xs font-bold text-white">Progress</span>
-            <span className={`text-xs font-black ${isGym ? 'text-teal-400' : 'text-indigo-400'}`}>{completedCount} of 28 workouts</span>
+            <span className="text-xs font-bold text-foreground">Progress</span>
+            <span className={`text-xs font-black ${isGym ? 'text-primary' : 'text-indigo-400'}`}>{completedCount} of 28 workouts</span>
           </div>
           <div className="h-2 bg-white/10 rounded-full overflow-hidden">
             <motion.div
@@ -223,9 +223,9 @@ export default function WorkoutProgramContent() {
                       }}
                       className={`relative rounded-2xl overflow-hidden border aspect-square ${
                         isCurrent
-                          ? isGym ? 'border-teal-400 shadow-[0_0_18px_rgba(20,184,166,0.5)]' : 'border-indigo-400 shadow-[0_0_18px_rgba(99,102,241,0.5)]'
+                          ? isGym ? 'border-primary shadow-[0_0_18px_rgba(20,184,166,0.5)]' : 'border-indigo-400 shadow-[0_0_18px_rgba(99,102,241,0.5)]'
                           : isCompleted
-                          ? isGym ? 'border-teal-400/40' : 'border-indigo-400/40'
+                          ? isGym ? 'border-primary/40' : 'border-indigo-400/40'
                           : 'border-white/8'
                       }`}
                     >
@@ -251,21 +251,21 @@ export default function WorkoutProgramContent() {
                       {/* Completed badge */}
                       {isCompleted && (
                         <div className="absolute top-1.5 right-1.5">
-                          <CheckCircle className={`w-4 h-4 ${isGym ? 'text-teal-400' : 'text-indigo-400'}`} />
+                          <CheckCircle className={`w-4 h-4 ${isGym ? 'text-primary' : 'text-indigo-400'}`} />
                         </div>
                       )}
 
                       {/* Live dot for today */}
                       {isCurrent && (
                         <div className="absolute top-1.5 right-1.5">
-                          <div className={`w-2.5 h-2.5 rounded-full animate-pulse ${isGym ? 'bg-teal-400 shadow-[0_0_8px_rgba(20,184,166,1)]' : 'bg-indigo-400 shadow-[0_0_8px_rgba(99,102,241,1)]'}`} />
+                          <div className={`w-2.5 h-2.5 rounded-full animate-pulse ${isGym ? 'bg-primary shadow-[0_0_8px_rgba(20,184,166,1)]' : 'bg-indigo-400 shadow-[0_0_8px_rgba(99,102,241,1)]'}`} />
                         </div>
                       )}
 
                       {/* Sets badge (calisthenics only) */}
                       {!isGym && !isLocked && !d.isRest && 'sets' in d && (
                         <div className="absolute top-1.5 left-1.5">
-                          <span className="text-[8px] font-black bg-black/70 text-white px-1.5 py-0.5 rounded-md">
+                          <span className="text-[8px] font-black bg-black/70 text-foreground px-1.5 py-0.5 rounded-md">
                             {(d as { sets: string }).sets.split(' + ')[0]}
                           </span>
                         </div>
@@ -273,11 +273,11 @@ export default function WorkoutProgramContent() {
 
                       {/* Bottom label */}
                       <div className="absolute bottom-1.5 left-1.5 right-1.5">
-                        <div className="text-[9px] font-black text-white leading-tight">
+                        <div className="text-[9px] font-black text-foreground leading-tight">
                           {d.isRest ? '😴 Rest' : `Day ${d.day}`}
                         </div>
                         {isCurrent && (
-                          <div className={`text-[8px] font-bold ${isGym ? 'text-teal-300' : 'text-indigo-300'}`}>TODAY</div>
+                          <div className={`text-[8px] font-bold ${isGym ? 'text-primary' : 'text-indigo-300'}`}>TODAY</div>
                         )}
                       </div>
                     </motion.button>
@@ -289,10 +289,10 @@ export default function WorkoutProgramContent() {
         })}
 
         {/* Finish Card */}
-        <div className={`border rounded-3xl p-6 text-center ${isGym ? 'bg-teal-500/5 border-teal-400/20' : 'bg-indigo-500/5 border-indigo-400/20'}`}>
+        <div className={`border rounded-3xl p-6 text-center ${isGym ? 'bg-primary/5 border-primary/20' : 'bg-indigo-500/5 border-indigo-400/20'}`}>
           <Trophy className="w-8 h-8 text-amber-400 mx-auto mb-3" />
-          <div className="text-sm font-black text-white mb-1">Complete all 28 days</div>
-          <div className="text-[11px] text-slate-400 font-medium">Unlock your transformation report & next-level program</div>
+          <div className="text-sm font-black text-foreground mb-1">Complete all 28 days</div>
+          <div className="text-[11px] text-foreground/70 font-medium">Unlock your transformation report & next-level program</div>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SyncStatusIndicator } from "@/design/components/sync-status-indicator";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,13 +18,20 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "SAM FIT",
+  title: "Nexora Health",
   description: "Stronger Heart. Better Health. Sustainable Progress.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "SAM FIT",
+    title: "Nexora Health",
+  },
+  openGraph: {
+    title: "Nexora Health",
+    description: "Stronger Heart. Better Health. Sustainable Progress.",
+    url: "https://health.nexora.ai",
+    siteName: "Nexora Health",
+    type: "website",
   },
 };
 
@@ -37,7 +45,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <SyncStatusIndicator />
+      </body>
     </html>
   );
 }

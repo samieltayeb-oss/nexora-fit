@@ -28,7 +28,7 @@ export function AnimatedCard({
         transition: { duration: 0.25, ease: 'easeOut' }
       }}
       whileTap={{ scale: 0.98 }}
-      className={`relative overflow-hidden transition-all duration-300 rounded-3xl bg-slate-900/40 backdrop-blur-3xl border border-white/[0.08] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.85),_inset_0_1px_1px_0_rgba(255,255,255,0.12)] ${className}`}
+      className={`relative overflow-hidden transition-all duration-300 rounded-3xl bg-background/40 backdrop-blur-3xl border border-white/[0.08] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.85),_inset_0_1px_1px_0_rgba(255,255,255,0.12)] ${className}`}
     >
       {/* Top Edge Soft Glass Reflection */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />

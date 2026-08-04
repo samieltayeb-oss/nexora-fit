@@ -1,35 +1,9 @@
 @import "tailwindcss";
-
-:root {
-  /* Premium Dark Theme Core */
-  --background: #030509; /* Deep midnight navy */
-  --foreground: #f8fafc; /* slate-50 */
-  
-  /* Brand Accents */
-  --accent-primary: #06b6d4; /* Performance Cyan */
-  --accent-primary-glow: rgba(6, 182, 212, 0.15);
-  
-  --accent-success: #10b981; /* Controlled Emerald */
-  --accent-warning: #f59e0b; /* Warm Amber */
-  --accent-urgent: #ef4444; /* Clear Red */
-  --accent-health: #fb7185; /* Soft Rose */
-  
-  /* Surfaces */
-  --surface-1: rgba(15, 23, 42, 0.6); /* Glass 1 */
-  --surface-2: rgba(30, 41, 59, 0.5); /* Glass 2 */
-  --surface-border: rgba(255, 255, 255, 0.06);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@import "../design/tokens/theme.css";
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   background-attachment: fixed;
 }
@@ -51,19 +25,18 @@ body {
     padding-right: env(safe-area-inset-right, 16px);
   }
   
-  /* Premium Glass Utilities */
+  /* Premium Glass Utilities - updated for NEXORA */
   .glass-panel {
-    background: var(--surface-1);
+    background: var(--color-surface);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--surface-border);
+    border: 1px solid var(--color-border-subtle);
   }
   .glass-card {
-    background: var(--surface-2);
+    background: var(--color-surface-elevated);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--surface-border);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   }
 }
-

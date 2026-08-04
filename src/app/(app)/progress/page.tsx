@@ -106,7 +106,7 @@ export default function ProgressPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight mt-2 flex items-center gap-2">
             Body Composition
           </h1>
-          <p className="text-slate-400 text-sm font-medium mt-1">Live metrics from your smart scale</p>
+          <p className="text-foreground/70 text-sm font-medium mt-1">Live metrics from your smart scale</p>
         </div>
 
         <button 
@@ -133,9 +133,9 @@ export default function ProgressPage() {
         
         <div className="flex justify-between items-start mb-6 relative z-10">
           <div>
-            <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Current Weight</h2>
+            <h2 className="text-sm font-bold text-foreground/70 uppercase tracking-widest">Current Weight</h2>
             <div className="text-6xl md:text-7xl font-bold text-[var(--foreground)] tracking-tighter mt-1 flex items-baseline gap-2">
-              <NumberCounter value={weight} decimals={2} /> <span className="text-2xl text-slate-400 font-medium tracking-normal">kg</span>
+              <NumberCounter value={weight} decimals={2} /> <span className="text-2xl text-foreground/70 font-medium tracking-normal">kg</span>
             </div>
           </div>
           <div className="flex items-center gap-1.5 text-[var(--accent-success)] bg-[var(--accent-success)]/10 px-4 py-2 rounded-2xl text-xs font-bold">
@@ -213,10 +213,10 @@ function MetricRow({
       className="flex items-center justify-between py-2 border-b border-white/5 last:border-0 group hover:bg-white/[0.02] -mx-2 px-2 rounded-xl transition-colors"
     >
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-white transition-colors">
+        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-foreground/70 group-hover:text-foreground transition-colors">
           {icon}
         </div>
-        <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{label}</span>
+        <span className="text-sm font-medium text-foreground/90 group-hover:text-foreground transition-colors">{label}</span>
       </div>
       <div className="flex items-center gap-4">
         <span className="text-base font-bold text-[var(--foreground)]">

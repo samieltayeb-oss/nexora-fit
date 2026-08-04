@@ -6,15 +6,15 @@ import { Dumbbell, PersonStanding, ChevronRight, Flame, Clock, Trophy, Star } fr
 
 export default function WorkoutHubPage() {
   return (
-    <div className="min-h-screen bg-[var(--background)] text-white pb-32">
+    <div className="min-h-screen bg-[var(--background)] text-foreground pb-32">
       {/* Header */}
       <div className="px-5 pt-10 pb-6">
-        <p className="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] mb-1">SAM FIT</p>
-        <h1 className="text-3xl font-black tracking-tight text-white leading-tight">
+        <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">NEXORA FIT</p>
+        <h1 className="text-3xl font-black tracking-tight text-foreground leading-tight">
           Choose Your<br />
-          <span className="text-teal-400">Training Style</span>
+          <span className="text-primary">Training Style</span>
         </h1>
-        <p className="text-sm text-slate-400 mt-2 font-medium">Two complete 28-day transformation programs</p>
+        <p className="text-sm text-foreground/70 mt-2 font-medium">Two complete 28-day transformation programs</p>
       </div>
 
       {/* Program Cards */}
@@ -41,25 +41,25 @@ export default function WorkoutHubPage() {
             {/* Content */}
             <div className="relative z-10 p-6">
               <div className="flex items-center gap-2 mb-3">
-                <div className="bg-teal-400/20 border border-teal-400/40 rounded-xl p-2">
-                  <Dumbbell className="w-5 h-5 text-teal-400" />
+                <div className="bg-primary/20 border border-primary/40 rounded-xl p-2">
+                  <Dumbbell className="w-5 h-5 text-primary" />
                 </div>
-                <span className="text-[10px] font-black text-teal-400 uppercase tracking-[0.15em]">Machine Training</span>
+                <span className="text-[10px] font-black text-primary uppercase tracking-[0.15em]">Machine Training</span>
               </div>
 
-              <h2 className="text-2xl font-black text-white tracking-tight mb-1">GYM STRENGTH<br />CHALLENGE</h2>
-              <p className="text-xs text-slate-300 font-medium mb-4">Leg Press · Chest Press · Lat Pulldown · Seated Row · and more</p>
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-1">GYM STRENGTH<br />CHALLENGE</h2>
+              <p className="text-xs text-foreground/90 font-medium mb-4">Leg Press · Chest Press · Lat Pulldown · Seated Row · and more</p>
 
               <div className="flex items-center gap-4 mb-4">
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-300">
-                  <Clock className="w-3.5 h-3.5 text-teal-400" />
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
+                  <Clock className="w-3.5 h-3.5 text-primary" />
                   35–50 min / session
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-300">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
                   <Flame className="w-3.5 h-3.5 text-orange-400" />
                   180–270 cal
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-300">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
                   <Trophy className="w-3.5 h-3.5 text-amber-400" />
                   28 Days
                 </div>
@@ -69,16 +69,16 @@ export default function WorkoutHubPage() {
                 <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
                   <div className="h-full w-[4%] bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full" />
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">1 / 28 done</span>
+                <span className="text-[10px] text-foreground/70 font-bold">1 / 28 done</span>
               </div>
 
               <div className="mt-4 flex items-center justify-between">
                 <div className="flex gap-1">
                   {['Beginner', 'Gym', 'Machine'].map(tag => (
-                    <span key={tag} className="text-[9px] font-black px-2 py-0.5 rounded-full bg-teal-400/10 text-teal-300 border border-teal-400/20">{tag}</span>
+                    <span key={tag} className="text-[9px] font-black px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">{tag}</span>
                   ))}
                 </div>
-                <div className="flex items-center gap-1.5 bg-teal-400 text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg">
+                <div className="flex items-center gap-1.5 bg-primary text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg">
                   Start <ChevronRight className="w-3.5 h-3.5" />
                 </div>
               </div>
@@ -113,19 +113,19 @@ export default function WorkoutHubPage() {
                 <span className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.15em]">Bodyweight</span>
               </div>
 
-              <h2 className="text-2xl font-black text-white tracking-tight mb-1">CALISTHENICS<br />CHALLENGE</h2>
-              <p className="text-xs text-slate-300 font-medium mb-4">Push-Ups · Planks · Burpees · Mountain Climbers · Lunges · and more</p>
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-1">CALISTHENICS<br />CHALLENGE</h2>
+              <p className="text-xs text-foreground/90 font-medium mb-4">Push-Ups · Planks · Burpees · Mountain Climbers · Lunges · and more</p>
 
               <div className="flex items-center gap-4 mb-4">
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-300">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
                   <Clock className="w-3.5 h-3.5 text-indigo-400" />
                   15–30 min / day
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-300">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
                   <Flame className="w-3.5 h-3.5 text-orange-400" />
                   120–200 cal
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-300">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
                   <Trophy className="w-3.5 h-3.5 text-amber-400" />
                   28 Days
                 </div>
@@ -135,7 +135,7 @@ export default function WorkoutHubPage() {
                 <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
                   <div className="h-full w-0 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full" />
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">0 / 28 done</span>
+                <span className="text-[10px] text-foreground/70 font-bold">0 / 28 done</span>
               </div>
 
               <div className="mt-4 flex items-center justify-between">
@@ -155,18 +155,18 @@ export default function WorkoutHubPage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-3 mt-2">
           <div className="glass-panel hover:bg-white/10 transition-colors cursor-pointer rounded-2xl p-4 text-center">
-            <div className="text-xl font-black text-teal-400">56</div>
-            <div className="text-[10px] text-slate-400 font-bold mt-0.5">Total Days</div>
+            <div className="text-xl font-black text-primary">56</div>
+            <div className="text-[10px] text-foreground/70 font-bold mt-0.5">Total Days</div>
           </div>
           <div className="glass-panel hover:bg-white/10 transition-colors cursor-pointer rounded-2xl p-4 text-center">
             <div className="text-xl font-black text-amber-400">22</div>
-            <div className="text-[10px] text-slate-400 font-bold mt-0.5">Exercises</div>
+            <div className="text-[10px] text-foreground/70 font-bold mt-0.5">Exercises</div>
           </div>
           <div className="glass-panel hover:bg-white/10 transition-colors cursor-pointer rounded-2xl p-4 text-center">
             <div className="text-xl font-black text-rose-400">
               <Star className="w-5 h-5 mx-auto fill-rose-400 drop-shadow-[0_0_8px_rgba(251,113,133,0.6)]" />
             </div>
-            <div className="text-[10px] text-slate-400 font-bold mt-0.5">Premium</div>
+            <div className="text-[10px] text-foreground/70 font-bold mt-0.5">Premium</div>
           </div>
         </div>
 
@@ -175,11 +175,11 @@ export default function WorkoutHubPage() {
           <div className="glass-panel hover:bg-white/10 transition-colors rounded-2xl p-4 flex items-center justify-between group">
             <div className="flex items-center gap-3">
               <div className="bg-slate-700/50 group-hover:bg-[var(--accent-primary)]/20 transition-colors rounded-xl p-2.5">
-                <Dumbbell className="w-4 h-4 text-slate-300 group-hover:text-[var(--accent-primary)] transition-colors" />
+                <Dumbbell className="w-4 h-4 text-foreground/90 group-hover:text-[var(--accent-primary)] transition-colors" />
               </div>
               <div>
-                <div className="text-sm font-bold text-white group-hover:text-[var(--accent-primary)] transition-colors">Exercise Library</div>
-                <div className="text-[11px] text-slate-400 font-medium">Form guides · Machine setup · Tips</div>
+                <div className="text-sm font-bold text-foreground group-hover:text-[var(--accent-primary)] transition-colors">Exercise Library</div>
+                <div className="text-[11px] text-foreground/70 font-medium">Form guides · Machine setup · Tips</div>
               </div>
             </div>
             <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-[var(--accent-primary)] transition-colors" />

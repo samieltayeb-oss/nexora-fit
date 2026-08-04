@@ -237,12 +237,12 @@ export default function ActiveWorkoutContent() {
           >
             <div className="glass-card p-6 max-w-sm w-full rounded-[2rem] text-center border-white/10">
               <RefreshCw className="w-12 h-12 text-[var(--accent-primary)] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">Resume Workout?</h3>
-              <p className="text-slate-400 mb-6 text-sm">We found an active workout session in progress. Would you like to resume where you left off?</p>
+              <h3 className="text-xl font-bold text-foreground mb-2">Resume Workout?</h3>
+              <p className="text-foreground/70 mb-6 text-sm">We found an active workout session in progress. Would you like to resume where you left off?</p>
               <div className="flex flex-col gap-3">
                 <button onClick={resumeSavedSession} className="w-full py-3 bg-[var(--accent-primary)] text-slate-950 font-bold rounded-xl">Resume Session</button>
-                <button onClick={discardSavedSession} className="w-full py-3 bg-white/10 text-white font-bold rounded-xl hover:bg-white/20">Start New Workout</button>
-                <button onClick={discardSavedSession} className="w-full py-3 bg-transparent text-slate-400 font-bold rounded-xl hover:text-white">Discard Saved Workout</button>
+                <button onClick={discardSavedSession} className="w-full py-3 bg-white/10 text-foreground font-bold rounded-xl hover:bg-white/20">Start New Workout</button>
+                <button onClick={discardSavedSession} className="w-full py-3 bg-transparent text-foreground/70 font-bold rounded-xl hover:text-foreground">Discard Saved Workout</button>
               </div>
             </div>
           </motion.div>
@@ -266,13 +266,13 @@ export default function ActiveWorkoutContent() {
 
       <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-6 pt-safe pt-6">
         <button onClick={() => router.push('/workout')} className="glass-panel rounded-full p-3 hover:bg-white/10 transition-colors">
-          <ChevronLeft className="w-5 h-5 text-white" />
+          <ChevronLeft className="w-5 h-5 text-foreground" />
         </button>
         <div className="glass-panel rounded-full px-5 py-2">
-          <span className="text-[10px] font-black text-white tracking-widest uppercase">{programTitle}</span>
+          <span className="text-[10px] font-black text-foreground tracking-widest uppercase">{programTitle}</span>
         </div>
         <button onClick={() => setAudioOn(p => !p)} className="glass-panel rounded-full p-3 hover:bg-white/10 transition-colors">
-          {audioOn ? <Volume2 className="w-5 h-5 text-white" /> : <VolumeX className="w-5 h-5 text-slate-400" />}
+          {audioOn ? <Volume2 className="w-5 h-5 text-foreground" /> : <VolumeX className="w-5 h-5 text-foreground/70" />}
         </button>
       </div>
 
@@ -302,7 +302,7 @@ export default function ActiveWorkoutContent() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center drop-shadow-2xl">
                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--accent-warning)] mb-1 drop-shadow-md">Rest</span>
-                <span className="text-7xl font-bold text-white tracking-tighter tabular-nums drop-shadow-2xl">{restCountdown}</span>
+                <span className="text-7xl font-bold text-foreground tracking-tighter tabular-nums drop-shadow-2xl">{restCountdown}</span>
               </div>
             </div>
           </motion.div>
@@ -320,16 +320,16 @@ export default function ActiveWorkoutContent() {
               className={`mb-8 ${phase === 'rest' ? 'opacity-30' : 'opacity-100'} transition-opacity duration-500`}
             >
               <div className="flex items-center gap-3 mb-3 drop-shadow-md">
-                <span className="px-3 py-1 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-full backdrop-blur-md">
+                <span className="px-3 py-1 bg-white/10 text-foreground text-[10px] font-black uppercase tracking-widest rounded-full backdrop-blur-md">
                   Set {currentSet} of {totalSets}
                 </span>
-                <span className="text-xs text-slate-400 font-medium drop-shadow">{ex.muscles.join(' · ')}</span>
+                <span className="text-xs text-foreground/70 font-medium drop-shadow">{ex.muscles.join(' · ')}</span>
                 {elapsedSeconds > 0 && (
-                  <span className="text-xs text-slate-300 font-medium tabular-nums ml-auto">{fmt(elapsedSeconds)}</span>
+                  <span className="text-xs text-foreground/90 font-medium tabular-nums ml-auto">{fmt(elapsedSeconds)}</span>
                 )}
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-2 drop-shadow-2xl">{ex.name}</h2>
-              <div className="text-xl font-medium text-slate-300 drop-shadow-md">{ex.setsReps}</div>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-2 drop-shadow-2xl">{ex.name}</h2>
+              <div className="text-xl font-medium text-foreground/90 drop-shadow-md">{ex.setsReps}</div>
             </motion.div>
           </AnimatePresence>
 
@@ -339,7 +339,7 @@ export default function ActiveWorkoutContent() {
               disabled={exIdx === 0}
               className="glass-panel p-4 rounded-2xl disabled:opacity-30 hover:bg-white/10 transition-colors"
             >
-              <ChevronLeft className="w-6 h-6 text-white" />
+              <ChevronLeft className="w-6 h-6 text-foreground" />
             </button>
 
             {phase === 'ready' ? (
@@ -356,7 +356,7 @@ export default function ActiveWorkoutContent() {
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={togglePause}
-                className="flex-1 py-5 rounded-2xl font-bold text-white text-lg flex items-center justify-center gap-2 glass-panel hover:bg-white/10 transition-colors"
+                className="flex-1 py-5 rounded-2xl font-bold text-foreground text-lg flex items-center justify-center gap-2 glass-panel hover:bg-white/10 transition-colors"
               >
                 {isPaused ? <><Play className="w-6 h-6 fill-white" /> Resume</> : <><Pause className="w-6 h-6 fill-white" /> Pause</>}
               </motion.button>
@@ -376,7 +376,7 @@ export default function ActiveWorkoutContent() {
                 disabled={exIdx === exercises.length - 1}
                 className="glass-panel p-4 rounded-2xl disabled:opacity-30 hover:bg-white/10 transition-colors"
               >
-                <ChevronRight className="w-6 h-6 text-white" />
+                <ChevronRight className="w-6 h-6 text-foreground" />
               </button>
             )}
           </div>
@@ -406,8 +406,8 @@ export default function ActiveWorkoutContent() {
                 <Trophy className="w-10 h-10 text-amber-500" />
               </div>
               <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 mb-2 drop-shadow-lg">Goal Reached</h2>
-              <h3 className="text-xl font-bold text-white mb-2">Protocol Complete</h3>
-              <p className="text-slate-400 font-medium mb-8">
+              <h3 className="text-xl font-bold text-foreground mb-2">Protocol Complete</h3>
+              <p className="text-foreground/70 font-medium mb-8">
                 {exercises.length} exercises · {fmt(elapsedSeconds)}
               </p>
               <button

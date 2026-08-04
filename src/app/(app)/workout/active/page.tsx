@@ -8,8 +8,8 @@ export default function ActiveWorkoutPage() {
     <Suspense fallback={
       <div className="fixed inset-0 bg-[#0a0a0f] flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-4 border-teal-400 border-t-transparent rounded-full animate-spin mx-auto" />
-          <div className="text-teal-400 font-black text-sm uppercase tracking-widest">Loading Workout...</div>
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          <div className="text-primary font-black text-sm uppercase tracking-widest">Loading Workout...</div>
         </div>
       </div>
     }>
