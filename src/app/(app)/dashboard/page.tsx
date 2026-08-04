@@ -19,7 +19,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
-import { NumberCounter } from '@/components/motion/number-counter'
+import { NumberCounter } from '@/components/ui/number-counter'
 
 export default function DashboardPage() {
   const [weight, setWeight] = useState<number>(82.10)

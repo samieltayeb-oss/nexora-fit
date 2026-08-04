@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { WeightChart } from '@/components/weight-chart'
+import { WeightChart } from '@/components/charts/weight-chart'
 import { TrendingDown, Sparkles, RefreshCw, Cpu, Activity, Flame, Zap, Droplets, Dumbbell } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
-import { NumberCounter } from '@/components/motion/number-counter'
+import { NumberCounter } from '@/components/ui/number-counter'
 
 export default function ProgressPage() {
   const [weight, setWeight] = useState<number>(82.10)
