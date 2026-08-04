@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 
 const envPath = path.resolve(process.cwd(), '.env.security-test.local');
@@ -55,30 +56,51 @@ async function runTests() {
 
   console.log('--- SETUP: Provisioning Test Users ---');
   
-  const { data: loginA, error: errA } = await clientA.auth.signInWithPassword({ email: TEST_USER_A_EMAIL, password: TEST_USER_A_PASSWORD });
-  if (errA) {
-    const { data: authA } = await clientA.auth.signUp({ email: TEST_USER_A_EMAIL, password: TEST_USER_A_PASSWORD });
-    userA_Id = authA?.user?.id;
-  } else {
-    userA_Id = loginA.user.id;
-  }
+  // Hash the test key dynamically just like the API does
+  const hashKey = (key) => crypto.createHash('sha256').update(key).digest('hex');
+  const actualHash = hashKey(TEST_SYNC_KEY);
+  
+  // Use Admin Client to ensure users exist and are confirmed
+  const ensureUser = async (email, password) => {
+    let { data: { users } } = await adminClient.auth.admin.listUsers();
+    let user = users.find(u => u.email === email);
+    if (user) {
+      await adminClient.auth.admin.deleteUser(user.id);
+    }
+    const { data, error } = await adminClient.auth.admin.createUser({ email, password, email_confirm: true });
+    if (error) throw error;
+    user = data.user;
 
-  const { data: loginB, error: errB } = await clientB.auth.signInWithPassword({ email: TEST_USER_B_EMAIL, password: TEST_USER_B_PASSWORD });
-  if (errB) {
-    const { data: authB } = await clientB.auth.signUp({ email: TEST_USER_B_EMAIL, password: TEST_USER_B_PASSWORD });
-    userB_Id = authB?.user?.id;
-  } else {
-    userB_Id = loginB.user.id;
-  }
+    // Sign in to get a valid session for RLS testing
+    const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false } });
+    const { data: sessionData, error: signInErr } = await client.auth.signInWithPassword({ email, password });
+    if (signInErr) throw signInErr;
+    return { user, client };
+  };
+
+  const a = await ensureUser(TEST_USER_A_EMAIL, TEST_USER_A_PASSWORD);
+  userA_Id = a.user.id;
+  const clientA = a.client;
+
+  const b = await ensureUser(TEST_USER_B_EMAIL, TEST_USER_B_PASSWORD);
+  userB_Id = b.user.id;
+  const clientB = b.client;
+
+  console.log(`User A ID: ${userA_Id}`);
+  console.log(`User B ID: ${userB_Id}`);
 
   // Provision Sync Key via Admin
   await adminClient.from('sync_keys').delete().eq('user_id', userA_Id);
-  const { data: keyRecord } = await adminClient.from('sync_keys').insert({
+  const { data: keyRecord, error: keyErr } = await adminClient.from('sync_keys').insert({
     user_id: userA_Id,
-    key_prefix: TEST_SYNC_KEY_PREFIX || TEST_SYNC_KEY.substring(0, 8),
-    key_hash: TEST_SYNC_KEY_HASH,
+    key_prefix: TEST_SYNC_KEY.substring(0, 8),
+    key_hash: actualHash,
     active: true
   }).select().single();
+  if (keyErr || !keyRecord) {
+    console.error('Failed to insert sync key:', keyErr);
+    process.exit(1);
+  }
   syncKeyId = keyRecord.id;
 
   // ==========================================

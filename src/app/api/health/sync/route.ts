@@ -95,6 +95,8 @@ export async function POST(req: NextRequest) {
     const keyHash = await hashKey(syncKey)
     const keyPrefix = syncKey.substring(0, 8)
 
+    console.log('API DEBUG: syncKey length', syncKey.length, 'keyPrefix', keyPrefix, 'keyHash', keyHash)
+
     const { data: keyRecord, error: keyError } = await supabase
       .from('sync_keys')
       .select('id, user_id, active, expires_at, revoked_at, failed_attempts')
@@ -102,11 +104,20 @@ export async function POST(req: NextRequest) {
       .eq('key_hash', keyHash)
       .single()
 
+    console.log('API DEBUG: keyRecord:', keyRecord, 'keyError:', keyError)
+
+    if (keyError || !keyRecord) {
+      console.log('API DEBUG: key lookup failed')
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    if (!keyRecord.active) {
+      console.log('API DEBUG: key inactive')
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     // Constant-time generic 401 response for ANY auth failure condition
     if (
-      keyError || 
-      !keyRecord || 
-      !keyRecord.active ||
       keyRecord.revoked_at ||
       (keyRecord.expires_at && new Date(keyRecord.expires_at) < new Date())
     ) {
