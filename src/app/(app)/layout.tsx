@@ -27,7 +27,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             >
               {children}
             </motion.div>
@@ -82,12 +82,12 @@ function NavItem({ href, icon, label }: { href: string; icon: React.ReactNode; l
   const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
 
   return (
-    <Link href={href} className="relative flex-1 py-3 px-2 rounded-full flex flex-col items-center justify-center group active:scale-95 transition-transform">
+    <Link href={href} className="relative flex-1 py-4 px-2 rounded-full flex flex-col items-center justify-center group active:scale-95 transition-transform min-h-[48px]">
       {isActive && (
         <motion.div 
           layoutId="mobile-nav-indicator"
           className="absolute inset-0 bg-white/5 rounded-full" 
-          transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
         />
       )}
       <div className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-[var(--accent-primary)]' : 'text-slate-500 group-hover:text-slate-300'}`}>

@@ -121,6 +121,14 @@ export default function ProgressPage() {
 
       {/* ── HERO: WEIGHT JOURNEY ─────────────────────────────────────────────── */}
       <section className="glass-panel rounded-3xl p-6 md:p-8 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/artifacts/exercises/chest_press_start.png"
+            alt="Progress Background"
+            className="w-full h-full object-cover opacity-10"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface)] via-[var(--surface)]/80 to-[var(--surface)]/60" />
+        </div>
         <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--accent-primary-glow)] rounded-full blur-[100px] pointer-events-none" />
         
         <div className="flex justify-between items-start mb-6 relative z-10">

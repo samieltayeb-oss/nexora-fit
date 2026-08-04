@@ -12,7 +12,8 @@ import {
   Zap, 
   ChevronRight,
   TrendingDown,
-  Target
+  Target,
+  Check
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -259,10 +260,20 @@ export default function DashboardPage() {
           <button 
             onClick={handleSyncClick}
             disabled={isRefreshing}
-            className="text-sm font-medium text-slate-400 hover:text-[var(--foreground)] transition-colors flex items-center gap-1.5"
+            className={`text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
+              showSyncSuccess 
+                ? 'bg-[var(--accent-success)]/20 text-[var(--accent-success)] shadow-[0_0_10px_var(--accent-success)]'
+                : 'glass-panel text-slate-400 hover:text-[var(--foreground)] active:scale-95'
+            }`}
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
-            Sync Apple Health
+            {showSyncSuccess ? (
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
+                <Check className="w-3.5 h-3.5" />
+              </motion.div>
+            ) : (
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            )}
+            {showSyncSuccess ? 'Synced' : 'Sync Watch'}
           </button>
         </div>
 
@@ -289,36 +300,6 @@ export default function DashboardPage() {
             <div className="text-xs font-medium text-slate-500 mt-1 uppercase tracking-wider">Active Kcal</div>
           </div>
 
-          {/* Signal Card: Last Sync Status */}
-          <div className="glass-panel rounded-2xl p-5 md:col-span-2 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
-                <Watch className="w-5 h-5 text-slate-300" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-sm text-[var(--foreground)] flex items-center gap-2">
-                  Apple Watch
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-success)] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent-success)]"></span>
-                  </span>
-                </h4>
-                <p className="text-xs text-slate-400 font-medium">Last synced just now</p>
-              </div>
-            </div>
-            <AnimatePresence>
-              {showSyncSuccess && (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="bg-[var(--accent-success)]/10 text-[var(--accent-success)] text-xs font-bold px-3 py-1.5 rounded-full"
-                >
-                  Updated!
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
         </div>
       </section>
       

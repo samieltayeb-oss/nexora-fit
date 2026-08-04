@@ -161,7 +161,7 @@ export default function ActiveWorkoutContent() {
           initial={{ opacity: 0, scale: 1.02 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           className="absolute inset-0"
         >
           <img
@@ -255,10 +255,9 @@ export default function ActiveWorkoutContent() {
         )}
       </AnimatePresence>
 
-      {/* ── BOTTOM OVERLAY — Controls ─────────────────────────── */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 px-6 pb-safe pb-8">
-        
-        <div className="max-w-2xl mx-auto w-full">
+      {/* ── BOTTOM CONTROLS (One-Thumb Ergonomics) ────────────── */}
+      <div className="absolute bottom-0 left-0 right-0 z-30 px-6 pt-12 pb-safe mb-4 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/90 to-transparent">
+        <div className="max-w-md mx-auto w-full">
           {/* Exercise Info */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -364,7 +363,8 @@ export default function ActiveWorkoutContent() {
                 <Trophy className="w-10 h-10 text-amber-500" />
               </div>
               
-              <h2 className="text-3xl font-bold text-white mb-2">Workout Complete</h2>
+              <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 mb-2 drop-shadow-lg">Goal Reached</h2>
+              <h3 className="text-xl font-bold text-white mb-2">Protocol Complete</h3>
               <p className="text-slate-400 font-medium mb-8">
                 {exercises.length} exercises · {fmt(elapsed)}
               </p>
@@ -372,7 +372,7 @@ export default function ActiveWorkoutContent() {
               <div className="space-y-3">
                 <button
                   onClick={() => router.push('/dashboard')}
-                  className="w-full py-4 bg-[var(--accent-primary)] text-slate-950 font-bold rounded-2xl hover:brightness-110 transition-all shadow-[0_0_20px_var(--accent-primary-glow)]"
+                  className="w-full py-4 bg-[var(--accent-primary)] text-slate-950 font-bold rounded-2xl hover:brightness-110 transition-all shadow-[0_0_20px_var(--accent-primary-glow)] active:scale-95"
                 >
                   Return Home
                 </button>
