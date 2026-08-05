@@ -154,7 +154,7 @@ export default function DashboardPage() {
                 <div className="font-mono text-xs uppercase tracking-wider text-foreground/50 mb-2">Goal Trajectory</div>
                 <div className="font-display text-2xl font-bold text-foreground mb-1">{context.goal.status}</div>
                 <p className="text-sm text-foreground/70">
-                  You are currently {context.goal.metrics.scenarios[0]?.distanceToGoalKg || 0}kg away from your target.
+                  You are currently {(context.goal.metrics.scenarios[0]?.distanceToGoalKg || 0).toFixed(1)}kg away from your target.
                 </p>
                 <div className="mt-4 flex items-center gap-2">
                   <TrendingDown className="h-4 w-4 text-primary" />
