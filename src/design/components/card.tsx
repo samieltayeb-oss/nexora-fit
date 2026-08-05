@@ -1,19 +1,42 @@
+"use client"
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
 
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-xl border border-border-subtle bg-surface text-foreground shadow-sm backdrop-blur-xl",
-      className
-    )}
-    {...props}
-  />
-))
+>(({ className, onClick, ...props }, ref) => {
+  const isInteractive = !!onClick;
+  
+  if (isInteractive) {
+    return (
+      <motion.div
+        ref={ref}
+        onClick={onClick}
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.98 }}
+        className={cn(
+          "rounded-xl border border-border-subtle bg-surface text-foreground shadow-sm backdrop-blur-xl cursor-pointer",
+          className
+        )}
+        {...(props as React.ComponentProps<typeof motion.div>)}
+      />
+    )
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-xl border border-border-subtle bg-surface text-foreground shadow-sm backdrop-blur-xl",
+        className
+      )}
+      {...props}
+    />
+  )
+})
 Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<

@@ -2,8 +2,11 @@ export type ConfidenceLevel = 'High' | 'Medium' | 'Low' | 'None'
 
 export interface TelemetryData {
   userId: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   recentWorkouts: any[] // TODO: Define strict types based on DB schema
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   recentBodyMeasurements: any[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   recentHealthLogs: any[]
   programStartDate: string | null
 }
@@ -12,6 +15,7 @@ export interface EngineResult {
   engineName: string
   confidence: ConfidenceLevel
   status: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metrics?: Record<string, any>
   flags?: string[]
 }
