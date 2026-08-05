@@ -32,7 +32,7 @@ export default async function LoginPage({
                 name="email"
                 type="email"
                 required
-                className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-primary transition-colors"
+                className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
                 placeholder="sam@example.com"
               />
             </div>
@@ -46,13 +46,13 @@ export default async function LoginPage({
                 name="password"
                 type="password"
                 required
-                className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-primary transition-colors"
+                className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
                 placeholder="••••••••"
               />
             </div>
 
             {resolvedSearchParams?.error && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-lg text-center">
+              <div className="bg-error/10 border border-error/20 text-error text-sm p-3 rounded-lg text-center">
                 {resolvedSearchParams.error}
               </div>
             )}
@@ -60,7 +60,7 @@ export default async function LoginPage({
             <div className="flex flex-col gap-3 pt-2">
               <button
                 formAction={login}
-                className="w-full bg-primary hover:bg-primary text-slate-950 font-semibold py-3 px-4 rounded-xl transition-all shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_30px_rgba(20,184,166,0.5)] active:scale-[0.98]"
+                className="w-full bg-primary hover:bg-primary-hover text-slate-950 font-bold py-3 px-4 rounded-xl transition-all shadow-[0_0_20px_var(--color-primary)] hover:shadow-[0_0_30px_var(--color-primary)] active:scale-[0.98]"
               >
                 Sign In
               </button>
