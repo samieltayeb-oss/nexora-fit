@@ -3,28 +3,29 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Dumbbell, PersonStanding, ChevronRight, Flame, Clock, Trophy, Star } from 'lucide-react'
+import { Card, CardContent } from '@/design/components/card'
 
 export default function WorkoutHubPage() {
   return (
-    <div className="min-h-screen bg-[var(--background)] text-foreground pb-32">
+    <div className="min-h-screen pb-32">
       {/* Header */}
-      <div className="px-5 pt-10 pb-6">
-        <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">NEXORA FIT</p>
-        <h1 className="text-3xl font-black tracking-tight text-foreground leading-tight">
+      <div className="px-5 pb-6 pt-10">
+        <p className="mb-1 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-primary">NEXORA FIT</p>
+        <h1 className="font-display text-3xl font-black leading-tight tracking-tight text-foreground">
           Choose Your<br />
           <span className="text-primary">Training Style</span>
         </h1>
-        <p className="text-sm text-foreground/70 mt-2 font-medium">Two complete 28-day transformation programs</p>
+        <p className="mt-2 text-sm font-medium text-foreground/70">Two complete 28-day transformation programs</p>
       </div>
 
       {/* Program Cards */}
-      <div className="px-5 space-y-4">
+      <div className="space-y-4 px-5">
 
         {/* Gym Machine Workout */}
         <Link href="/workout/program?type=gym">
           <motion.div
             whileTap={{ scale: 0.97 }}
-            className="relative rounded-3xl overflow-hidden glass-card hover:shadow-[0_0_30px_var(--accent-primary-glow)] transition-shadow duration-500"
+            className="group relative overflow-hidden rounded-3xl border border-border-subtle bg-surface shadow-sm transition-shadow duration-500 hover:shadow-[0_0_30px_var(--color-primary)]"
             style={{ minHeight: 200 }}
           >
             {/* Background Image */}
@@ -32,54 +33,54 @@ export default function WorkoutHubPage() {
               <img
                 src="/artifacts/exercises/chest_press_illustrated.jpg"
                 alt="Gym Workout"
-                className="w-full h-full object-cover opacity-40"
+                className="h-full w-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[var(--surface)]/95 via-[var(--surface)]/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-surface/95 via-surface/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
             </div>
 
             {/* Content */}
             <div className="relative z-10 p-6">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="bg-primary/20 border border-primary/40 rounded-xl p-2">
-                  <Dumbbell className="w-5 h-5 text-primary" />
+              <div className="mb-3 flex items-center gap-2">
+                <div className="rounded-xl border border-primary/40 bg-primary/20 p-2">
+                  <Dumbbell className="h-5 w-5 text-primary" />
                 </div>
-                <span className="text-[10px] font-black text-primary uppercase tracking-[0.15em]">Machine Training</span>
+                <span className="font-mono text-[10px] font-black uppercase tracking-[0.15em] text-primary">Machine Training</span>
               </div>
 
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-1">GYM STRENGTH<br />CHALLENGE</h2>
-              <p className="text-xs text-foreground/90 font-medium mb-4">Leg Press · Chest Press · Lat Pulldown · Seated Row · and more</p>
+              <h2 className="mb-1 font-display text-2xl font-black tracking-tight text-foreground">GYM STRENGTH<br />CHALLENGE</h2>
+              <p className="mb-4 text-xs font-medium text-foreground/90">Leg Press · Chest Press · Lat Pulldown · Seated Row · and more</p>
 
-              <div className="flex items-center gap-4 mb-4">
+              <div className="mb-4 flex items-center gap-4">
                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Clock className="w-3.5 h-3.5 text-primary" />
+                  <Clock className="h-3.5 w-3.5 text-primary" />
                   35–50 min / session
                 </div>
                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Flame className="w-3.5 h-3.5 text-orange-400" />
+                  <Flame className="h-3.5 w-3.5 text-warning" />
                   180–270 cal
                 </div>
                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Trophy className="w-3.5 h-3.5 text-amber-400" />
+                  <Trophy className="h-3.5 w-3.5 text-primary" />
                   28 Days
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full w-[4%] bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full" />
+                <div className="flex-1 overflow-hidden rounded-full bg-surface-elevated h-1.5">
+                  <div className="h-full w-[4%] rounded-full bg-primary" />
                 </div>
-                <span className="text-[10px] text-foreground/70 font-bold">1 / 28 done</span>
+                <span className="text-[10px] font-bold text-foreground/70">1 / 28 done</span>
               </div>
 
               <div className="mt-4 flex items-center justify-between">
                 <div className="flex gap-1">
                   {['Beginner', 'Gym', 'Machine'].map(tag => (
-                    <span key={tag} className="text-[9px] font-black px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">{tag}</span>
+                    <span key={tag} className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-[9px] font-black text-primary">{tag}</span>
                   ))}
                 </div>
-                <div className="flex items-center gap-1.5 bg-primary text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg">
-                  Start <ChevronRight className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-black text-background shadow-lg">
+                  Start <ChevronRight className="h-3.5 w-3.5" />
                 </div>
               </div>
             </div>
@@ -90,7 +91,7 @@ export default function WorkoutHubPage() {
         <Link href="/workout/program?type=calisthenics">
           <motion.div
             whileTap={{ scale: 0.97 }}
-            className="relative rounded-3xl overflow-hidden glass-card hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] transition-shadow duration-500"
+            className="group relative overflow-hidden rounded-3xl border border-border-subtle bg-surface shadow-sm transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(34,197,94,0.2)]"
             style={{ minHeight: 200 }}
           >
             {/* Background Image */}
@@ -98,54 +99,54 @@ export default function WorkoutHubPage() {
               <img
                 src="/artifacts/exercises/pushup_illustrated.jpg"
                 alt="Calisthenics"
-                className="w-full h-full object-cover opacity-40"
+                className="h-full w-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#12101f]/95 via-[#12101f]/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-surface/95 via-surface/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
             </div>
 
             {/* Content */}
             <div className="relative z-10 p-6">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="bg-indigo-400/20 border border-indigo-400/40 rounded-xl p-2">
-                  <PersonStanding className="w-5 h-5 text-indigo-400" />
+              <div className="mb-3 flex items-center gap-2">
+                <div className="rounded-xl border border-success/40 bg-success/20 p-2">
+                  <PersonStanding className="h-5 w-5 text-success" />
                 </div>
-                <span className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.15em]">Bodyweight</span>
+                <span className="font-mono text-[10px] font-black uppercase tracking-[0.15em] text-success">Bodyweight</span>
               </div>
 
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-1">CALISTHENICS<br />CHALLENGE</h2>
-              <p className="text-xs text-foreground/90 font-medium mb-4">Push-Ups · Planks · Burpees · Mountain Climbers · Lunges · and more</p>
+              <h2 className="mb-1 font-display text-2xl font-black tracking-tight text-foreground">CALISTHENICS<br />CHALLENGE</h2>
+              <p className="mb-4 text-xs font-medium text-foreground/90">Push-Ups · Planks · Burpees · Mountain Climbers · Lunges · and more</p>
 
-              <div className="flex items-center gap-4 mb-4">
+              <div className="mb-4 flex items-center gap-4">
                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Clock className="w-3.5 h-3.5 text-indigo-400" />
+                  <Clock className="h-3.5 w-3.5 text-success" />
                   15–30 min / day
                 </div>
                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Flame className="w-3.5 h-3.5 text-orange-400" />
+                  <Flame className="h-3.5 w-3.5 text-warning" />
                   120–200 cal
                 </div>
                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Trophy className="w-3.5 h-3.5 text-amber-400" />
+                  <Trophy className="h-3.5 w-3.5 text-success" />
                   28 Days
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full w-0 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full" />
+                <div className="flex-1 overflow-hidden rounded-full bg-surface-elevated h-1.5">
+                  <div className="h-full w-0 rounded-full bg-success" />
                 </div>
-                <span className="text-[10px] text-foreground/70 font-bold">0 / 28 done</span>
+                <span className="text-[10px] font-bold text-foreground/70">0 / 28 done</span>
               </div>
 
               <div className="mt-4 flex items-center justify-between">
                 <div className="flex gap-1">
                   {['No Equipment', 'Home', 'Outdoor'].map(tag => (
-                    <span key={tag} className="text-[9px] font-black px-2 py-0.5 rounded-full bg-indigo-400/10 text-indigo-300 border border-indigo-400/20">{tag}</span>
+                    <span key={tag} className="rounded-full border border-success/20 bg-success/10 px-2 py-0.5 text-[9px] font-black text-success">{tag}</span>
                   ))}
                 </div>
-                <div className="flex items-center gap-1.5 bg-indigo-400 text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg">
-                  Start <ChevronRight className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-1.5 rounded-xl bg-success px-4 py-2 text-xs font-black text-background shadow-lg">
+                  Start <ChevronRight className="h-3.5 w-3.5" />
                 </div>
               </div>
             </div>
@@ -153,37 +154,45 @@ export default function WorkoutHubPage() {
         </Link>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-3 mt-2">
-          <div className="glass-panel hover:bg-white/10 transition-colors cursor-pointer rounded-2xl p-4 text-center">
-            <div className="text-xl font-black text-primary">56</div>
-            <div className="text-[10px] text-foreground/70 font-bold mt-0.5">Total Days</div>
-          </div>
-          <div className="glass-panel hover:bg-white/10 transition-colors cursor-pointer rounded-2xl p-4 text-center">
-            <div className="text-xl font-black text-amber-400">22</div>
-            <div className="text-[10px] text-foreground/70 font-bold mt-0.5">Exercises</div>
-          </div>
-          <div className="glass-panel hover:bg-white/10 transition-colors cursor-pointer rounded-2xl p-4 text-center">
-            <div className="text-xl font-black text-rose-400">
-              <Star className="w-5 h-5 mx-auto fill-rose-400 drop-shadow-[0_0_8px_rgba(251,113,133,0.6)]" />
-            </div>
-            <div className="text-[10px] text-foreground/70 font-bold mt-0.5">Premium</div>
-          </div>
+        <div className="mt-2 grid grid-cols-3 gap-3">
+          <Card className="cursor-pointer transition-colors hover:bg-surface-elevated">
+            <CardContent className="p-4 text-center">
+              <div className="font-display text-xl font-black text-primary">56</div>
+              <div className="mt-0.5 font-mono text-[10px] font-bold text-foreground/70">Total Days</div>
+            </CardContent>
+          </Card>
+          <Card className="cursor-pointer transition-colors hover:bg-surface-elevated">
+            <CardContent className="p-4 text-center">
+              <div className="font-display text-xl font-black text-primary">22</div>
+              <div className="mt-0.5 font-mono text-[10px] font-bold text-foreground/70">Exercises</div>
+            </CardContent>
+          </Card>
+          <Card className="cursor-pointer transition-colors hover:bg-surface-elevated">
+            <CardContent className="p-4 text-center">
+              <div className="font-display text-xl font-black text-primary">
+                <Star className="mx-auto h-5 w-5 fill-primary drop-shadow-[0_0_8px_var(--color-primary)]" />
+              </div>
+              <div className="mt-0.5 font-mono text-[10px] font-bold text-foreground/70">Premium</div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Exercise Library Link */}
         <Link href="/workout/library">
-          <div className="glass-panel hover:bg-white/10 transition-colors rounded-2xl p-4 flex items-center justify-between group">
-            <div className="flex items-center gap-3">
-              <div className="bg-slate-700/50 group-hover:bg-[var(--accent-primary)]/20 transition-colors rounded-xl p-2.5">
-                <Dumbbell className="w-4 h-4 text-foreground/90 group-hover:text-[var(--accent-primary)] transition-colors" />
+          <Card className="group cursor-pointer transition-colors hover:bg-surface-elevated">
+            <CardContent className="flex items-center justify-between p-4">
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl bg-surface-elevated p-2.5 transition-colors group-hover:bg-primary/20">
+                  <Dumbbell className="h-4 w-4 text-foreground/90 transition-colors group-hover:text-primary" />
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-foreground transition-colors group-hover:text-primary">Exercise Library</div>
+                  <div className="text-[11px] font-medium text-foreground/70">Form guides · Machine setup · Tips</div>
+                </div>
               </div>
-              <div>
-                <div className="text-sm font-bold text-foreground group-hover:text-[var(--accent-primary)] transition-colors">Exercise Library</div>
-                <div className="text-[11px] text-foreground/70 font-medium">Form guides · Machine setup · Tips</div>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-[var(--accent-primary)] transition-colors" />
-          </div>
+              <ChevronRight className="h-4 w-4 text-foreground/50 transition-colors group-hover:text-primary" />
+            </CardContent>
+          </Card>
         </Link>
       </div>
     </div>

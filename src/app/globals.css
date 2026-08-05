@@ -1,10 +1,15 @@
 @import "tailwindcss";
 @import "../design/tokens/theme.css";
 
+@theme {
+  --font-display: var(--font-display), serif;
+  --font-body: var(--font-body), sans-serif;
+  --font-mono: var(--font-mono), monospace;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   background-attachment: fixed;
 }
 
