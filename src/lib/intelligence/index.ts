@@ -5,6 +5,7 @@ import { ConsistencyEngine } from './engines/consistency-engine'
 import { GoalEngine } from './engines/goal-engine'
 import { TrendEngine } from './engines/additional-engines'
 import { MemoryEngine } from './engines/additional-engines'
+import { StoryEngine } from './engines/story-engine'
 import { RecommendationEngine } from './engines/recommendation-engine'
 import { IntelligenceLLM } from './llm'
 
@@ -19,6 +20,7 @@ export class NEXORAIntelligence {
     const goal = GoalEngine.evaluate(telemetry)
     const trend = TrendEngine.evaluate(telemetry)
     const memory = MemoryEngine.evaluate(telemetry)
+    const story = StoryEngine.evaluate(telemetry)
     const recommendation = RecommendationEngine.evaluate(recovery, consistency, goal)
 
     return {
@@ -29,6 +31,7 @@ export class NEXORAIntelligence {
       goal,
       trend,
       memory,
+      story,
       recommendation
     }
   }

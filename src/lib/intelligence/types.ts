@@ -12,7 +12,7 @@ export interface EngineResult {
   engineName: string
   confidence: ConfidenceLevel
   status: string
-  metrics?: Record<string, number | string | boolean>
+  metrics?: Record<string, any>
   flags?: string[]
 }
 
@@ -47,12 +47,18 @@ export interface ConsistencyOutput extends EngineResult {
 }
 
 // 4. Goal Engine
+export interface GoalScenario {
+  pace: 'Current Pace' | 'Best Pace' | 'Slower Pace'
+  projectedDate: string
+  distanceToGoalKg: number
+}
+
 export interface GoalOutput extends EngineResult {
   engineName: 'GoalEngine'
   status: 'On-Track' | 'Ahead' | 'Behind' | 'Unknown'
+  explanation: string[] // The "Why?" list
   metrics: {
-    distanceToGoalKg?: number
-    projectedDaysToGoal?: number
+    scenarios: GoalScenario[]
   }
 }
 
@@ -85,6 +91,18 @@ export interface RecommendationOutput extends EngineResult {
   }
 }
 
+// 8. Story Engine
+export interface StoryOutput extends EngineResult {
+  engineName: 'StoryEngine'
+  status: 'Active'
+  chapter: {
+    id: number
+    title: string
+    summary: string | null // e.g. "You completed 18 workouts, lost 2.1kg..."
+  }
+  letterToFutureMe?: string // Monthly reflection generated via LLM proxy
+}
+
 // The final structured payload sent to the LLM
 export interface HybridIntelligenceContext {
   telemetryWindowDays: number
@@ -94,5 +112,6 @@ export interface HybridIntelligenceContext {
   goal: GoalOutput
   trend: TrendOutput
   memory: MemoryOutput
+  story: StoryOutput
   recommendation: RecommendationOutput
 }
