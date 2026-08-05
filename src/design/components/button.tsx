@@ -4,7 +4,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+import { motion, type MotionProps, useReducedMotion } from "framer-motion"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-border disabled:pointer-events-none disabled:opacity-50",
@@ -32,30 +32,40 @@ const buttonVariants = cva(
   }
 )
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean
-}
+/**
+ * ButtonProps extends both standard HTML button attributes AND Framer Motion
+ * animation props so callers can pass whileHover/whileTap/animate directly.
+ * The `asChild` mode delegates to Radix Slot (no animation layer).
+ */
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonVariants> &
+  MotionProps & {
+    asChild?: boolean
+  }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const prefersReducedMotion = useReducedMotion()
+
     if (asChild) {
+      // Slot does not accept MotionProps — strip them out
+      const { whileHover, whileTap, whileFocus, whileDrag, animate, initial, exit, transition, variants, ...htmlProps } = props
+      void whileHover; void whileTap; void whileFocus; void whileDrag; void animate; void initial; void exit; void transition; void variants
       return (
         <Slot
           className={cn(buttonVariants({ variant, size, className }))}
           ref={ref}
-          {...props}
+          {...htmlProps}
         />
       )
     }
 
     return (
       <motion.button
-        whileTap={{ scale: 0.97 }}
+        whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        {...(props as React.ComponentProps<typeof motion.button>)}
+        {...props}
       />
     )
   }

@@ -45,3 +45,18 @@ body {
     box-shadow: 0 8px 32px rgba(0,0,0,0.6);
   }
 }
+
+/**
+ * Belt-and-suspenders: CSS-level prefers-reduced-motion guarantee.
+ * Framer Motion also reads this via useReducedMotion(), but this ensures
+ * any transition not managed by the JS hook is also suppressed.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

@@ -39,10 +39,9 @@ export class ConsistencyEngine {
 
     // Streak calculation (simple implementation: workouts in last 7 days)
     const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000)
-    const currentStreak = telemetry.recentWorkouts.filter(w => {
-      const workout = w as { created_at: string };
-      return workout.created_at ? new Date(workout.created_at).getTime() > sevenDaysAgo : false;
-    }).length
+    const currentStreak = telemetry.recentWorkouts.filter(
+      w => new Date(w.created_at).getTime() > sevenDaysAgo
+    ).length
 
     return {
       engineName: 'ConsistencyEngine',

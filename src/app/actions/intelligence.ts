@@ -7,13 +7,13 @@ import { TelemetryData } from '@/lib/intelligence/types'
 const mockTelemetry: TelemetryData = {
   userId: 'user_1',
   recentWorkouts: [
-    { id: 1, created_at: new Date(Date.now() - 42 * 60 * 60 * 1000).toISOString() }, // 42 hours ago
-    { id: 2, created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() }
+    { id: 'w1', user_id: 'user_1', created_at: new Date(Date.now() - 42 * 60 * 60 * 1000).toISOString() },
+    { id: 'w2', user_id: 'user_1', created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() }
   ],
   recentBodyMeasurements: [
-    { id: 1, created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(), weight_kg: 85.0 },
-    { id: 2, created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), weight_kg: 83.5 },
-    { id: 3, created_at: new Date().toISOString(), weight_kg: 82.1 }
+    { id: 'b1', user_id: 'user_1', created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(), weight_kg: 85.0 },
+    { id: 'b2', user_id: 'user_1', created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), weight_kg: 83.5 },
+    { id: 'b3', user_id: 'user_1', created_at: new Date().toISOString(), weight_kg: 82.1 }
   ],
   recentHealthLogs: [],
   programStartDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString() // 15 days ago
