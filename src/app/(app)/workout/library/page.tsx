@@ -43,15 +43,15 @@ export default function ExerciseLibraryPage() {
 
         {/* Category Pills */}
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {[
+          {([
             { id: 'all', label: 'All Exercises' },
             { id: 'strength', label: 'Strength Machines' },
             { id: 'warm_up', label: 'Warm-Up & Mobility' },
             { id: 'cardio', label: 'Cardio Equipment' },
-          ].map(cat => (
+          ] as const).map(cat => (
             <button
               key={cat.id}
-              onClick={() => setSelectedCategory(cat.id as any)}
+              onClick={() => setSelectedCategory(cat.id)}
               className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                 selectedCategory === cat.id 
                   ? 'bg-primary text-slate-950 shadow-lg shadow-teal-500/20' 
