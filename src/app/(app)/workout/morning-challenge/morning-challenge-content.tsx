@@ -576,248 +576,264 @@ export default function MorningChallengeContent() {
   const currentDayData = DAYS.find(d => d.day === CURRENT_DAY)
 
   return (
-    <div className="min-h-screen bg-[#08080a] pb-36">
+    <div className="min-h-screen pb-36 text-foreground">
+      <div className="max-w-3xl mx-auto">
 
-      {/* ── HERO HEADER ─────────────────────────────── */}
-      <div className="relative overflow-hidden">
-        {/* Sunrise gradient bg */}
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-950/60 via-[#0d0b08] to-[#08080a]" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full bg-amber-500/10 blur-[80px] pointer-events-none" />
+        {/* ── HERO HEADER ─────────────────────────────── */}
+        <div className="relative overflow-hidden rounded-3xl mb-6">
+          {/* Sunrise gradient bg */}
+          <div className="absolute inset-0 bg-gradient-to-b from-amber-950/70 via-[#0d0b08] to-[#08080a]" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full bg-amber-500/15 blur-[80px] pointer-events-none" />
 
-        <div className="relative z-10 px-5 pt-6 pb-5">
-          {/* Back */}
-          <button
-            onClick={() => router.push('/workout')}
-            className="mb-5 flex items-center gap-1.5 text-xs font-bold text-foreground/60 hover:text-foreground transition-colors"
-          >
-            <ChevronLeft className="h-4 w-4" /> Back to Programs
-          </button>
+          <div className="relative z-10 px-5 pt-6 pb-6 border border-amber-500/20 rounded-3xl">
+            {/* Back */}
+            <button
+              onClick={() => router.push('/workout')}
+              className="mb-5 flex items-center gap-1.5 text-xs font-bold text-foreground/60 hover:text-foreground transition-colors"
+            >
+              <ChevronLeft className="h-4 w-4" /> Back to Programs
+            </button>
 
-          {/* Badge */}
-          <div className="mb-3 flex items-center gap-2">
-            <div className="rounded-xl border border-amber-500/40 bg-amber-500/15 p-1.5">
-              <Sun className="h-4 w-4 text-amber-400" />
+            {/* Badge */}
+            <div className="mb-3 flex items-center gap-2">
+              <div className="rounded-xl border border-amber-500/40 bg-amber-500/15 p-1.5">
+                <Sun className="h-4 w-4 text-amber-400" />
+              </div>
+              <span className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-amber-400">
+                Morning Challenge · No Equipment
+              </span>
             </div>
-            <span className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-amber-400">
-              Morning Challenge · No Equipment
-            </span>
-          </div>
 
-          <h1 className="mb-1 font-display text-3xl font-black tracking-tight text-foreground leading-[1.1]">
-            28-DAY HOME<br />
-            <span className="text-amber-400">MORNING</span> CHALLENGE
-          </h1>
-          <p className="mb-5 text-xs font-medium text-foreground/60">
-            Calisthenics · 15 min every morning · No equipment needed
-          </p>
+            <h1 className="mb-1 font-display text-3xl md:text-4xl font-black tracking-tight text-foreground leading-[1.1]">
+              28-DAY HOME<br />
+              <span className="text-amber-400">MORNING</span> CHALLENGE
+            </h1>
+            <p className="mb-5 text-xs md:text-sm font-medium text-foreground/60">
+              Calisthenics · 15 min every morning · 100% bodyweight
+            </p>
 
-          {/* Stats Row */}
-          <div className="mb-5 grid grid-cols-3 gap-3">
-            {[
-              { icon: <Clock className="h-3.5 w-3.5 text-amber-400" />, label: 'Duration', value: '15 min' },
-              { icon: <Flame className="h-3.5 w-3.5 text-orange-400" />, label: 'Calories', value: '90–220' },
-              { icon: <Target className="h-3.5 w-3.5 text-amber-400" />, label: 'Equipment', value: 'None' },
-            ].map(s => (
-              <div key={s.label} className="rounded-2xl border border-white/[0.07] bg-white/[0.04] p-3">
-                <div className="mb-1 flex items-center gap-1">{s.icon}</div>
-                <div className="text-[10px] font-bold text-foreground/50 uppercase tracking-wider">{s.label}</div>
-                <div className="text-xs font-black text-foreground">{s.value}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Progress Bar */}
-          <div className="mb-1 flex items-center justify-between">
-            <span className="text-xs font-bold text-foreground">Your Progress</span>
-            <span className="text-xs font-black text-amber-400">{completedCount} of 28 workouts</span>
-          </div>
-          <div className="h-2.5 rounded-full bg-white/[0.06] overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progressPercent}%` }}
-              transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-              className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-400"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* ── START CTA ───────────────────────────────── */}
-      {currentDayData && (
-        <div className="px-5 mb-6 mt-1">
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            onClick={() => setSelectedDay(currentDayData)}
-            className="w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 py-4 flex items-center justify-center gap-2.5 font-black text-sm text-black shadow-[0_8px_32px_rgba(245,158,11,0.3)]"
-          >
-            <Play className="h-5 w-5 fill-black" />
-            START TODAY&apos;S WORKOUT · Day {CURRENT_DAY}
-          </motion.button>
-        </div>
-      )}
-
-      {/* ── DAY GRID ────────────────────────────────── */}
-      <div className="px-4 space-y-6">
-        {WEEKS.map(week => {
-          const weekDays = DAYS.filter(d => d.week === week.week)
-          return (
-            <div key={week.week}>
-              {/* Week Header */}
-              <div className={`mb-3 flex items-center gap-2 rounded-xl border ${week.border} bg-gradient-to-r ${week.color} px-3 py-2`}>
-                <div className={`font-mono text-[10px] font-black uppercase tracking-[0.18em] ${week.accent}`}>
-                  {week.label}
+            {/* Stats Row */}
+            <div className="mb-5 grid grid-cols-3 gap-3">
+              {[
+                { icon: <Clock className="h-3.5 w-3.5 text-amber-400" />, label: 'Duration', value: '15 min' },
+                { icon: <Flame className="h-3.5 w-3.5 text-orange-400" />, label: 'Calories', value: '90–220' },
+                { icon: <Target className="h-3.5 w-3.5 text-amber-400" />, label: 'Equipment', value: 'None' },
+              ].map(s => (
+                <div key={s.label} className="rounded-2xl border border-white/[0.07] bg-white/[0.04] p-3">
+                  <div className="mb-1 flex items-center gap-1">{s.icon}</div>
+                  <div className="text-[10px] font-bold text-foreground/50 uppercase tracking-wider">{s.label}</div>
+                  <div className="text-xs md:text-sm font-black text-foreground">{s.value}</div>
                 </div>
-              </div>
+              ))}
+            </div>
 
-              {/* Day Cards — 4 column grid */}
-              <div className="grid grid-cols-4 gap-2.5">
-                {weekDays.map(day => {
-                  const isDone = COMPLETED_DAYS.includes(day.day)
-                  const isCurrent = day.day === CURRENT_DAY
-                  const isLocked = !isDone && !isCurrent && day.day > CURRENT_DAY
-                  const canTap = isDone || isCurrent
+            {/* Progress Bar */}
+            <div className="mb-1.5 flex items-center justify-between">
+              <span className="text-xs font-bold text-foreground">Your Progress</span>
+              <span className="text-xs font-black text-amber-400">{completedCount} of 28 workouts</span>
+            </div>
+            <div className="h-2.5 rounded-full bg-white/[0.06] overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercent}%` }}
+                transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
+                className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-400"
+              />
+            </div>
+          </div>
+        </div>
 
-                  return (
-                    <motion.button
-                      key={day.day}
-                      whileTap={canTap ? { scale: 0.93 } : {}}
-                      onClick={() => canTap && setSelectedDay(day)}
-                      disabled={isLocked}
-                      className={`relative overflow-hidden flex flex-col items-end justify-end rounded-2xl border transition-all aspect-square
-                        ${isCurrent
-                          ? 'border-amber-500/70 shadow-[0_0_20px_rgba(245,158,11,0.25)]'
-                          : isDone
-                            ? 'border-white/15'
-                            : 'border-white/[0.05] opacity-55'
-                        }`}
-                    >
-                      {/* Background image */}
-                      <img
-                        src={day.thumb}
-                        alt={day.title}
-                        className={`absolute inset-0 h-full w-full object-cover transition-all ${
-                          isLocked ? 'grayscale brightness-50' : isDone ? 'brightness-75' : 'brightness-90'
-                        }`}
-                      />
-                      {/* Dark overlay gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        {/* ── START CTA ───────────────────────────────── */}
+        {currentDayData && (
+          <div className="mb-6">
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setSelectedDay(currentDayData)}
+              className="w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 py-4 flex items-center justify-center gap-2.5 font-black text-sm text-black shadow-[0_8px_32px_rgba(245,158,11,0.3)] hover:brightness-110 transition-all cursor-pointer"
+            >
+              <Play className="h-5 w-5 fill-black" />
+              START TODAY&apos;S WORKOUT · Day {CURRENT_DAY}
+            </motion.button>
+          </div>
+        )}
 
-                      {/* Status badge */}
-                      <div className="absolute top-1.5 right-1.5 z-10">
-                        {isDone
-                          ? <div className="rounded-full bg-amber-500 p-0.5"><CheckCircle className="h-3 w-3 text-black" /></div>
-                          : isLocked
-                            ? <Lock className="h-3 w-3 text-white/40" />
-                            : isCurrent
-                              ? <div className="rounded-full bg-amber-500 p-0.5"><Zap className="h-3 w-3 text-black" /></div>
-                              : null
-                        }
-                      </div>
+        {/* ── DAY GRID ────────────────────────────────── */}
+        <div className="space-y-6">
+          {WEEKS.map(week => {
+            const weekDays = DAYS.filter(d => d.week === week.week)
+            return (
+              <div key={week.week}>
+                {/* Week Header */}
+                <div className={`mb-3 flex items-center gap-2 rounded-xl border ${week.border} bg-gradient-to-r ${week.color} px-3.5 py-2.5`}>
+                  <div className={`font-mono text-[11px] font-black uppercase tracking-[0.18em] ${week.accent}`}>
+                    {week.label}
+                  </div>
+                </div>
 
-                      {/* Day label at bottom */}
-                      <div className="relative z-10 w-full px-1.5 pb-1.5">
-                        <div className={`font-mono text-[9px] font-black uppercase tracking-wider ${
-                          isCurrent ? 'text-amber-400' : 'text-white/80'
-                        }`}>
-                          Day {day.day}
+                {/* Day Cards — 4 column grid */}
+                <div className="grid grid-cols-4 sm:grid-cols-4 gap-3">
+                  {weekDays.map(day => {
+                    const isDone = COMPLETED_DAYS.includes(day.day)
+                    const isCurrent = day.day === CURRENT_DAY
+                    const isLocked = !isDone && !isCurrent && day.day > CURRENT_DAY
+                    const canTap = isDone || isCurrent
+
+                    return (
+                      <motion.button
+                        key={day.day}
+                        whileTap={canTap ? { scale: 0.93 } : {}}
+                        onClick={() => canTap && setSelectedDay(day)}
+                        disabled={isLocked}
+                        className={`relative overflow-hidden flex flex-col items-end justify-end rounded-2xl border transition-all aspect-square cursor-pointer
+                          ${isCurrent
+                            ? 'border-amber-500/90 shadow-[0_0_24px_rgba(245,158,11,0.35)] ring-2 ring-amber-500/40'
+                            : isDone
+                              ? 'border-white/20'
+                              : 'border-white/[0.05] opacity-45 cursor-not-allowed'
+                          }`}
+                      >
+                        {/* Background image */}
+                        <img
+                          src={day.thumb}
+                          alt={day.title}
+                          className={`absolute inset-0 h-full w-full object-cover transition-all ${
+                            isLocked ? 'grayscale brightness-40' : isDone ? 'brightness-75' : 'brightness-95'
+                          }`}
+                        />
+                        {/* Dark overlay gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+
+                        {/* Status badge */}
+                        <div className="absolute top-2 right-2 z-10">
+                          {isDone
+                            ? <div className="rounded-full bg-amber-500 p-0.5"><CheckCircle className="h-3.5 w-3.5 text-black" /></div>
+                            : isLocked
+                              ? <div className="rounded-full bg-black/50 backdrop-blur-xs p-1"><Lock className="h-3 w-3 text-white/50" /></div>
+                              : isCurrent
+                                ? <div className="rounded-full bg-amber-500 p-0.5 shadow-[0_0_10px_rgba(245,158,11,0.8)]"><Zap className="h-3.5 w-3.5 text-black" /></div>
+                                : null
+                          }
                         </div>
 
-                        {day.isRest && (
-                          <div className="text-[8px] font-bold text-white/40 uppercase">Rest</div>
+                        {/* Day label at bottom */}
+                        <div className="relative z-10 w-full px-2 pb-2">
+                          <div className={`font-mono text-[10px] sm:text-xs font-black uppercase tracking-wider ${
+                            isCurrent ? 'text-amber-400' : 'text-white/90'
+                          }`}>
+                            Day {day.day}
+                          </div>
+
+                          {day.isRest && (
+                            <div className="text-[8px] font-black text-amber-300/80 uppercase tracking-widest">Rest</div>
+                          )}
+                        </div>
+
+                        {/* Current day pulse ring */}
+                        {isCurrent && (
+                          <motion.div
+                            animate={{ scale: [1, 1.08, 1], opacity: [0.5, 0.2, 0.5] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                            className="absolute inset-0 rounded-2xl border-2 border-amber-400 pointer-events-none"
+                          />
                         )}
-                      </div>
-
-                      {/* Current day pulse ring */}
-                      {isCurrent && (
-                        <motion.div
-                          animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.15, 0.4] }}
-                          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                          className="absolute inset-0 rounded-2xl border-2 border-amber-500/60"
-                        />
-                      )}
-                    </motion.button>
-                  )
-                })}
+                      </motion.button>
+                    )
+                  })}
+                </div>
               </div>
-            </div>
-          )
-        })}
-      </div>
-
-      {/* ── BOTTOM MOTIVATION ───────────────────────── */}
-      <div className="mt-8 mx-5 rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-950/30 to-transparent p-5 text-center">
-        <Trophy className="mx-auto mb-2 h-6 w-6 text-amber-400" />
-        <div className="font-display text-sm font-black text-foreground">15 minutes every morning.</div>
-        <div className="mt-1 text-xs font-medium text-foreground/60">
-          That&apos;s 1% of your day. In 28 days, you&apos;ll be a different person.
+            )
+          })}
         </div>
+
+        {/* ── BOTTOM MOTIVATION ───────────────────────── */}
+        <div className="mt-8 rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-950/30 to-transparent p-6 text-center">
+          <Trophy className="mx-auto mb-2 h-7 w-7 text-amber-400" />
+          <div className="font-display text-base font-black text-foreground">15 minutes every morning.</div>
+          <div className="mt-1 text-xs font-medium text-foreground/60 max-w-md mx-auto">
+            That&apos;s 1% of your day. In 28 days, you&apos;ll be a completely different person.
+          </div>
+        </div>
+
       </div>
 
-      {/* ── DAY DETAIL BOTTOM SHEET ─────────────────── */}
+      {/* ── DAY DETAIL MODAL / DIALOG (Responsive: Bottom Sheet on Mobile, Centered Modal on Desktop) ── */}
       <AnimatePresence>
         {selectedDay && (
-          <>
+          <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-6">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedDay(null)}
-              className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/80 backdrop-blur-md"
             />
 
-            {/* Sheet */}
+            {/* Modal Content */}
             <motion.div
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="fixed bottom-0 left-0 right-0 z-50 max-h-[88vh] overflow-y-auto rounded-t-3xl bg-[#0f0e0c] border-t border-amber-500/20"
+              initial={{ opacity: 0, y: 50, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 50, scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+              className="relative z-[101] w-full md:max-w-xl max-h-[88vh] overflow-y-auto rounded-t-[2rem] md:rounded-[2rem] bg-[#0e0d0b] border border-amber-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden"
             >
-              {/* Handle */}
-              <div className="mx-auto mt-3 mb-4 h-1 w-10 rounded-full bg-white/20" />
+              {/* Featured Avatar Image Banner */}
+              <div className="relative h-48 md:h-56 w-full overflow-hidden">
+                <img
+                  src={selectedDay.thumb}
+                  alt={selectedDay.title}
+                  className="h-full w-full object-cover object-top"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0e0d0b] via-[#0e0d0b]/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
 
-              <div className="px-5 pb-10">
-                {/* Header */}
-                <div className="mb-5 flex items-start justify-between">
-                  <div>
-                    <div className="mb-1 flex items-center gap-2">
-                      <span className="text-2xl">{selectedDay.emoji}</span>
-                      <span className="font-mono text-[10px] font-black uppercase tracking-[0.15em] text-amber-400">
-                        Day {selectedDay.day} · Week {selectedDay.week}
-                      </span>
-                    </div>
-                    <h2 className="font-display text-xl font-black tracking-tight text-foreground">{selectedDay.title}</h2>
-                    <p className="text-xs font-medium text-foreground/60">{selectedDay.focus}</p>
+                {/* Close button */}
+                <button
+                  onClick={() => setSelectedDay(null)}
+                  className="absolute top-4 right-4 z-20 rounded-full bg-black/60 backdrop-blur-md p-2 text-white/80 hover:text-white hover:bg-black/90 transition-colors cursor-pointer"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+
+                {/* Badge overlay on image */}
+                <div className="absolute bottom-3 left-5 z-10">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xl">{selectedDay.emoji}</span>
+                    <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-400 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-amber-500/30">
+                      Day {selectedDay.day} · Week {selectedDay.week}
+                    </span>
                   </div>
-                  <button
-                    onClick={() => setSelectedDay(null)}
-                    className="rounded-full bg-white/10 p-2 text-foreground/70 hover:bg-white/20"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+                  <h2 className="font-display text-2xl font-black tracking-tight text-white drop-shadow-md">
+                    {selectedDay.title}
+                  </h2>
                 </div>
+              </div>
 
-                {/* Stats */}
-                {!selectedDay.isRest && (
-                  <div className="mb-5 flex items-center gap-4">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-foreground/80">
-                      <Clock className="h-3.5 w-3.5 text-amber-400" /> {selectedDay.duration}
-                    </div>
-                    {selectedDay.calories > 0 && (
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-foreground/80">
-                        <Flame className="h-3.5 w-3.5 text-orange-400" /> ~{selectedDay.calories} kcal
+              <div className="p-5 md:p-6 pt-2">
+                {/* Focus subtitle & stats */}
+                <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
+                  <p className="text-xs md:text-sm font-semibold text-foreground/70">{selectedDay.focus}</p>
+                  
+                  {!selectedDay.isRest && (
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-xl border border-amber-500/20">
+                        <Clock className="h-3.5 w-3.5" /> {selectedDay.duration}
                       </div>
-                    )}
-                  </div>
-                )}
+                      {selectedDay.calories > 0 && (
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-orange-400 bg-orange-500/10 px-2.5 py-1 rounded-xl border border-orange-500/20">
+                          <Flame className="h-3.5 w-3.5" /> ~{selectedDay.calories} kcal
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
 
                 {/* Rest Day Message */}
                 {selectedDay.isRest ? (
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-center">
-                    <div className="mb-2 text-3xl">😴</div>
-                    <div className="font-display text-base font-black text-foreground">Rest Day</div>
-                    <p className="mt-2 text-xs font-medium text-foreground/60 leading-relaxed">
+                  <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-6 text-center">
+                    <div className="mb-3 text-4xl">😴</div>
+                    <div className="font-display text-lg font-black text-foreground">Rest & Recovery</div>
+                    <p className="mt-2 text-xs md:text-sm font-medium text-foreground/70 leading-relaxed max-w-md mx-auto">
                       {selectedDay.work[0]?.tip}
                     </p>
                   </div>
@@ -827,11 +843,10 @@ export default function MorningChallengeContent() {
                     {selectedDay.warmup.length > 0 && (
                       <div>
                         <div className="mb-2 flex items-center gap-2">
-                          <div className="h-px flex-1 bg-white/10" />
-                          <span className="font-mono text-[9px] font-black uppercase tracking-[0.18em] text-amber-500/80">
+                          <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-400">
                             ☀️ 2 Min Warm-Up
                           </span>
-                          <div className="h-px flex-1 bg-white/10" />
+                          <div className="h-px flex-1 bg-amber-500/20" />
                         </div>
                         <div className="space-y-2">
                           {selectedDay.warmup.map((ex, i) => (
@@ -844,11 +859,10 @@ export default function MorningChallengeContent() {
                     {/* Main Work */}
                     <div>
                       <div className="mb-2 flex items-center gap-2">
-                        <div className="h-px flex-1 bg-white/10" />
-                        <span className="font-mono text-[9px] font-black uppercase tracking-[0.18em] text-orange-400">
+                        <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-orange-400">
                           🔥 11 Min Work
                         </span>
-                        <div className="h-px flex-1 bg-white/10" />
+                        <div className="h-px flex-1 bg-orange-500/20" />
                       </div>
                       <div className="space-y-2">
                         {selectedDay.work.map((ex, i) => (
@@ -861,11 +875,10 @@ export default function MorningChallengeContent() {
                     {selectedDay.cooldown.length > 0 && (
                       <div>
                         <div className="mb-2 flex items-center gap-2">
-                          <div className="h-px flex-1 bg-white/10" />
-                          <span className="font-mono text-[9px] font-black uppercase tracking-[0.18em] text-blue-400/80">
+                          <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-blue-400">
                             🧊 2 Min Cool-Down
                           </span>
-                          <div className="h-px flex-1 bg-white/10" />
+                          <div className="h-px flex-1 bg-blue-500/20" />
                         </div>
                         <div className="space-y-2">
                           {selectedDay.cooldown.map((ex, i) => (
@@ -881,14 +894,14 @@ export default function MorningChallengeContent() {
                 {!selectedDay.isRest && (
                   <motion.button
                     whileTap={{ scale: 0.97 }}
-                    className="mt-6 w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 py-4 font-black text-sm text-black shadow-[0_8px_32px_rgba(245,158,11,0.25)]"
+                    className="mt-6 w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 py-4 font-black text-sm text-black shadow-[0_8px_32px_rgba(245,158,11,0.3)] hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-2"
                   >
-                    Start Day {selectedDay.day} Now
+                    <Play className="h-4 w-4 fill-black" /> Start Day {selectedDay.day} Now
                   </motion.button>
                 )}
               </div>
             </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </div>
