@@ -874,7 +874,7 @@ export default function MorningChallengeContent() {
                       <div>
                         <div className="mb-2 flex items-center gap-2">
                           <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-400">
-                            ☀️ 2 Min Warm-Up
+                            ☀️ 2 Min Warm-Up (Mobility & Pulse)
                           </span>
                           <div className="h-px flex-1 bg-amber-500/20" />
                         </div>
@@ -884,7 +884,6 @@ export default function MorningChallengeContent() {
                               key={i} 
                               ex={ex} 
                               accent="amber" 
-                              onOpenFormCoach={() => setActiveCoachExercise(ex.name)}
                             />
                           ))}
                         </div>
@@ -895,7 +894,7 @@ export default function MorningChallengeContent() {
                     <div>
                       <div className="mb-2 flex items-center gap-2">
                         <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-orange-400">
-                          🔥 11 Min Work · Tap Any Exercise for Form Animation
+                          🔥 11 Min Main Work · Tap Any Exercise for Animated Form GIF
                         </span>
                         <div className="h-px flex-1 bg-orange-500/20" />
                       </div>
@@ -916,7 +915,7 @@ export default function MorningChallengeContent() {
                       <div>
                         <div className="mb-2 flex items-center gap-2">
                           <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-blue-400">
-                            🧊 2 Min Cool-Down
+                            🧊 2 Min Cool-Down (Flexibility & Breathing)
                           </span>
                           <div className="h-px flex-1 bg-blue-500/20" />
                         </div>
@@ -926,7 +925,6 @@ export default function MorningChallengeContent() {
                               key={i} 
                               ex={ex} 
                               accent="blue" 
-                              onOpenFormCoach={() => setActiveCoachExercise(ex.name)}
                             />
                           ))}
                         </div>
