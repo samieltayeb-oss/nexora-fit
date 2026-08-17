@@ -615,7 +615,7 @@ export function MetabolicNutritionGuide() {
                   </div>
                   <h3 className="font-bold text-xl text-white">Daily Meal, Coffee &amp; Supplement Timeline</h3>
                   <p className="text-xs text-foreground/60 mt-0.5">
-                    Coordinated with morning calisthenics, Coffee, Creatine, Dapagliflozin, CoQ10 200mg, K2+D3 &amp; Evening Meds
+                    Coordinated with Morning Calisthenics, Coffee, Taurine 1000mg, Ultra Testosterone Boost, CoQ10 200mg, K2+D3, Creatine &amp; Evening Meds
                   </p>
                 </div>
                 <button onClick={() => setShowMealPlanModal(false)} className="text-white/60 hover:text-white p-2 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center">
@@ -629,15 +629,15 @@ export function MetabolicNutritionGuide() {
                 <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-2">
                   <div className="flex items-center justify-between text-amber-300 font-bold">
                     <span className="flex items-center gap-1.5">
-                      <Coffee className="w-4 h-4" /> 07:00 AM — Coffee Cup 1 + Pre-Workout Creatine
+                      <Coffee className="w-4 h-4" /> 07:00 AM — Coffee Cup 1 + Creatine 5g + Taurine 1000mg
                     </span>
                     <span className="font-mono text-[10px] bg-amber-500/20 px-2 py-0.5 rounded-md">Pre-Training</span>
                   </div>
                   <p className="text-white font-medium">
-                    Drink <strong>Cup 1 Coffee (Espresso or Black Americano)</strong> alongside <strong>500ml water</strong> mixed with <strong>5g Creatine Monohydrate</strong>.
+                    Drink <strong>Cup 1 Coffee (Espresso or Black Americano)</strong> alongside <strong>500ml water</strong> mixed with <strong>5g Creatine Monohydrate</strong> and <strong>Taurine 1000mg (1g)</strong>.
                   </p>
                   <p className="text-[11px] text-foreground/70">
-                    Why: Caffeine + Creatine accelerates muscular ATP replenishment during the 15-minute challenge and drives GLUT-4 glucose clearance into muscle tissue.
+                    Why: Caffeine + Creatine + Taurine accelerates muscular ATP replenishment, provides intracellular osmoregulation &amp; cardiac contractile support during training, and drives GLUT-4 glucose clearance into muscle tissue.
                   </p>
                 </div>
 
@@ -649,12 +649,13 @@ export function MetabolicNutritionGuide() {
                     </span>
                     <span className="font-mono text-[10px] bg-teal-500/20 px-2 py-0.5 rounded-md">Post-Workout Meal</span>
                   </div>
-                  <div className="text-white font-medium space-y-1">
+                  <div className="text-white font-medium space-y-1.5">
                     <div>• <strong>Plate</strong>: 2–3 Whole Eggs with sautéed baby spinach, 1/2 avocado slice, and 1/2 cup wild blueberries or raspberries.</div>
-                    <div>• <strong>Morning Meds &amp; Supplements</strong>: Take Dapagliflozin 10mg, Ramipril 5mg, Aspirin 81mg, Vitamin B12, <strong>CoQ10 200mg</strong>, and <strong>Vitamin K2+D3 (120mcg/1000 IU)</strong>.</div>
+                    <div>• <strong>Medications</strong>: Auro-Dapagliflozin 10mg, Taro-Ramipril 5mg, Aspirin 81mg, Vitamin B12.</div>
+                    <div>• <strong>Supplements</strong>: <strong>CoQ10 200mg</strong>, <strong>Vitamin K2+D3 (120mcg/1000 IU)</strong>, and <strong>Ultra Testosterone Boost (2 Tablets)</strong>.</div>
                   </div>
                   <p className="text-[11px] text-foreground/70">
-                    Why: The healthy fats from whole eggs and avocado maximize absorption of fat-soluble CoQ10, Vitamin K2, and Vitamin D3.
+                    Why: Whole eggs and avocado fats maximize absorption of fat-soluble CoQ10, K2+D3. Ultra Testosterone Boost (Testofen® + Maca + Sensoril® Ashwagandha + Zinc + Boron) increases bioavailable free testosterone, accelerates muscle protein synthesis, and reduces cortisol &amp; CRP inflammation.
                   </p>
                 </div>
 

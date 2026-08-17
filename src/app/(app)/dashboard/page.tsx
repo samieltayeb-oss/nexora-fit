@@ -166,8 +166,8 @@ export default function DashboardPage() {
             <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
               <Pill className="w-3.5 h-3.5" /> Morning Protocol
             </div>
-            <div className="text-sm font-black text-white">6 Active Doses</div>
-            <p className="text-[11px] text-foreground/60">Dapagliflozin, Ramipril, Aspirin, B12, CoQ10 200mg, K2+D3</p>
+            <div className="text-sm font-black text-white">8 Active Doses</div>
+            <p className="text-[11px] text-foreground/60">Dapagliflozin, Ramipril, Aspirin, B12, CoQ10 200mg, K2+D3, Taurine 1000mg, Ultra Testo</p>
           </div>
         </div>
       </section>
@@ -232,7 +232,7 @@ export default function DashboardPage() {
                   <Pill className="h-3 w-3 text-teal-400" />
                   Clinical Regimen &amp; Nutrition
                 </span>
-                <span className="font-mono text-xs font-bold text-teal-300">12 Active Items</span>
+                <span className="font-mono text-xs font-bold text-teal-300">14 Active Items</span>
               </div>
 
               <h3 className="font-display text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
@@ -243,7 +243,7 @@ export default function DashboardPage() {
               </h3>
               
               <p className="text-xs sm:text-sm font-medium text-foreground/75 mt-2.5">
-                CoQ10 200mg · K2+D3 · Creatine 5g · Dapagliflozin · Ramipril · Coffee Timing &amp; Food Sequencing Blueprint.
+                CoQ10 200mg · K2+D3 · Taurine 1000mg · Ultra Testo Boost · Creatine 5g · Dapagliflozin · Ramipril · Coffee Protocol.
               </p>
             </div>
 

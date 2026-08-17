@@ -137,6 +137,30 @@ const MEDICATION_REGIMEN: MedicationItem[] = [
     exerciseCue: 'Synergistic arterial protection: Vitamin K2 directs calcium away from vascular walls into bones and teeth, preventing arterial stiffness while D3 optimizes metabolic insulin sensitivity.'
   },
   {
+    id: 'taurine',
+    name: 'TAURINE 1000 MG',
+    generic: '2-AMINOETHANESULFONIC ACID (TAURINE)',
+    dose: '1000 mg (1g)',
+    schedule: 'Daily Morning',
+    category: 'Amino Acid & Osmolyte • Cardiac Contractility, Cellular Hydration & Vascular Tone',
+    instructions: 'TAKE 1000 MG (1G) ONCE DAILY WITH WATER OR MORNING PRE-WORKOUT BEVERAGE',
+    source: 'Patient Clinical Supplement',
+    dateStarted: 'Active Daily',
+    exerciseCue: 'Enhances intracellular hydration, stabilizes mitochondrial membranes, supports cardiac contractile efficiency, and works synergistically with Ramipril and Creatine.'
+  },
+  {
+    id: 'ultra-testo-boost',
+    name: 'ULTRA TESTOSTERONE BOOST (WEBBER NATURALS)',
+    generic: 'TESTOFEN® FENUGREEK (300MG) + MACA (125MG) + SENSORIL® ASHWAGANDHA (62.5MG) + ZINC (15MG) + BORON (0.35MG)',
+    dose: '2 Tablets Daily (with Food)',
+    schedule: 'Daily Morning',
+    category: 'Endocrine & Androgen Optimization • Free Testosterone, Cortisol & CRP Reduction',
+    instructions: 'TAKE 2 TABLETS DAILY WITH FOOD (A FEW HOURS BEFORE OR AFTER OTHER MEDICATIONS)',
+    source: 'Patient Clinical Regimen',
+    dateStarted: 'Active Daily',
+    exerciseCue: 'Clinically proven Testofen® increases bioavailable free testosterone and lean muscle protein synthesis, while Sensoril® Ashwagandha reduces stress cortisol and C-reactive protein (CRP) systemic inflammation to maximize recovery.'
+  },
+  {
     id: 'creatine',
     name: 'CREATINE MONOHYDRATE',
     generic: 'CREATINE MONOHYDRATE POWDER',
@@ -452,7 +476,7 @@ export default function HealthPage() {
               : 'bg-white/[0.03] text-foreground/70 border border-white/[0.08] hover:bg-white/[0.06]'
           }`}
         >
-          💊 Medications &amp; Supplements (12 Items)
+          💊 Medications &amp; Supplements (14 Items)
         </button>
 
         <button
