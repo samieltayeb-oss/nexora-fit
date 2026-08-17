@@ -19,7 +19,8 @@ import {
   Check,
   Heart,
   Scale,
-  Flame
+  Flame,
+  Pill
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NexoraLogo } from '@/components/brand/nexora-logo'
@@ -120,7 +121,14 @@ export default function MorePage() {
             href="/onboarding"
             icon={<User className="w-5 h-5 text-amber-400" />}
             title="Fitness Profile & Weight Trajectory"
-            subtitle="Sami Suliman • 81.0 kg starting baseline • 75.0 kg goal"
+            subtitle="Sami Suliman • 82.70 kg VeSync baseline • 75.0 kg goal"
+          />
+          <MenuLink 
+            href="/health"
+            icon={<Pill className="w-5 h-5 text-teal-400" />}
+            title="Prescriptions & Clinical Supplements"
+            subtitle="Ozempic, Dapagliflozin, Ramipril, Aspirin, Statin, Supplements"
+            badge="Netcare"
           />
           <div onClick={() => setShowRemindersModal(true)} className="cursor-pointer">
             <MenuLinkItem 

@@ -49,7 +49,7 @@ export default function DashboardPage() {
               Diabetic Type 2 Protocol
             </span>
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/15 border border-amber-500/30 text-amber-300">
-              Weight: 81.0 kg → 75.0 kg Goal
+              Weight: 82.70 kg → 75.0 kg Goal
             </span>
           </div>
           <h1 className="font-display text-3xl md:text-4xl font-black text-foreground tracking-tight">
