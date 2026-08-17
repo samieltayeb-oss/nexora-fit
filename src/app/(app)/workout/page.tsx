@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Dumbbell, PersonStanding, ChevronRight, Flame, Clock, Trophy, Star } from 'lucide-react'
+import { Dumbbell, PersonStanding, ChevronRight, Flame, Clock, Trophy, Star, Sun } from 'lucide-react'
 import { Card, CardContent } from '@/design/components/card'
 
 export default function WorkoutHubPage() {
@@ -146,6 +146,71 @@ export default function WorkoutHubPage() {
                   ))}
                 </div>
                 <div className="flex items-center gap-1.5 rounded-xl bg-success px-4 py-2 text-xs font-black text-background shadow-lg">
+                  Start <ChevronRight className="h-3.5 w-3.5" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </Link>
+
+        {/* ✨ Morning Challenge — 15 Min Home */}
+        <Link href="/workout/morning-challenge">
+          <motion.div
+            whileTap={{ scale: 0.97 }}
+            className="group relative overflow-hidden rounded-3xl border border-amber-500/30 bg-surface shadow-sm transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]"
+            style={{ minHeight: 200 }}
+          >
+            {/* Sunrise gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-950/80 via-surface/90 to-surface" />
+            <div className="absolute top-0 right-0 w-[200px] h-[200px] rounded-full bg-amber-500/10 blur-[60px] pointer-events-none" />
+
+            {/* Content */}
+            <div className="relative z-10 p-6">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="rounded-xl border border-amber-500/40 bg-amber-500/15 p-2">
+                  <Sun className="h-5 w-5 text-amber-400" />
+                </div>
+                <span className="font-mono text-[10px] font-black uppercase tracking-[0.15em] text-amber-400">
+                  Morning Routine · Home
+                </span>
+              </div>
+
+              <h2 className="mb-1 font-display text-2xl font-black tracking-tight text-foreground">
+                28-DAY MORNING<br />CHALLENGE
+              </h2>
+              <p className="mb-4 text-xs font-medium text-foreground/80">
+                Push-Ups · Squats · Plank · Burpees · Jumping Jacks · No gym needed
+              </p>
+
+              <div className="mb-4 flex items-center gap-4">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
+                  <Clock className="h-3.5 w-3.5 text-amber-400" />
+                  15 min / morning
+                </div>
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
+                  <Flame className="h-3.5 w-3.5 text-warning" />
+                  90–220 cal
+                </div>
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
+                  <Trophy className="h-3.5 w-3.5 text-amber-400" />
+                  28 Days
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="flex-1 overflow-hidden rounded-full bg-surface-elevated h-1.5">
+                  <div className="h-full w-[11%] rounded-full bg-gradient-to-r from-amber-500 to-orange-400" />
+                </div>
+                <span className="text-[10px] font-bold text-foreground/70">3 / 28 done</span>
+              </div>
+
+              <div className="mt-4 flex items-center justify-between">
+                <div className="flex gap-1">
+                  {(['No Equipment', 'Home', '15 Min'] as const).map(tag => (
+                    <span key={tag} className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[9px] font-black text-amber-400">{tag}</span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 text-xs font-black text-black shadow-lg">
                   Start <ChevronRight className="h-3.5 w-3.5" />
                 </div>
               </div>
