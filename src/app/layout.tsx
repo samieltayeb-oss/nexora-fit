@@ -32,9 +32,13 @@ export const metadata: Metadata = {
   description: "Precision health management, clinical medication adherence & guided transformation.",
   manifest: "/manifest.json",
   icons: {
-    icon: "/brand/nexorafit.png",
-    shortcut: "/brand/nexorafit.png",
-    apple: "/brand/nexorafit.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   appleWebApp: {
     capable: true,
@@ -60,6 +64,11 @@ export default function RootLayout({
       lang="en"
       className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className="min-h-full flex flex-col font-body bg-[#0a0a0f] text-foreground">
         <UserProfileProvider>
           {children}
