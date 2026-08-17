@@ -258,7 +258,7 @@ export default function ActiveWorkoutContent() {
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           className="absolute inset-0"
         >
-          <img src={ex.image} alt={ex.name} className="w-full h-full object-cover" />
+          <img src={ex.motionGif || ex.image} alt={ex.name} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)]/80 via-transparent to-[var(--background)]" />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/40 to-transparent" />
         </motion.div>

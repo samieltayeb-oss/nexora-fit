@@ -1,8 +1,10 @@
 'use client'
 
 import { useSearchParams, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Lock, CheckCircle, ChevronLeft, Play, Flame, Clock, Trophy, Target, Dumbbell, PersonStanding } from 'lucide-react'
+import { Lock, CheckCircle, ChevronLeft, Play, Flame, Clock, Trophy, Target, Dumbbell, PersonStanding, Sparkles } from 'lucide-react'
+import { useUserProfile } from '@/context/user-profile-context'
 
 // ─────────────────────────────────────────────
 // WEEK STRUCTURES
@@ -15,99 +17,67 @@ const WEEKS = [
 ]
 
 // ─────────────────────────────────────────────
-// GYM PROGRAM (28 days)
+// GYM PROGRAM (28 days with Looping Motion GIFs)
 // ─────────────────────────────────────────────
 const GYM_DAYS = [
   // Week 1
-  { day:1,  title:'Full Body Foundation', focus:'Legs & Chest',          duration:'35 min', calories:180, thumb:'/artifacts/exercises/leg_press_illustrated.jpg',       week:1, isRest:false },
-  { day:2,  title:'Active Recovery',      focus:'Cardio & Mobility',     duration:'20 min', calories:90,  thumb:'/artifacts/exercises/recumbent_bike_illustrated.jpg',  week:1, isRest:false },
-  { day:3,  title:'Push & Pull',          focus:'Back & Shoulders',      duration:'40 min', calories:200, thumb:'/artifacts/exercises/lat_pulldown_illustrated.jpg',    week:1, isRest:false },
-  { day:4,  title:'Rest Day',             focus:'Recovery',              duration:'—',      calories:0,   thumb:'/artifacts/exercises/hip_mobility_illustrated.jpg',    week:1, isRest:true  },
-  { day:5,  title:'Lower Body Strength',  focus:'Quads & Hamstrings',    duration:'38 min', calories:190, thumb:'/artifacts/exercises/leg_extension_illustrated.jpg',   week:1, isRest:false },
-  { day:6,  title:'Upper Body Endurance', focus:'Chest & Triceps',       duration:'35 min', calories:175, thumb:'/artifacts/exercises/chest_press_illustrated.jpg',     week:1, isRest:false },
-  { day:7,  title:'Rest & Restore',       focus:'Full Rest',             duration:'—',      calories:0,   thumb:'/artifacts/exercises/hip_mobility_illustrated.jpg',    week:1, isRest:true  },
+  { day:1,  title:'Full Body Foundation', focus:'Legs & Chest',          duration:'35 min', calories:180, thumb:'/artifacts/exercises/leg_press_motion.gif',          week:1, isRest:false },
+  { day:2,  title:'Active Recovery',      focus:'Cardio & Mobility',     duration:'20 min', calories:90,  thumb:'/artifacts/exercises/recumbent_bike_motion.gif',     week:1, isRest:false },
+  { day:3,  title:'Push & Pull',          focus:'Back & Shoulders',      duration:'40 min', calories:200, thumb:'/artifacts/exercises/lat_pulldown_motion.gif',       week:1, isRest:false },
+  { day:4,  title:'Rest Day',             focus:'Recovery',              duration:'—',      calories:0,   thumb:'/artifacts/exercises/hip_mobility_motion.gif',       week:1, isRest:true  },
+  { day:5,  title:'Lower Body Strength',  focus:'Quads & Hamstrings',    duration:'38 min', calories:190, thumb:'/artifacts/exercises/leg_extension_motion.gif',      week:1, isRest:false },
+  { day:6,  title:'Upper Body Endurance', focus:'Chest & Triceps',       duration:'35 min', calories:175, thumb:'/artifacts/exercises/chest_press_motion.gif',        week:1, isRest:false },
+  { day:7,  title:'Rest & Restore',       focus:'Full Rest',             duration:'—',      calories:0,   thumb:'/artifacts/exercises/hip_mobility_motion.gif',       week:1, isRest:true  },
   // Week 2
-  { day:8,  title:'Power Legs',           focus:'Compound Lower',        duration:'42 min', calories:220, thumb:'/artifacts/exercises/leg_press_illustrated.jpg',       week:2, isRest:false },
-  { day:9,  title:'Core & Cardio',        focus:'Fat Burn',              duration:'30 min', calories:150, thumb:'/artifacts/exercises/recumbent_bike_illustrated.jpg',  week:2, isRest:false },
-  { day:10, title:'Back Dominator',       focus:'Lats & Rhomboids',      duration:'40 min', calories:205, thumb:'/artifacts/exercises/seated_row_illustrated.jpg',      week:2, isRest:false },
-  { day:11, title:'Active Recovery',      focus:'Stretch & Mobility',    duration:'25 min', calories:80,  thumb:'/artifacts/exercises/hip_mobility_illustrated.jpg',    week:2, isRest:false },
-  { day:12, title:'Leg Isolation',        focus:'Quads & Hamstrings',    duration:'38 min', calories:195, thumb:'/artifacts/exercises/leg_curl_illustrated.jpg',        week:2, isRest:false },
-  { day:13, title:'Push Power',           focus:'Chest & Shoulders',     duration:'40 min', calories:210, thumb:'/artifacts/exercises/shoulder_press_illustrated.jpg',  week:2, isRest:false },
-  { day:14, title:'Rest & Restore',       focus:'Full Rest',             duration:'—',      calories:0,   thumb:'/artifacts/exercises/hip_mobility_illustrated.jpg',    week:2, isRest:true  },
+  { day:8,  title:'Power Legs',           focus:'Compound Lower',        duration:'42 min', calories:220, thumb:'/artifacts/exercises/leg_press_motion.gif',          week:2, isRest:false },
+  { day:9,  title:'Core & Cardio',        focus:'Fat Burn',              duration:'30 min', calories:150, thumb:'/artifacts/exercises/recumbent_bike_motion.gif',     week:2, isRest:false },
+  { day:10, title:'Back Dominator',       focus:'Lats & Rhomboids',      duration:'40 min', calories:205, thumb:'/artifacts/exercises/seated_row_motion.gif',         week:2, isRest:false },
+  { day:11, title:'Active Recovery',      focus:'Stretch & Mobility',    duration:'25 min', calories:80,  thumb:'/artifacts/exercises/hip_mobility_motion.gif',       week:2, isRest:false },
+  { day:12, title:'Leg Isolation',        focus:'Quads & Hamstrings',    duration:'38 min', calories:195, thumb:'/artifacts/exercises/seated_leg_curl_motion.gif',     week:2, isRest:false },
+  { day:13, title:'Push Power',           focus:'Chest & Shoulders',     duration:'40 min', calories:210, thumb:'/artifacts/exercises/shoulder_press_motion.gif',     week:2, isRest:false },
+  { day:14, title:'Rest & Restore',       focus:'Full Rest',             duration:'—',      calories:0,   thumb:'/artifacts/exercises/hip_mobility_motion.gif',       week:2, isRest:true  },
   // Week 3
-  { day:15, title:'Strength Circuit',     focus:'Full Body',             duration:'45 min', calories:240, thumb:'/artifacts/exercises/chest_press_illustrated.jpg',     week:3, isRest:false },
-  { day:16, title:'Cardio Blast',         focus:'LISS Cardio',           duration:'30 min', calories:160, thumb:'/artifacts/exercises/recumbent_bike_illustrated.jpg',  week:3, isRest:false },
-  { day:17, title:'Pull Compound',        focus:'Back & Biceps',         duration:'42 min', calories:215, thumb:'/artifacts/exercises/lat_pulldown_illustrated.jpg',    week:3, isRest:false },
-  { day:18, title:'Active Recovery',      focus:'Mobility & Core',       duration:'25 min', calories:90,  thumb:'/artifacts/exercises/hip_mobility_illustrated.jpg',    week:3, isRest:false },
-  { day:19, title:'Leg Strength+',        focus:'Quads & Glutes',        duration:'45 min', calories:230, thumb:'/artifacts/exercises/leg_press_illustrated.jpg',       week:3, isRest:false },
-  { day:20, title:'Upper Body Peak',      focus:'Chest, Shoulders, Tris',duration:'45 min', calories:225, thumb:'/artifacts/exercises/cable_fly_illustrated.jpg',       week:3, isRest:false },
-  { day:21, title:'Rest & Restore',       focus:'Full Rest',             duration:'—',      calories:0,   thumb:'/artifacts/exercises/hip_mobility_illustrated.jpg',    week:3, isRest:true  },
+  { day:15, title:'Strength Circuit',     focus:'Full Body',             duration:'45 min', calories:240, thumb:'/artifacts/exercises/chest_press_motion.gif',        week:3, isRest:false },
+  { day:16, title:'Cardio Blast',         focus:'LISS Cardio',           duration:'30 min', calories:160, thumb:'/artifacts/exercises/recumbent_bike_motion.gif',     week:3, isRest:false },
+  { day:17, title:'Pull Compound',        focus:'Back & Biceps',         duration:'42 min', calories:215, thumb:'/artifacts/exercises/lat_pulldown_motion.gif',       week:3, isRest:false },
+  { day:18, title:'Active Recovery',      focus:'Mobility & Core',       duration:'25 min', calories:90,  thumb:'/artifacts/exercises/hip_mobility_motion.gif',       week:3, isRest:false },
+  { day:19, title:'Leg Strength+',        focus:'Quads & Glutes',        duration:'45 min', calories:230, thumb:'/artifacts/exercises/leg_press_motion.gif',          week:3, isRest:false },
+  { day:20, title:'Upper Body Peak',      focus:'Chest, Shoulders, Tris',duration:'45 min', calories:225, thumb:'/artifacts/exercises/cable_fly_motion.gif',          week:3, isRest:false },
+  { day:21, title:'Rest & Restore',       focus:'Full Rest',             duration:'—',      calories:0,   thumb:'/artifacts/exercises/hip_mobility_motion.gif',       week:3, isRest:true  },
   // Week 4
-  { day:22, title:'Power Full Body',      focus:'Max Effort',            duration:'50 min', calories:270, thumb:'/artifacts/exercises/leg_extension_illustrated.jpg',   week:4, isRest:false },
-  { day:23, title:'Cardio & Core',        focus:'Fat Burn',              duration:'35 min', calories:180, thumb:'/artifacts/exercises/recumbent_bike_illustrated.jpg',  week:4, isRest:false },
-  { day:24, title:'Back & Bicep Max',     focus:'Pull Day',              duration:'45 min', calories:235, thumb:'/artifacts/exercises/seated_row_illustrated.jpg',      week:4, isRest:false },
-  { day:25, title:'Active Recovery',      focus:'Light & Easy',          duration:'25 min', calories:80,  thumb:'/artifacts/exercises/hip_mobility_illustrated.jpg',    week:4, isRest:false },
-  { day:26, title:'Leg Final Test',       focus:'All Leg Muscles',       duration:'48 min', calories:250, thumb:'/artifacts/exercises/leg_curl_illustrated.jpg',        week:4, isRest:false },
-  { day:27, title:'Upper Body Final',     focus:'Push & Fly',            duration:'48 min', calories:245, thumb:'/artifacts/exercises/chest_press_illustrated.jpg',     week:4, isRest:false },
-  { day:28, title:'🏆 Final Challenge',  focus:'Full Body Test',        duration:'55 min', calories:290, thumb:'/artifacts/exercises/leg_press_illustrated.jpg',       week:4, isRest:false },
-]
-
-// ─────────────────────────────────────────────
-// CALISTHENICS PROGRAM (28 days)
-// ─────────────────────────────────────────────
-const CALI_DAYS = [
-  // Week 1
-  { day:1,  title:'Day 1 — Begin',        focus:'Jumping Jacks + Squats',  sets:'2×20 + 2×15',duration:'15 min', calories:120, thumb:'/artifacts/morning-challenge/jumping_jacks.jpg',    week:1, isRest:false },
-  { day:2,  title:'Push Day',             focus:'Push-Ups',                sets:'2×10',        duration:'20 min', calories:130, thumb:'/artifacts/morning-challenge/push_ups.jpg',         week:1, isRest:false },
-  { day:3,  title:'Core Intro',           focus:'Planks + Crunches',       sets:'2×30s + 2×15',duration:'20 min', calories:110, thumb:'/artifacts/morning-challenge/plank.jpg',          week:1, isRest:false },
-  { day:4,  title:'Rest Day',             focus:'Recovery',              sets:'—',           duration:'—',      calories:0,   thumb:'/artifacts/morning-challenge/glute_bridge.jpg',       week:1, isRest:true  },
-  { day:5,  title:'Leg Power',            focus:'Squats + Lunges',         sets:'3×15 + 2×12', duration:'22 min', calories:145, thumb:'/artifacts/morning-challenge/squats.jpg',          week:1, isRest:false },
-  { day:6,  title:'Cardio Burn',          focus:'High Knees + Mountain Climbers', sets:'3×30 + 2×20', duration:'20 min', calories:160, thumb:'/artifacts/morning-challenge/high_knees.jpg', week:1, isRest:false },
-  { day:7,  title:'Rest & Restore',       focus:'Full Rest',               sets:'—',           duration:'—',      calories:0,   thumb:'/artifacts/morning-challenge/glute_bridge.jpg',       week:1, isRest:true  },
-  // Week 2
-  { day:8,  title:'Push Power',           focus:'Push-Ups + Dips',         sets:'3×12 + 2×10', duration:'25 min', calories:150, thumb:'/artifacts/morning-challenge/diamond_pushups.jpg', week:2, isRest:false },
-  { day:9,  title:'Core Blast',           focus:'Crunches + Mountain Climbers', sets:'3×20 + 2×30', duration:'25 min', calories:155, thumb:'/artifacts/morning-challenge/mountain_climbers.jpg', week:2, isRest:false },
-  { day:10, title:'Lower Body',           focus:'Squats + Lunges',         sets:'3×20 + 3×15', duration:'28 min', calories:165, thumb:'/artifacts/morning-challenge/lunges.jpg',          week:2, isRest:false },
-  { day:11, title:'Active Rest',          focus:'Light Stretching',        sets:'—',           duration:'20 min', calories:60,  thumb:'/artifacts/morning-challenge/glute_bridge.jpg',       week:2, isRest:false },
-  { day:12, title:'Full Body HIIT',       focus:'Burpees + Jumping Jacks', sets:'3×10 + 3×30', duration:'25 min', calories:180, thumb:'/artifacts/morning-challenge/burpees.jpg',         week:2, isRest:false },
-  { day:13, title:'Back & Core',          focus:'Superman + Plank',        sets:'3×20 + 3×40s',duration:'25 min', calories:140, thumb:'/artifacts/morning-challenge/superman.jpg',        week:2, isRest:false },
-  { day:14, title:'Rest & Restore',       focus:'Full Rest',               sets:'—',           duration:'—',      calories:0,   thumb:'/artifacts/morning-challenge/glute_bridge.jpg',       week:2, isRest:true  },
-  // Week 3
-  { day:15, title:'Push Circuit',         focus:'Push-Ups + Mountain Climbers', sets:'3×15 + 3×20', duration:'28 min', calories:165, thumb:'/artifacts/morning-challenge/diamond_pushups.jpg', week:3, isRest:false },
-  { day:16, title:'Leg Burner',           focus:'Squats + Lunges + Jumps', sets:'3×25 + 2×20 + 2×15', duration:'30 min', calories:190, thumb:'/artifacts/morning-challenge/jump_squats.jpg',   week:3, isRest:false },
-  { day:17, title:'Core & Back',          focus:'Superman + Crunches',     sets:'3×25 + 3×20', duration:'25 min', calories:145, thumb:'/artifacts/morning-challenge/bicycle_crunches.jpg',week:3, isRest:false },
-  { day:18, title:'Active Recovery',      focus:'Light Cardio',            sets:'—',           duration:'20 min', calories:70,  thumb:'/artifacts/morning-challenge/high_knees.jpg',     week:3, isRest:false },
-  { day:19, title:'HIIT Blast',           focus:'Burpees + High Knees',   sets:'3×15 + 3×30', duration:'28 min', calories:200, thumb:'/artifacts/morning-challenge/burpees.jpg',         week:3, isRest:false },
-  { day:20, title:'Full Push Day',        focus:'Push-Ups + Dips + Plank', sets:'3×20 + 2×15 + 3×45s', duration:'30 min', calories:175, thumb:'/artifacts/morning-challenge/pike_pushups.jpg',  week:3, isRest:false },
-  { day:21, title:'Rest & Restore',       focus:'Full Rest',               sets:'—',           duration:'—',      calories:0,   thumb:'/artifacts/morning-challenge/lunges.jpg',          week:3, isRest:true  },
-  // Week 4
-  { day:22, title:'Power Circuit',        focus:'Full Body Max',           sets:'3×25 + 2×35 + 2×15', duration:'35 min', calories:220, thumb:'/artifacts/morning-challenge/mountain_climbers.jpg', week:4, isRest:false },
-  { day:23, title:'Leg Dominator',        focus:'Squats + Lunges + Jumps', sets:'4×25 + 3×20', duration:'35 min', calories:210, thumb:'/artifacts/morning-challenge/wall_sit.jpg',       week:4, isRest:false },
-  { day:24, title:'Core Max',             focus:'Plank + Crunches + Mountain Climbers', sets:'4×60s + 4×25 + 3×30', duration:'30 min', calories:185, thumb:'/artifacts/morning-challenge/side_plank.jpg',    week:4, isRest:false },
-  { day:25, title:'Active Recovery',      focus:'Easy Walk + Stretching',  sets:'—',           duration:'20 min', calories:70,  thumb:'/artifacts/morning-challenge/superman.jpg',       week:4, isRest:false },
-  { day:26, title:'HIIT Final',           focus:'Burpees + High Knees + Jumps', sets:'4×15 + 4×30', duration:'35 min', calories:240, thumb:'/artifacts/morning-challenge/burpees.jpg', week:4, isRest:false },
-  { day:27, title:'Upper Body Final',     focus:'Push-Ups + Superman + Plank', sets:'4×20 + 4×25 + 4×60s', duration:'35 min', calories:200, thumb:'/artifacts/morning-challenge/pike_pushups.jpg', week:4, isRest:false },
-  { day:28, title:'🏆 Day 28 — DONE',    focus:'Full Body Challenge',     sets:'Max effort — all exercises', duration:'40 min', calories:260, thumb:'/artifacts/morning-challenge/day28_trophy.jpg', week:4, isRest:false },
+  { day:22, title:'Power Full Body',      focus:'Max Effort',            duration:'50 min', calories:270, thumb:'/artifacts/exercises/leg_extension_motion.gif',      week:4, isRest:false },
+  { day:23, title:'Cardio & Core',        focus:'Fat Burn',              duration:'35 min', calories:180, thumb:'/artifacts/exercises/recumbent_bike_motion.gif',     week:4, isRest:false },
+  { day:24, title:'Back & Bicep Max',     focus:'Pull Day',              duration:'45 min', calories:235, thumb:'/artifacts/exercises/seated_row_motion.gif',         week:4, isRest:false },
+  { day:25, title:'Active Recovery',      focus:'Light & Easy',          duration:'25 min', calories:80,  thumb:'/artifacts/exercises/hip_mobility_motion.gif',       week:4, isRest:false },
+  { day:26, title:'Leg Final Test',       focus:'All Leg Muscles',       duration:'48 min', calories:250, thumb:'/artifacts/exercises/seated_leg_curl_motion.gif',     week:4, isRest:false },
+  { day:27, title:'Upper Body Final',     focus:'Push & Fly',            duration:'48 min', calories:245, thumb:'/artifacts/exercises/chest_press_motion.gif',        week:4, isRest:false },
+  { day:28, title:'🏆 Final Challenge',  focus:'Full Body Test',        duration:'55 min', calories:290, thumb:'/artifacts/exercises/leg_press_motion.gif',          week:4, isRest:false },
 ]
 
 const GYM_COMPLETED: number[] = []
 const GYM_CURRENT   = 1
-const CALI_COMPLETED: number[] = []
-const CALI_CURRENT  = 1
 
 export default function WorkoutProgramContent() {
   const router = useRouter()
   const params = useSearchParams()
-  const type = params.get('type') === 'calisthenics' ? 'calisthenics' : 'gym'
+  const typeParam = params.get('type')
+  const { profile } = useUserProfile()
 
-  const isGym   = type === 'gym'
-  const days    = isGym ? GYM_DAYS : CALI_DAYS
-  const completed = isGym ? GYM_COMPLETED : CALI_COMPLETED
-  const current   = isGym ? GYM_CURRENT : CALI_CURRENT
-  const accent    = isGym ? 'teal' : 'indigo'
-  const title     = isGym ? 'GYM STRENGTH CHALLENGE' : 'CALISTHENICS CHALLENGE'
-  const subtitle  = isGym ? 'Machine Training · 3–4 Days / Week' : 'Bodyweight Only · Every Day'
+  // Redirect calisthenics parameter to 28-day morning challenge
+  useEffect(() => {
+    if (typeParam === 'calisthenics') {
+      router.replace('/workout/morning-challenge')
+    }
+  }, [typeParam, router])
+
+  const isGym = true
+  const days = GYM_DAYS
+  const completed = GYM_COMPLETED
+  const current = GYM_CURRENT
+  const title = 'GYM MACHINE ROUTINE'
+  const subtitle = 'Machine Training · 3–4 Days / Week · Looping Form GIFs'
   const completedCount = completed.length
+
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-foreground pb-32">
@@ -154,7 +124,7 @@ export default function WorkoutProgramContent() {
               <div className="text-[10px] text-foreground/70 font-bold uppercase tracking-wider mb-0.5">Your Weight</div>
               <div className="text-xs font-black text-foreground flex items-center gap-1">
                 <Flame className="w-3 h-3 text-orange-400" />
-                85 kg → 75 kg
+                {profile.baselineWeightKg.toFixed(2)} kg → {profile.targetWeightKg.toFixed(2)} kg
               </div>
             </div>
           </div>
@@ -162,14 +132,14 @@ export default function WorkoutProgramContent() {
           {/* Progress Bar */}
           <div className="mb-1 flex items-center justify-between">
             <span className="text-xs font-bold text-foreground">Progress</span>
-            <span className={`text-xs font-black ${isGym ? 'text-primary' : 'text-indigo-400'}`}>{completedCount} of 28 workouts</span>
+            <span className={`text-xs font-black text-primary`}>{completedCount} of 28 workouts</span>
           </div>
           <div className="h-2 bg-white/10 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${(completedCount / 28) * 100}%` }}
               transition={{ duration: 1.2, ease: 'easeOut' }}
-              className={`h-full rounded-full ${isGym ? 'bg-gradient-to-r from-teal-400 to-cyan-400' : 'bg-gradient-to-r from-indigo-400 to-purple-400'}`}
+              className={`h-full rounded-full bg-gradient-to-r from-teal-400 to-cyan-400`}
             />
           </div>
         </div>
@@ -179,12 +149,8 @@ export default function WorkoutProgramContent() {
       <div className="px-5 my-4">
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={() => router.push(`/workout/active?type=${type}&day=${current}`)}
-          className={`w-full font-black py-4 rounded-2xl flex items-center justify-center gap-2.5 shadow-2xl text-sm text-slate-950 ${
-            isGym
-              ? 'bg-gradient-to-r from-teal-400 to-cyan-400 shadow-teal-500/30'
-              : 'bg-gradient-to-r from-indigo-400 to-purple-400 shadow-indigo-500/30'
-          }`}
+          onClick={() => router.push(`/workout/active?type=gym&day=${current}`)}
+          className={`w-full font-black py-4 rounded-2xl flex items-center justify-center gap-2.5 shadow-2xl text-sm text-slate-950 bg-gradient-to-r from-teal-400 to-cyan-400 shadow-teal-500/30 cursor-pointer`}
         >
           <Play className="w-5 h-5 fill-slate-950" />
           START TODAY&apos;S WORKOUT &middot; Day {current}
@@ -219,13 +185,13 @@ export default function WorkoutProgramContent() {
                       key={d.day}
                       whileTap={{ scale: 0.94 }}
                       onClick={() => {
-                        if (!isLocked) router.push(`/workout/active?type=${type}&day=${d.day}`)
+                        if (!isLocked) router.push(`/workout/active?type=gym&day=${d.day}`)
                       }}
                       className={`relative rounded-2xl overflow-hidden border aspect-square ${
                         isCurrent
-                          ? isGym ? 'border-primary shadow-[0_0_18px_rgba(20,184,166,0.5)]' : 'border-indigo-400 shadow-[0_0_18px_rgba(99,102,241,0.5)]'
+                          ? 'border-primary shadow-[0_0_18px_rgba(20,184,166,0.5)]'
                           : isCompleted
-                          ? isGym ? 'border-primary/40' : 'border-indigo-400/40'
+                          ? 'border-primary/40'
                           : 'border-white/8'
                       }`}
                     >
