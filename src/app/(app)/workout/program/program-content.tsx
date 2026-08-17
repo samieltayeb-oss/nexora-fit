@@ -65,7 +65,7 @@ const CALI_DAYS = [
   { day:6,  title:'Cardio Burn',          focus:'High Knees + Mountain Climbers', sets:'3×30 + 2×20', duration:'20 min', calories:160, thumb:'/artifacts/morning-challenge/high_knees.jpg', week:1, isRest:false },
   { day:7,  title:'Rest & Restore',       focus:'Full Rest',               sets:'—',           duration:'—',      calories:0,   thumb:'/artifacts/morning-challenge/glute_bridge.jpg',       week:1, isRest:true  },
   // Week 2
-  { day:8,  title:'Push Power',           focus:'Push-Ups + Dips',         sets:'3×12 + 2×10', duration:'25 min', calories:150, thumb:'/artifacts/morning-challenge/push_ups.jpg',         week:2, isRest:false },
+  { day:8,  title:'Push Power',           focus:'Push-Ups + Dips',         sets:'3×12 + 2×10', duration:'25 min', calories:150, thumb:'/artifacts/morning-challenge/diamond_pushups.jpg', week:2, isRest:false },
   { day:9,  title:'Core Blast',           focus:'Crunches + Mountain Climbers', sets:'3×20 + 2×30', duration:'25 min', calories:155, thumb:'/artifacts/morning-challenge/mountain_climbers.jpg', week:2, isRest:false },
   { day:10, title:'Lower Body',           focus:'Squats + Lunges',         sets:'3×20 + 3×15', duration:'28 min', calories:165, thumb:'/artifacts/morning-challenge/lunges.jpg',          week:2, isRest:false },
   { day:11, title:'Active Rest',          focus:'Light Stretching',        sets:'—',           duration:'20 min', calories:60,  thumb:'/artifacts/morning-challenge/glute_bridge.jpg',       week:2, isRest:false },
@@ -73,20 +73,20 @@ const CALI_DAYS = [
   { day:13, title:'Back & Core',          focus:'Superman + Plank',        sets:'3×20 + 3×40s',duration:'25 min', calories:140, thumb:'/artifacts/morning-challenge/superman.jpg',        week:2, isRest:false },
   { day:14, title:'Rest & Restore',       focus:'Full Rest',               sets:'—',           duration:'—',      calories:0,   thumb:'/artifacts/morning-challenge/glute_bridge.jpg',       week:2, isRest:true  },
   // Week 3
-  { day:15, title:'Push Circuit',         focus:'Push-Ups + Mountain Climbers', sets:'3×15 + 3×20', duration:'28 min', calories:165, thumb:'/artifacts/morning-challenge/push_ups.jpg', week:3, isRest:false },
-  { day:16, title:'Leg Burner',           focus:'Squats + Lunges + Jumps', sets:'3×25 + 2×20 + 2×15', duration:'30 min', calories:190, thumb:'/artifacts/morning-challenge/squats.jpg', week:3, isRest:false },
-  { day:17, title:'Core & Back',          focus:'Superman + Crunches',     sets:'3×25 + 3×20', duration:'25 min', calories:145, thumb:'/artifacts/morning-challenge/crunches.jpg',       week:3, isRest:false },
+  { day:15, title:'Push Circuit',         focus:'Push-Ups + Mountain Climbers', sets:'3×15 + 3×20', duration:'28 min', calories:165, thumb:'/artifacts/morning-challenge/diamond_pushups.jpg', week:3, isRest:false },
+  { day:16, title:'Leg Burner',           focus:'Squats + Lunges + Jumps', sets:'3×25 + 2×20 + 2×15', duration:'30 min', calories:190, thumb:'/artifacts/morning-challenge/jump_squats.jpg',   week:3, isRest:false },
+  { day:17, title:'Core & Back',          focus:'Superman + Crunches',     sets:'3×25 + 3×20', duration:'25 min', calories:145, thumb:'/artifacts/morning-challenge/bicycle_crunches.jpg',week:3, isRest:false },
   { day:18, title:'Active Recovery',      focus:'Light Cardio',            sets:'—',           duration:'20 min', calories:70,  thumb:'/artifacts/morning-challenge/high_knees.jpg',     week:3, isRest:false },
   { day:19, title:'HIIT Blast',           focus:'Burpees + High Knees',   sets:'3×15 + 3×30', duration:'28 min', calories:200, thumb:'/artifacts/morning-challenge/burpees.jpg',         week:3, isRest:false },
-  { day:20, title:'Full Push Day',        focus:'Push-Ups + Dips + Plank', sets:'3×20 + 2×15 + 3×45s', duration:'30 min', calories:175, thumb:'/artifacts/morning-challenge/push_ups.jpg', week:3, isRest:false },
+  { day:20, title:'Full Push Day',        focus:'Push-Ups + Dips + Plank', sets:'3×20 + 2×15 + 3×45s', duration:'30 min', calories:175, thumb:'/artifacts/morning-challenge/pike_pushups.jpg',  week:3, isRest:false },
   { day:21, title:'Rest & Restore',       focus:'Full Rest',               sets:'—',           duration:'—',      calories:0,   thumb:'/artifacts/morning-challenge/lunges.jpg',          week:3, isRest:true  },
   // Week 4
   { day:22, title:'Power Circuit',        focus:'Full Body Max',           sets:'3×25 + 2×35 + 2×15', duration:'35 min', calories:220, thumb:'/artifacts/morning-challenge/mountain_climbers.jpg', week:4, isRest:false },
-  { day:23, title:'Leg Dominator',        focus:'Squats + Lunges + Jumps', sets:'4×25 + 3×20', duration:'35 min', calories:210, thumb:'/artifacts/morning-challenge/squats.jpg',          week:4, isRest:false },
-  { day:24, title:'Core Max',             focus:'Plank + Crunches + Mountain Climbers', sets:'4×60s + 4×25 + 3×30', duration:'30 min', calories:185, thumb:'/artifacts/morning-challenge/plank.jpg', week:4, isRest:false },
+  { day:23, title:'Leg Dominator',        focus:'Squats + Lunges + Jumps', sets:'4×25 + 3×20', duration:'35 min', calories:210, thumb:'/artifacts/morning-challenge/wall_sit.jpg',       week:4, isRest:false },
+  { day:24, title:'Core Max',             focus:'Plank + Crunches + Mountain Climbers', sets:'4×60s + 4×25 + 3×30', duration:'30 min', calories:185, thumb:'/artifacts/morning-challenge/side_plank.jpg',    week:4, isRest:false },
   { day:25, title:'Active Recovery',      focus:'Easy Walk + Stretching',  sets:'—',           duration:'20 min', calories:70,  thumb:'/artifacts/morning-challenge/superman.jpg',       week:4, isRest:false },
   { day:26, title:'HIIT Final',           focus:'Burpees + High Knees + Jumps', sets:'4×15 + 4×30', duration:'35 min', calories:240, thumb:'/artifacts/morning-challenge/burpees.jpg', week:4, isRest:false },
-  { day:27, title:'Upper Body Final',     focus:'Push-Ups + Superman + Plank', sets:'4×20 + 4×25 + 4×60s', duration:'35 min', calories:200, thumb:'/artifacts/morning-challenge/push_ups.jpg', week:4, isRest:false },
+  { day:27, title:'Upper Body Final',     focus:'Push-Ups + Superman + Plank', sets:'4×20 + 4×25 + 4×60s', duration:'35 min', calories:200, thumb:'/artifacts/morning-challenge/pike_pushups.jpg', week:4, isRest:false },
   { day:28, title:'🏆 Day 28 — DONE',    focus:'Full Body Challenge',     sets:'Max effort — all exercises', duration:'40 min', calories:260, thumb:'/artifacts/morning-challenge/day28_trophy.jpg', week:4, isRest:false },
 ]
 

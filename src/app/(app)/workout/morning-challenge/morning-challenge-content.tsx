@@ -82,7 +82,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 3, week: 1, emoji: '🦵', thumb: '/artifacts/morning-challenge/lunges.jpg', isRest: false,
+    day: 3, week: 1, emoji: '🦵', thumb: '/artifacts/morning-challenge/wall_sit.jpg', isRest: false,
     title: 'Leg Intro',
     focus: 'Quads & Glutes',
     duration: '15 min', calories: 110,
@@ -167,7 +167,7 @@ const DAYS: ChallengeDay[] = [
 
   // ── WEEK 2: FEEL THE BURN ─────────────────────────────
   {
-    day: 8, week: 2, emoji: '🔥', thumb: '/artifacts/morning-challenge/push_ups.jpg', isRest: false,
+    day: 8, week: 2, emoji: '🔥', thumb: '/artifacts/morning-challenge/diamond_pushups.jpg', isRest: false,
     title: 'Push Power',
     focus: 'Chest, Triceps & Shoulders',
     duration: '15 min', calories: 130,
@@ -187,7 +187,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 9, week: 2, emoji: '🦵', thumb: '/artifacts/morning-challenge/squats.jpg', isRest: false,
+    day: 9, week: 2, emoji: '🦵', thumb: '/artifacts/morning-challenge/jump_squats.jpg', isRest: false,
     title: 'Leg Burner',
     focus: 'Quads, Hamstrings & Calves',
     duration: '15 min', calories: 145,
@@ -207,7 +207,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 10, week: 2, emoji: '🧱', thumb: '/artifacts/morning-challenge/plank.jpg', isRest: false,
+    day: 10, week: 2, emoji: '🧱', thumb: '/artifacts/morning-challenge/side_plank.jpg', isRest: false,
     title: 'Core Blast',
     focus: 'Full Core Burn',
     duration: '15 min', calories: 120,
@@ -297,7 +297,7 @@ const DAYS: ChallengeDay[] = [
 
   // ── WEEK 3: STRENGTH ──────────────────────────────────
   {
-    day: 15, week: 3, emoji: '💎', thumb: '/artifacts/morning-challenge/push_ups.jpg', isRest: false,
+    day: 15, week: 3, emoji: '💎', thumb: '/artifacts/morning-challenge/diamond_pushups.jpg', isRest: false,
     title: 'Push Circuit',
     focus: 'Chest & Shoulders Peak',
     duration: '15 min', calories: 145,
@@ -317,7 +317,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 16, week: 3, emoji: '🚀', thumb: '/artifacts/morning-challenge/lunges.jpg', isRest: false,
+    day: 16, week: 3, emoji: '🚀', thumb: '/artifacts/morning-challenge/jump_squats.jpg', isRest: false,
     title: 'Leg Power',
     focus: 'Explosive Legs',
     duration: '15 min', calories: 175,
@@ -337,7 +337,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 17, week: 3, emoji: '🧱', thumb: '/artifacts/morning-challenge/crunches.jpg', isRest: false,
+    day: 17, week: 3, emoji: '🧱', thumb: '/artifacts/morning-challenge/bicycle_crunches.jpg', isRest: false,
     title: 'Core Max',
     focus: 'Plank Variations & Abs',
     duration: '15 min', calories: 130,
@@ -389,7 +389,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 20, week: 3, emoji: '💪', thumb: '/artifacts/morning-challenge/push_ups.jpg', isRest: false,
+    day: 20, week: 3, emoji: '💪', thumb: '/artifacts/morning-challenge/pike_pushups.jpg', isRest: false,
     title: 'Upper Body Strength',
     focus: 'Push-Up Variations',
     duration: '15 min', calories: 160,
@@ -439,7 +439,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 23, week: 4, emoji: '🔱', thumb: '/artifacts/morning-challenge/squats.jpg', isRest: false,
+    day: 23, week: 4, emoji: '🔱', thumb: '/artifacts/morning-challenge/wall_sit.jpg', isRest: false,
     title: 'Leg Dominator',
     focus: 'Ultimate Leg Day',
     duration: '15 min', calories: 190,
@@ -459,7 +459,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 24, week: 4, emoji: '🧱', thumb: '/artifacts/morning-challenge/plank.jpg', isRest: false,
+    day: 24, week: 4, emoji: '🧱', thumb: '/artifacts/morning-challenge/side_plank.jpg', isRest: false,
     title: 'Core Finisher',
     focus: 'Abs Max Effort',
     duration: '15 min', calories: 150,
@@ -508,7 +508,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 27, week: 4, emoji: '👑', thumb: '/artifacts/morning-challenge/mountain_climbers.jpg', isRest: false,
+    day: 27, week: 4, emoji: '👑', thumb: '/artifacts/morning-challenge/pike_pushups.jpg', isRest: false,
     title: 'Upper Body Final',
     focus: 'Push Everything',
     duration: '15 min', calories: 185,
