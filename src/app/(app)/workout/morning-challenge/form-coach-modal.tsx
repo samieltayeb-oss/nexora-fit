@@ -273,6 +273,23 @@ const EXERCISE_GUIDES: Record<string, ExerciseFormGuide> = {
       'Stack feet or stagger for added balance.',
     ],
   },
+  'plank': {
+    name: 'Forearm Plank Hold',
+    title: 'Forearm Plank Core Lock',
+    category: 'Core Stability & Transverse Abs',
+    gifSrc: '/artifacts/morning-challenge/push_up_motion.gif',
+    angleInfo: 'Spine: 180° Straight Plank Line',
+    alignmentBadge: 'Glutes & Core Squeezed',
+    breathCue: 'Continuous Controlled Breathing',
+    cadence: 'Isometric Timed Hold',
+    focusCue: 'Elbows under shoulders, pull belly button to spine, squeeze quads and glutes into a rock-solid plank.',
+    rules: [
+      'Elbows directly below shoulders at 90°.',
+      'Do not let hips sag down or poke up into the air.',
+      'Keep glutes and quads squeezed the entire hold.',
+      'Breathe steadily through your nose — do not hold your breath.',
+    ],
+  },
   'wall sit': {
     name: 'Isometric Wall Sit',
     title: 'Wall Sit Quad Endurance',
@@ -290,7 +307,137 @@ const EXERCISE_GUIDES: Record<string, ExerciseFormGuide> = {
       'Do not rest hands on knees or thighs.',
     ],
   },
+  'arm circle': {
+    name: 'Arm Circles',
+    title: 'Arm Circles Warm-Up',
+    category: 'Shoulder Mobility & Warm-Up',
+    gifSrc: '/artifacts/morning-challenge/jumping_jacks_motion.gif',
+    angleInfo: 'Shoulder Range: Full 360° Rotation',
+    alignmentBadge: 'Smooth Controlled Mobility',
+    breathCue: 'Easy Nasal Breathing',
+    cadence: '30s Forward / 30s Reverse',
+    focusCue: 'Extend arms straight out to sides. Make gradual circular rotations to lubricate the shoulder joints.',
+    rules: [
+      'Keep shoulders down away from your ears.',
+      'Start with small circles and expand to full range.',
+      'Reverse directions halfway through the set.',
+      'Stand tall with core lightly braced.',
+    ],
+  },
+  'neck': {
+    name: 'Neck Rolls',
+    title: 'Cervical Spine Mobility',
+    category: 'Neck & Upper Trap Release',
+    gifSrc: '/artifacts/morning-challenge/superman_motion.gif',
+    angleInfo: 'Range: Gentle 180° Half-Circles',
+    alignmentBadge: 'Slow Gentle Motion',
+    breathCue: 'Slow Deep Inhales & Exhales',
+    cadence: 'Gentle Controlled Pace',
+    focusCue: 'Gently drop ear toward shoulder, roll chin across chest to other shoulder. Never roll aggressively backward.',
+    rules: [
+      'Move slowly and gently — never force or yank.',
+      'Keep shoulders relaxed and down.',
+      'Roll chin smoothly along the collarbone.',
+      'Pause gently on tight spots for 2–3 breaths.',
+    ],
+  },
+  'hip circle': {
+    name: 'Hip Circles',
+    title: 'Pelvic & Hip Joint Mobility',
+    category: 'Hip Joint Warm-Up',
+    gifSrc: '/artifacts/morning-challenge/squats_motion.gif',
+    angleInfo: 'Pelvic Rotation: 360° Circular Path',
+    alignmentBadge: 'Loose Fluid Hips',
+    breathCue: 'Steady Breathing',
+    cadence: 'Smooth Circles Both Ways',
+    focusCue: 'Hands on hips, feet shoulder-width. Make large circular rotations to warm hip sockets and lower back.',
+    rules: [
+      'Draw large circles with your hips like using a hula hoop.',
+      'Keep knees soft with slight flex.',
+      'Switch clockwise and counter-clockwise.',
+      'Feel the stretch in hip flexors, glutes, and lower back.',
+    ],
+  },
+  'quad stretch': {
+    name: 'Standing Quad Stretch',
+    title: 'Quadriceps Flexibility Guide',
+    category: 'Leg Flexibility & Cool-Down',
+    gifSrc: '/artifacts/morning-challenge/lunges_motion.gif',
+    angleInfo: 'Knee Flexion: Heel to Glute',
+    alignmentBadge: 'Knees Kept Together',
+    breathCue: 'Deep Relaxing Exhales',
+    cadence: '30s Hold Each Leg',
+    focusCue: 'Hold wall for balance. Grab ankle and gently pull heel toward glute. Keep both knees side-by-side.',
+    rules: [
+      'Keep knees touching — do not let the bent knee flare out.',
+      'Stand tall and tuck your tailbone slightly under.',
+      'Do not arch your lower back.',
+      'Breathe deeply into the front of the thigh.',
+    ],
+  },
+  'hamstring': {
+    name: 'Seated Hamstring Stretch',
+    title: 'Hamstring Flexibility Release',
+    category: 'Posterior Leg Flexibility',
+    gifSrc: '/artifacts/morning-challenge/crunches_motion.gif',
+    angleInfo: 'Hip Hinge: Flat Back Reach',
+    alignmentBadge: 'Hinge From Hips (Not Spine)',
+    breathCue: 'Exhale As You Reach Forward',
+    cadence: '45s Deep Hold',
+    focusCue: 'Sit tall on floor with legs extended. Hinge at your hips and reach chest toward your toes gently.',
+    rules: [
+      'Lead with your chest, not by rounding your shoulders.',
+      'Keep knees soft if your hamstrings are tight.',
+      'Never bounce — hold the stretch smoothly.',
+      'Exhale deeply to sink 1 inch deeper every 15 seconds.',
+    ],
+  },
+  'breathing': {
+    name: 'Deep Diaphragmatic Breathing',
+    title: 'Parasympathetic Recovery Breath',
+    category: 'Cool-Down & Heart Rate Recovery',
+    gifSrc: '/artifacts/morning-challenge/glute_bridge_motion.gif',
+    angleInfo: '4-7-8 Cadence / Diaphragm Rise',
+    alignmentBadge: 'Vagus Nerve Activation',
+    breathCue: 'Inhale 4s · Hold 4s · Exhale 6s',
+    cadence: 'Slow Recovery Cycle',
+    focusCue: 'Breathe deeply into your belly (belly rises, chest stays still). Lowers cortisol and restores heart rate.',
+    rules: [
+      'Inhale slowly through your nose for 4 seconds.',
+      'Hold the air in your lower belly for 2–4 seconds.',
+      'Exhale smoothly through your mouth for 6 seconds.',
+      'Feel your body relax into recovery mode.',
+    ],
+  },
 }
+
+// Ordered keys for precise matching: specific variations FIRST
+const ORDERED_KEYS = [
+  'diamond push-up',
+  'pike push-up',
+  'wall push-up',
+  'push-up',
+  'jump squat',
+  'squat',
+  'jumping jack',
+  'high knees',
+  'burpee',
+  'mountain climber',
+  'bicycle crunch',
+  'crunches',
+  'side plank',
+  'plank',
+  'superman',
+  'glute bridge',
+  'wall sit',
+  'arm circle',
+  'neck',
+  'hip circle',
+  'quad stretch',
+  'hamstring',
+  'breathing',
+  'lunge',
+]
 
 interface FormCoachModalProps {
   isOpen: boolean
@@ -300,17 +447,29 @@ interface FormCoachModalProps {
 
 export function findExerciseGuide(query?: string): ExerciseFormGuide {
   if (!query) return EXERCISE_GUIDES['push-up']
-  const q = query.toLowerCase()
-  for (const key of Object.keys(EXERCISE_GUIDES)) {
+  const q = query.toLowerCase().trim()
+  
+  for (const key of ORDERED_KEYS) {
     if (q.includes(key)) {
       return EXERCISE_GUIDES[key]
     }
   }
+
+  // Fallback check words
+  if (q.includes('push') || q.includes('press')) return EXERCISE_GUIDES['push-up']
+  if (q.includes('squat')) return EXERCISE_GUIDES['squat']
+  if (q.includes('lunge')) return EXERCISE_GUIDES['lunge']
+  if (q.includes('plank')) return EXERCISE_GUIDES['plank']
+  if (q.includes('crunch') || q.includes('ab')) return EXERCISE_GUIDES['crunches']
+  if (q.includes('jump')) return EXERCISE_GUIDES['jumping jack']
+  if (q.includes('knee')) return EXERCISE_GUIDES['high knees']
+  if (q.includes('stretch')) return EXERCISE_GUIDES['quad stretch']
+  if (q.includes('breath')) return EXERCISE_GUIDES['breathing']
+
   return EXERCISE_GUIDES['push-up']
 }
 
 export default function FormCoachModal({ isOpen, onClose, exerciseQuery }: FormCoachModalProps) {
-  const [speed, setSpeed] = useState<0.5 | 1>(1)
   const guide = findExerciseGuide(exerciseQuery)
 
   if (!isOpen) return null
