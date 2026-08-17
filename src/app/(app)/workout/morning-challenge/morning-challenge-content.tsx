@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ChevronLeft, Sun, Lock, CheckCircle, Play,
-  Flame, Clock, X, Dumbbell, Target, Zap, Trophy
+  Flame, Clock, X, Target, Zap, Trophy, Sparkles
 } from 'lucide-react'
+import FormCoachModal from './form-coach-modal'
 
 // ─────────────────────────────────────────────────────────
 // TYPES
@@ -570,6 +571,7 @@ const CURRENT_DAY = 4
 export default function MorningChallengeContent() {
   const router = useRouter()
   const [selectedDay, setSelectedDay] = useState<ChallengeDay | null>(null)
+  const [showFormCoach, setShowFormCoach] = useState(false)
 
   const completedCount = COMPLETED_DAYS.length
   const progressPercent = (completedCount / 28) * 100
@@ -578,6 +580,34 @@ export default function MorningChallengeContent() {
   return (
     <div className="min-h-screen pb-36 text-foreground">
       <div className="max-w-3xl mx-auto">
+
+        {/* ── INTERACTIVE FORM ANIMATION SAMPLE BANNER ── */}
+        <div className="mb-4 rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-transparent p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
+          <div className="flex items-center gap-3">
+            <div className="rounded-xl bg-amber-500/20 p-2.5 text-amber-400 border border-amber-500/30 flex-shrink-0">
+              <Sparkles className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[9px] font-black uppercase tracking-widest text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/30">
+                  NEW FEATURE
+                </span>
+                <span className="text-xs font-bold text-white">Form Animation & Biomechanics</span>
+              </div>
+              <p className="text-[11px] text-foreground/70 font-medium mt-0.5">
+                Watch real-time rep cadence, breathing cues, and joint angle alignment.
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setShowFormCoach(true)}
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black px-4 py-2 rounded-xl text-xs font-black shadow-[0_4px_16px_rgba(245,158,11,0.3)] hover:brightness-110 transition-all cursor-pointer flex-shrink-0"
+          >
+            <Play className="h-3.5 w-3.5 fill-black" />
+            Watch Push-Up Sample
+          </button>
+        </div>
 
         {/* ── HERO HEADER ─────────────────────────────── */}
         <div className="relative overflow-hidden rounded-3xl mb-6">
@@ -866,7 +896,12 @@ export default function MorningChallengeContent() {
                       </div>
                       <div className="space-y-2">
                         {selectedDay.work.map((ex, i) => (
-                          <ExerciseRow key={i} ex={ex} accent="orange" />
+                          <ExerciseRow 
+                            key={i} 
+                            ex={ex} 
+                            accent="orange" 
+                            onOpenFormCoach={ex.name.toLowerCase().includes('push-up') ? () => setShowFormCoach(true) : undefined}
+                          />
                         ))}
                       </div>
                     </div>
@@ -904,6 +939,12 @@ export default function MorningChallengeContent() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* ── INTERACTIVE FORM COACH ANIMATION MODAL ── */}
+      <FormCoachModal
+        isOpen={showFormCoach}
+        onClose={() => setShowFormCoach(false)}
+      />
     </div>
   )
 }
@@ -911,7 +952,15 @@ export default function MorningChallengeContent() {
 // ─────────────────────────────────────────────────────────
 // EXERCISE ROW SUB-COMPONENT
 // ─────────────────────────────────────────────────────────
-function ExerciseRow({ ex, accent }: { ex: Exercise; accent: 'amber' | 'orange' | 'blue' }) {
+function ExerciseRow({
+  ex,
+  accent,
+  onOpenFormCoach,
+}: {
+  ex: Exercise
+  accent: 'amber' | 'orange' | 'blue'
+  onOpenFormCoach?: () => void
+}) {
   const dotColor = {
     amber: 'bg-amber-400',
     orange: 'bg-orange-400',
@@ -919,16 +968,42 @@ function ExerciseRow({ ex, accent }: { ex: Exercise; accent: 'amber' | 'orange' 
   }[accent]
 
   return (
-    <div className="flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-3">
+    <div
+      onClick={onOpenFormCoach}
+      className={`flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-3 transition-all ${
+        onOpenFormCoach
+          ? 'hover:border-amber-500/50 hover:bg-amber-500/10 cursor-pointer group'
+          : ''
+      }`}
+    >
       <div className={`mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full ${dotColor}`} />
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="text-[13px] font-bold text-foreground">{ex.name}</span>
-          <span className={`flex-shrink-0 font-mono text-[11px] font-black ${
-            accent === 'amber' ? 'text-amber-400' : accent === 'orange' ? 'text-orange-400' : 'text-blue-400'
-          }`}>{ex.reps}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-[13px] font-bold text-foreground group-hover:text-amber-300 transition-colors">
+              {ex.name}
+            </span>
+            {onOpenFormCoach && (
+              <span className="flex items-center gap-1 font-mono text-[9px] font-black uppercase text-amber-400 bg-amber-500/20 border border-amber-500/40 px-1.5 py-0.5 rounded-md shadow-xs">
+                <Sparkles className="h-2.5 w-2.5" /> Watch Form GIF
+              </span>
+            )}
+          </div>
+          <span
+            className={`flex-shrink-0 font-mono text-[11px] font-black ${
+              accent === 'amber'
+                ? 'text-amber-400'
+                : accent === 'orange'
+                ? 'text-orange-400'
+                : 'text-blue-400'
+            }`}
+          >
+            {ex.reps}
+          </span>
         </div>
-        <p className="mt-0.5 text-[11px] font-medium text-foreground/50 leading-snug">{ex.tip}</p>
+        <p className="mt-0.5 text-[11px] font-medium text-foreground/50 leading-snug">
+          {ex.tip}
+        </p>
       </div>
     </div>
   )
