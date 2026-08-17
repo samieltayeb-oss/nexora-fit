@@ -13,11 +13,14 @@ import { NumberCounter } from '@/components/ui/number-counter'
 import { AnimatedCard } from '@/components/ui/animated-card'
 import { triggerCelebrationConfetti } from '@/components/ui/celebration'
 
+import { useUserProfile } from '@/context/user-profile-context'
+
 export default function WaistlineCoachPage() {
   const router = useRouter()
+  const { profile } = useUserProfile()
 
   // Simulator State
-  const [simulatedWeight, setSimulatedWeight] = useState<number>(81.0)
+  const [simulatedWeight, setSimulatedWeight] = useState<number>(profile.baselineWeightKg)
   
   // Waist & Habit State
   const [currentWaist, setCurrentWaist] = useState<number>(101)
@@ -36,7 +39,7 @@ export default function WaistlineCoachPage() {
   })
 
   // Calculate dynamic simulator outputs
-  const weightLostInSim = 81.0 - simulatedWeight
+  const weightLostInSim = profile.baselineWeightKg - simulatedWeight
   const estimatedWaistSim = (currentWaist - weightLostInSim * 0.85).toFixed(1)
   const estimatedBmiSim = (simulatedWeight / (1.72 * 1.72)).toFixed(1)
   const estimatedBodyFatSim = (23.4 - weightLostInSim * 0.6).toFixed(1)

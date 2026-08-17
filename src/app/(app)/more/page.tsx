@@ -20,7 +20,8 @@ import {
   Heart,
   Scale,
   Flame,
-  Pill
+  Pill,
+  Target
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NexoraLogo } from '@/components/brand/nexora-logo'
@@ -121,6 +122,13 @@ export default function MorePage() {
             title="Apple Watch &amp; HealthKit"
             subtitle="Live HR &amp; active caloric burn telemetry • Auto-sync"
             badge="Connected"
+          />
+          <MenuLink 
+            href="/waistline"
+            icon={<Target className="w-5 h-5 text-amber-400" />}
+            title="Core &amp; Waistline Coach"
+            subtitle="Interactive waist circumference reduction simulator"
+            badge="Simulator"
           />
           <MenuLink 
             href="/admin/exercises"
