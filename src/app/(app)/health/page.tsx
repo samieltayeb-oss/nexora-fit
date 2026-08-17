@@ -31,6 +31,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { triggerCelebrationConfetti } from '@/components/ui/celebration'
 import { useUserProfile } from '@/context/user-profile-context'
 import { MetabolicNutritionGuide } from '@/components/health/metabolic-nutrition-guide'
+import { SupplementBenefitsCockpit } from '@/components/health/supplement-benefits-card'
 
 interface GlucoseLog {
   id: string
@@ -605,7 +606,7 @@ export default function HealthPage() {
                   </span>
                 </div>
                 <p className="text-xs text-foreground/60 mt-0.5">
-                  12 Total Items • Daily adherence tracker &amp; clinical exercise precautions
+                  14 Total Items • Daily adherence tracker &amp; clinical exercise precautions
                 </p>
               </div>
             </div>
@@ -617,11 +618,14 @@ export default function HealthPage() {
             </div>
           </div>
 
+          {/* ── CLINICAL SUPPLEMENT BENEFITS & BIO-MECHANISMS COCKPIT ── */}
+          <SupplementBenefitsCockpit />
+
           {/* Morning Protocol */}
-          <div className="space-y-3">
+          <div className="space-y-3 pt-3">
             <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-amber-400">
               <Sun className="w-4 h-4 text-amber-400" />
-              <span>☀️ Morning Protocol (6 Items: Meds + CoQ10 + K2+D3 + Creatine)</span>
+              <span>☀️ Morning Protocol (8 Items: Meds + CoQ10 + K2+D3 + Taurine + Ultra Testo + Creatine)</span>
               <div className="h-px flex-1 bg-amber-500/20" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
