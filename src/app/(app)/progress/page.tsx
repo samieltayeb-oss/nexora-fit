@@ -8,18 +8,18 @@ import { createClient } from '@/utils/supabase/client'
 import { NumberCounter } from '@/components/ui/number-counter'
 
 export default function ProgressPage() {
-  const [weight, setWeight] = useState<number>(82.10)
-  const [bodyFat, setBodyFat] = useState<number>(23.6)
-  const [muscleMass, setMuscleMass] = useState<number>(59.06)
-  const [visceralFat, setVisceralFat] = useState<number>(10)
-  const [bmi, setBmi] = useState<number>(27.5)
-  const [bmr, setBmr] = useState<number>(1733)
-  const [bodyWater, setBodyWater] = useState<number>(55.1)
-  const [skeletalMuscle, setSkeletalMuscle] = useState<number>(49.3)
-  const [boneMass, setBoneMass] = useState<number>(3.11)
-  const [protein, setProtein] = useState<number>(17.4)
-  const [metabolicAge, setMetabolicAge] = useState<number>(49)
-  const [subcutFat, setSubcutFat] = useState<number>(20.5)
+  const [weight, setWeight] = useState<number>(81.00)
+  const [bodyFat, setBodyFat] = useState<number>(23.4)
+  const [muscleMass, setMuscleMass] = useState<number>(59.10)
+  const [visceralFat, setVisceralFat] = useState<number>(9.5)
+  const [bmi, setBmi] = useState<number>(27.1)
+  const [bmr, setBmr] = useState<number>(1740)
+  const [bodyWater, setBodyWater] = useState<number>(55.4)
+  const [skeletalMuscle, setSkeletalMuscle] = useState<number>(49.6)
+  const [boneMass, setBoneMass] = useState<number>(3.15)
+  const [protein, setProtein] = useState<number>(17.6)
+  const [metabolicAge, setMetabolicAge] = useState<number>(48)
+  const [subcutFat, setSubcutFat] = useState<number>(20.1)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const fetchProgress = async () => {

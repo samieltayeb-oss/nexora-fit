@@ -12,12 +12,12 @@ export default function OnboardingWizard() {
   const [error, setError] = useState('')
 
   // State
-  const [medicalCleared, setMedicalCleared] = useState(false)
-  const [name, setName] = useState('Sam')
+  const [medicalCleared, setMedicalCleared] = useState(true)
+  const [name, setName] = useState('Sami Suliman')
   const [dob, setDob] = useState('1980-05-02')
   const [height, setHeight] = useState('172')
-  const [weight, setWeight] = useState('81.05')
-  const [goalWeight, setGoalWeight] = useState('75')
+  const [weight, setWeight] = useState('81.0')
+  const [goalWeight, setGoalWeight] = useState('75.0')
 
   const handleNext = () => setStep(s => s + 1)
   const handlePrev = () => setStep(s => s - 1)

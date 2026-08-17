@@ -968,6 +968,21 @@ export default function MorningChallengeContent() {
                   </div>
                 ) : (
                   <div className="space-y-4">
+                    {/* ── SETS X REPS EDUCATIONAL BANNER ── */}
+                    <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-transparent p-3.5 flex items-start gap-3">
+                      <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex-shrink-0 mt-0.5">
+                        <Sparkles className="h-4 w-4" />
+                      </div>
+                      <div className="text-xs">
+                        <div className="font-bold text-amber-300 flex items-center gap-1.5">
+                          How Training Notation Works:
+                        </div>
+                        <p className="text-foreground/80 text-[11px] mt-0.5 leading-relaxed font-medium">
+                          <strong>Formula: Sets × Reps</strong> (e.g. <strong>3 × 20</strong> = Do 20 count, rest 30s, repeat for 3 total rounds).
+                        </p>
+                      </div>
+                    </div>
+
                     {/* Warm-Up */}
                     {selectedDay.warmup.length > 0 && (
                       <div>
@@ -1069,6 +1084,35 @@ export default function MorningChallengeContent() {
 }
 
 // ─────────────────────────────────────────────────────────
+// HELPER: PARSE REPS EXPLANATION (e.g. 3 × 20 -> 3 Sets of 20 Reps)
+// ─────────────────────────────────────────────────────────
+function parseRepsDetails(repsStr: string): { badge: string; subtitle: string } {
+  const match = repsStr.match(/(\d+)\s*[×x*]\s*(\d+s?)/i)
+  if (match) {
+    const sets = match[1]
+    const count = match[2]
+    const isSeconds = count.endsWith('s')
+    const unit = isSeconds ? 'sec hold' : 'reps'
+    return {
+      badge: `${sets} Sets × ${count} ${isSeconds ? '' : 'Reps'}`,
+      subtitle: `${sets} rounds of ${count} ${unit} • ~30s rest`,
+    }
+  }
+
+  if (repsStr.includes('s') || repsStr.includes('sec')) {
+    return {
+      badge: `${repsStr} Hold`,
+      subtitle: `${repsStr} continuous mobility`,
+    }
+  }
+
+  return {
+    badge: repsStr,
+    subtitle: repsStr,
+  }
+}
+
+// ─────────────────────────────────────────────────────────
 // EXERCISE ROW SUB-COMPONENT
 // ─────────────────────────────────────────────────────────
 function ExerciseRow({
@@ -1086,41 +1130,51 @@ function ExerciseRow({
     blue: 'bg-blue-400',
   }[accent]
 
+  const { badge, subtitle } = parseRepsDetails(ex.reps)
+
   return (
     <div
       onClick={onOpenFormCoach}
-      className={`flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-3 transition-all ${
+      className={`flex items-start gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.03] p-3.5 transition-all ${
         onOpenFormCoach
           ? 'hover:border-amber-500/50 hover:bg-amber-500/10 cursor-pointer group'
           : ''
       }`}
     >
-      <div className={`mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full ${dotColor}`} />
+      <div className={`mt-1.5 h-2 w-2 flex-shrink-0 rounded-full ${dotColor}`} />
+      
       <div className="flex-1 min-w-0">
-        <div className="flex items-baseline justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="text-[13px] font-bold text-foreground group-hover:text-amber-300 transition-colors">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[13px] sm:text-sm font-bold text-foreground group-hover:text-amber-300 transition-colors">
               {ex.name}
             </span>
             {onOpenFormCoach && (
-              <span className="flex items-center gap-1 font-mono text-[9px] font-black uppercase text-amber-400 bg-amber-500/20 border border-amber-500/40 px-1.5 py-0.5 rounded-md shadow-xs">
-                <Sparkles className="h-2.5 w-2.5" /> Watch Form GIF
+              <span className="inline-flex items-center gap-1 font-mono text-[9px] font-black uppercase text-amber-400 bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 rounded-md shadow-xs">
+                <Sparkles className="h-2.5 w-2.5" /> Watch GIF Form
               </span>
             )}
           </div>
-          <span
-            className={`flex-shrink-0 font-mono text-[11px] font-black ${
-              accent === 'amber'
-                ? 'text-amber-400'
-                : accent === 'orange'
-                ? 'text-orange-400'
-                : 'text-blue-400'
-            }`}
-          >
-            {ex.reps}
-          </span>
+
+          <div className="flex flex-col sm:items-end">
+            <span
+              className={`font-mono text-xs font-black ${
+                accent === 'amber'
+                  ? 'text-amber-400'
+                  : accent === 'orange'
+                  ? 'text-orange-400'
+                  : 'text-blue-400'
+              }`}
+            >
+              {badge}
+            </span>
+            <span className="text-[10px] text-foreground/50 font-medium">
+              {subtitle}
+            </span>
+          </div>
         </div>
-        <p className="mt-0.5 text-[11px] font-medium text-foreground/50 leading-snug">
+
+        <p className="mt-1 text-[11px] font-medium text-foreground/60 leading-relaxed">
           {ex.tip}
         </p>
       </div>

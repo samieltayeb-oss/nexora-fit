@@ -41,25 +41,40 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8 md:space-y-12 pb-24">
       {/* ── HEADER ───────────────────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
         <div>
-          <h1 className="font-display text-display-md text-foreground">
-            Good morning, Sam
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/15 border border-teal-500/30 text-teal-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+              Diabetic Type 2 Protocol
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/15 border border-amber-500/30 text-amber-300">
+              Weight: 81.0 kg → 75.0 kg Goal
+            </span>
+          </div>
+          <h1 className="font-display text-3xl md:text-4xl font-black text-foreground tracking-tight">
+            Good morning, <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300">Sami Suliman</span>
           </h1>
-          <p className="font-mono text-xs uppercase tracking-wider text-foreground/70 mt-2">
-            Friday, July 31 • Week 1 Phase 1
+          <p className="font-mono text-xs uppercase tracking-wider text-foreground/70 mt-1">
+            28-Day Morning Transformation • Week 1 Phase 1
           </p>
         </div>
         
-        <motion.div 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="h-12 w-12 cursor-pointer overflow-hidden rounded-full border border-border p-[1px] shadow-[0_0_15px_var(--color-primary)]"
-        >
-          <div className="flex h-full w-full items-center justify-center bg-primary text-lg font-black text-background">
-            S
-          </div>
-        </motion.div>
+        <Link href="/more">
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] hover:border-teal-500/40 p-2 pr-4 rounded-2xl cursor-pointer transition-all shadow-lg"
+          >
+            <div className="h-11 w-11 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-400 flex items-center justify-center font-display text-slate-950 font-black text-lg shadow-md shadow-teal-500/30">
+              SS
+            </div>
+            <div className="hidden sm:block text-left">
+              <div className="text-xs font-bold text-foreground">Sami Suliman</div>
+              <div className="text-[10px] font-semibold text-teal-400">81.0 kg · T2D Active</div>
+            </div>
+          </motion.div>
+        </Link>
       </header>
 
       {/* ── 1. MORNING BRIEF ─────────────────────────────────────────────────── */}
@@ -83,63 +98,93 @@ export default function DashboardPage() {
         )}
       </section>
 
-      {/* ── 2. READINESS & TODAY'S WORKOUT ───────────────────────────────────── */}
-      {context && (
-        <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {/* Readiness Card */}
-          <Card className="relative overflow-hidden border-success/30">
-            <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-success/10 blur-[60px]" />
-            <CardContent className="flex h-full flex-col justify-between p-6 md:p-8">
+      {/* ── 2. 28-DAY MORNING CHALLENGE (DAY 1) & READINESS ──────────────────── */}
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* Morning Challenge Day 1 Quick Start */}
+        <Link href="/workout/morning-challenge">
+          <motion.div 
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            className="group relative h-full min-h-[300px] cursor-pointer overflow-hidden rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-950/80 via-[#110f0c] to-black shadow-2xl p-6 sm:p-8 flex flex-col justify-between"
+          >
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-amber-500/10 blur-[90px] pointer-events-none" />
+            
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/40">
+                  <Zap className="h-3 w-3 fill-amber-400" />
+                  Day 1 Active · Ready to Start
+                </span>
+                <span className="font-mono text-xs font-bold text-foreground/50">15 min · Calisthenics</span>
+              </div>
+
+              <h3 className="font-display text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+                28-Day Morning Challenge:<br />
+                <span className="text-amber-400">Day 1 — Wake Up</span>
+              </h3>
+              
+              <p className="text-xs sm:text-sm font-medium text-foreground/70 mt-2 line-clamp-2">
+                Jumping Jacks (3×20) · Bodyweight Squats (3×15) · Wall Push-Ups (2×10). Animated form GIFs included.
+              </p>
+            </div>
+
+            <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/[0.08]">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs">
+                  1%
+                </div>
+                <span className="text-xs font-semibold text-foreground/80">Of your day • Fasting Glucose Drop</span>
+              </div>
+
+              <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black px-4 py-2.5 rounded-xl font-black text-xs shadow-lg group-hover:brightness-110 transition-all">
+                Start Day 1 <ArrowRight className="h-3.5 w-3.5" />
+              </div>
+            </div>
+          </motion.div>
+        </Link>
+
+        {/* Readiness Card */}
+        {context ? (
+          <Card className="relative overflow-hidden border-teal-500/30 bg-gradient-to-br from-teal-950/30 via-surface to-background">
+            <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-teal-500/10 blur-[60px]" />
+            <CardContent className="flex h-full flex-col justify-between p-6 sm:p-8">
               <div>
-                <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-success/10 px-3 py-1 text-xs font-semibold text-success">
-                  <Zap className="h-3.5 w-3.5" /> Readiness
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-teal-500/15 border border-teal-500/30 px-3 py-1 text-xs font-semibold text-teal-400">
+                    <Zap className="h-3.5 w-3.5" /> Readiness & Metabolism
+                  </div>
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-teal-400 font-bold">
+                    {context.recovery.confidence}
+                  </span>
                 </div>
                 <h3 className="mb-2 font-display text-3xl font-bold tracking-tight text-foreground">
                   {context.recovery.status}
                 </h3>
-                <p className="leading-relaxed text-foreground/70">
-                  Last session was {context.recovery.metrics.hoursSinceLastWorkout} hours ago. Your recovery indicators suggest you are ready to push today.
+                <p className="leading-relaxed text-foreground/70 text-sm">
+                  {context.recovery.metrics.hoursSinceLastWorkout} hours since previous session. Glucose utilization is primed for low-impact morning resistance.
                 </p>
-                
-                {/* Confidence Marker */}
-                <div className="mt-4 flex items-center gap-2">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/50">Confidence:</span>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-success font-bold">{context.recovery.confidence}</span>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-border/40 grid grid-cols-2 gap-3">
+                <div className="bg-background/60 p-3 rounded-2xl border border-border/60">
+                  <div className="text-[10px] font-bold text-foreground/50 uppercase">Insulin Sensitivity</div>
+                  <div className="text-sm font-black text-teal-400 mt-0.5">High (GLUT-4 Ready)</div>
+                </div>
+                <div className="bg-background/60 p-3 rounded-2xl border border-border/60">
+                  <div className="text-[10px] font-bold text-foreground/50 uppercase">Weight Baseline</div>
+                  <div className="text-sm font-black text-foreground mt-0.5">81.0 kg</div>
                 </div>
               </div>
             </CardContent>
           </Card>
-
-          {/* Today's Workout */}
-          <Link href="/workout/active">
-            <motion.div 
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              className="group relative h-full min-h-[280px] cursor-pointer overflow-hidden rounded-3xl shadow-2xl"
-            >
-              <Image 
-                src="/artifacts/exercises/hero_dashboard_banner.png" 
-                alt="Today's Workout"
-                fill
-                className="object-cover object-center transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-90" />
-              
-              <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 md:p-8">
-                <span className="mb-3 w-fit rounded-full border border-border-subtle bg-surface/50 px-4 py-1.5 text-xs font-semibold text-foreground backdrop-blur-md">
-                  Action Prescribed
-                </span>
-                <h3 className="mb-2 font-display text-3xl font-bold tracking-tight text-foreground">
-                  {context.recommendation.recommendation.action}
-                </h3>
-                <Button className="mt-4 w-fit gap-2 shadow-2xl">
-                  Start Workout <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </motion.div>
-          </Link>
-        </section>
-      )}
+        ) : (
+          <Card className="p-6">
+            <div className="h-full flex items-center justify-center text-foreground/50 text-sm">
+              Loading metabolic telemetry...
+            </div>
+          </Card>
+        )}
+      </section>
 
       {/* ── 3. PROGRESS & INSIGHTS ───────────────────────────────────────────── */}
       {context && (

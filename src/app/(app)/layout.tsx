@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { CalendarDays, Dumbbell, TrendingUp, HeartPulse, Menu } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageTransition } from '@/design/components/page-transition'
+import { NexoraLogo } from '@/components/brand/nexora-logo'
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
@@ -45,11 +46,11 @@ export default function AppLayout({ children }: { children: ReactNode }) {
           {/* Logo / Avatar */}
           <Link href="/dashboard">
             <motion.div 
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
-              className="w-12 h-12 bg-gradient-to-tr from-[var(--accent-primary)] to-cyan-300 rounded-2xl flex items-center justify-center text-slate-950 font-black text-xl shadow-[0_0_20px_var(--accent-primary-glow)] cursor-pointer"
+              className="cursor-pointer"
             >
-              S
+              <NexoraLogo size="md" showWordmark={false} />
             </motion.div>
           </Link>
 
