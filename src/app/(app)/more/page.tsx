@@ -84,7 +84,7 @@ export default function MorePage() {
                 <ShieldCheck className="w-3.5 h-3.5 text-teal-400" /> Diabetic Type 2 Management
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/15 border border-amber-500/40 rounded-full text-[10px] font-bold text-amber-300">
-                <Scale className="w-3.5 h-3.5 text-amber-400" /> 81.0 kg → 75.0 kg Target
+                <Scale className="w-3.5 h-3.5 text-amber-400" /> 82.70 kg → 75.0 kg Target
               </span>
             </div>
           </div>

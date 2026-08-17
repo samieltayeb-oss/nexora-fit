@@ -177,9 +177,22 @@ export default function ProgressPage() {
             </p>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5 text-amber-300 bg-amber-500/15 border border-amber-500/30 px-4 py-2.5 rounded-2xl text-xs font-bold shadow-lg">
               <TrendingDown className="w-4 h-4 text-amber-400" /> {(weight - 75.0).toFixed(2)} kg to goal
+            </div>
+
+            <div className="relative">
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-teal-500/40 shadow-xl shadow-teal-500/20 bg-slate-900 flex-shrink-0">
+                <img 
+                  src="/brand/owner.png" 
+                  alt="Sami Suliman" 
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-teal-500 text-slate-950 flex items-center justify-center text-[10px] font-black shadow-md">
+                ✓
+              </div>
             </div>
           </div>
         </div>
