@@ -27,29 +27,11 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  const pathname = request.nextUrl.pathname
-  const isAuthRoute = pathname.startsWith('/auth') || pathname === '/login'
-  const isApiRoute = pathname.startsWith('/api')
-
-  if (
-    !user &&
-    !isAuthRoute &&
-    !isApiRoute &&
-    pathname !== '/'
-  ) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
-  }
-
-  if (user && isAuthRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/dashboard'
-    return NextResponse.redirect(url)
+  // Update session cookies gracefully without blocking access
+  try {
+    await supabase.auth.getUser()
+  } catch (err) {
+    // Ignore auth lookup errors for seamless access
   }
 
   return supabaseResponse
