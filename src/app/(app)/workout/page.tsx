@@ -97,7 +97,7 @@ export default function WorkoutHubPage() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <img
-                src="/artifacts/exercises/pushup_illustrated.jpg"
+                src="/artifacts/morning-challenge/push_ups.jpg"
                 alt="Calisthenics"
                 className="h-full w-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105"
               />

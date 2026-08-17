@@ -25,6 +25,7 @@ interface ChallengeDay {
   duration: string
   calories: number
   emoji: string
+  thumb: string
   isRest: boolean
   warmup: Exercise[]
   work: Exercise[]
@@ -38,7 +39,7 @@ interface ChallengeDay {
 const DAYS: ChallengeDay[] = [
   // ── WEEK 1: BUILD THE HABIT ──────────────────────────
   {
-    day: 1, week: 1, emoji: '🌅', isRest: false,
+    day: 1, week: 1, emoji: '🌅', thumb: '/artifacts/morning-challenge/jumping_jacks.jpg', isRest: false,
     title: 'Day 1 — Wake Up',
     focus: 'Full Body Activation',
     duration: '15 min', calories: 90,
@@ -60,7 +61,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 2, week: 1, emoji: '💪', isRest: false,
+    day: 2, week: 1, emoji: '💪', thumb: '/artifacts/morning-challenge/push_ups.jpg', isRest: false,
     title: 'Push Foundation',
     focus: 'Chest & Triceps',
     duration: '15 min', calories: 100,
@@ -81,7 +82,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 3, week: 1, emoji: '🦵', isRest: false,
+    day: 3, week: 1, emoji: '🦵', thumb: '/artifacts/morning-challenge/lunges.jpg', isRest: false,
     title: 'Leg Intro',
     focus: 'Quads & Glutes',
     duration: '15 min', calories: 110,
@@ -102,7 +103,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 4, week: 1, emoji: '🧘', isRest: true,
+    day: 4, week: 1, emoji: '🧘', thumb: '/artifacts/morning-challenge/glute_bridge.jpg', isRest: true,
     title: 'Active Recovery',
     focus: 'Mobility & Breathing',
     duration: '15 min', calories: 40,
@@ -115,7 +116,7 @@ const DAYS: ChallengeDay[] = [
     cooldown: [],
   },
   {
-    day: 5, week: 1, emoji: '🔥', isRest: false,
+    day: 5, week: 1, emoji: '🔥', thumb: '/artifacts/morning-challenge/squats.jpg', isRest: false,
     title: 'Full Body Wake-Up',
     focus: 'Cardio + Strength',
     duration: '15 min', calories: 130,
@@ -135,7 +136,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 6, week: 1, emoji: '💥', isRest: false,
+    day: 6, week: 1, emoji: '💥', thumb: '/artifacts/morning-challenge/crunches.jpg', isRest: false,
     title: 'Core Intro',
     focus: 'Abs & Stability',
     duration: '15 min', calories: 105,
@@ -155,7 +156,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 7, week: 1, emoji: '😴', isRest: true,
+    day: 7, week: 1, emoji: '😴', thumb: '/artifacts/morning-challenge/glute_bridge.jpg', isRest: true,
     title: 'Rest & Restore',
     focus: 'Full Rest',
     duration: '—', calories: 0,
@@ -166,7 +167,7 @@ const DAYS: ChallengeDay[] = [
 
   // ── WEEK 2: FEEL THE BURN ─────────────────────────────
   {
-    day: 8, week: 2, emoji: '🔥', isRest: false,
+    day: 8, week: 2, emoji: '🔥', thumb: '/artifacts/morning-challenge/push_ups.jpg', isRest: false,
     title: 'Push Power',
     focus: 'Chest, Triceps & Shoulders',
     duration: '15 min', calories: 130,
@@ -186,7 +187,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 9, week: 2, emoji: '🦵', isRest: false,
+    day: 9, week: 2, emoji: '🦵', thumb: '/artifacts/morning-challenge/squats.jpg', isRest: false,
     title: 'Leg Burner',
     focus: 'Quads, Hamstrings & Calves',
     duration: '15 min', calories: 145,
@@ -206,7 +207,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 10, week: 2, emoji: '🧱', isRest: false,
+    day: 10, week: 2, emoji: '🧱', thumb: '/artifacts/morning-challenge/plank.jpg', isRest: false,
     title: 'Core Blast',
     focus: 'Full Core Burn',
     duration: '15 min', calories: 120,
@@ -226,7 +227,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 11, week: 2, emoji: '⚡', isRest: false,
+    day: 11, week: 2, emoji: '⚡', thumb: '/artifacts/morning-challenge/high_knees.jpg', isRest: false,
     title: 'HIIT Intro',
     focus: 'Cardio & Fat Burn',
     duration: '15 min', calories: 160,
@@ -245,7 +246,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 12, week: 2, emoji: '🌊', isRest: false,
+    day: 12, week: 2, emoji: '🌊', thumb: '/artifacts/morning-challenge/burpees.jpg', isRest: false,
     title: 'Full Body Flow',
     focus: 'Strength + Cardio Mix',
     duration: '15 min', calories: 150,
@@ -265,7 +266,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 13, week: 2, emoji: '🦸', isRest: false,
+    day: 13, week: 2, emoji: '🦸', thumb: '/artifacts/morning-challenge/superman.jpg', isRest: false,
     title: 'Back & Core',
     focus: 'Posterior Chain',
     duration: '15 min', calories: 115,
@@ -285,7 +286,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 14, week: 2, emoji: '😴', isRest: true,
+    day: 14, week: 2, emoji: '😴', thumb: '/artifacts/morning-challenge/glute_bridge.jpg', isRest: true,
     title: 'Rest & Restore',
     focus: 'Full Rest',
     duration: '—', calories: 0,
@@ -296,7 +297,7 @@ const DAYS: ChallengeDay[] = [
 
   // ── WEEK 3: STRENGTH ──────────────────────────────────
   {
-    day: 15, week: 3, emoji: '💎', isRest: false,
+    day: 15, week: 3, emoji: '💎', thumb: '/artifacts/morning-challenge/push_ups.jpg', isRest: false,
     title: 'Push Circuit',
     focus: 'Chest & Shoulders Peak',
     duration: '15 min', calories: 145,
@@ -316,7 +317,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 16, week: 3, emoji: '🚀', isRest: false,
+    day: 16, week: 3, emoji: '🚀', thumb: '/artifacts/morning-challenge/lunges.jpg', isRest: false,
     title: 'Leg Power',
     focus: 'Explosive Legs',
     duration: '15 min', calories: 175,
@@ -336,7 +337,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 17, week: 3, emoji: '🧱', isRest: false,
+    day: 17, week: 3, emoji: '🧱', thumb: '/artifacts/morning-challenge/crunches.jpg', isRest: false,
     title: 'Core Max',
     focus: 'Plank Variations & Abs',
     duration: '15 min', calories: 130,
@@ -356,7 +357,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 18, week: 3, emoji: '🧘', isRest: true,
+    day: 18, week: 3, emoji: '🧘', thumb: '/artifacts/morning-challenge/superman.jpg', isRest: true,
     title: 'Active Recovery',
     focus: 'Mobility Flow',
     duration: '15 min', calories: 45,
@@ -369,7 +370,7 @@ const DAYS: ChallengeDay[] = [
     cooldown: [],
   },
   {
-    day: 19, week: 3, emoji: '⚡', isRest: false,
+    day: 19, week: 3, emoji: '⚡', thumb: '/artifacts/morning-challenge/burpees.jpg', isRest: false,
     title: 'HIIT Blast',
     focus: 'Cardio & Fat Burn',
     duration: '15 min', calories: 185,
@@ -388,7 +389,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 20, week: 3, emoji: '💪', isRest: false,
+    day: 20, week: 3, emoji: '💪', thumb: '/artifacts/morning-challenge/push_ups.jpg', isRest: false,
     title: 'Upper Body Strength',
     focus: 'Push-Up Variations',
     duration: '15 min', calories: 160,
@@ -408,7 +409,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 21, week: 3, emoji: '😴', isRest: true,
+    day: 21, week: 3, emoji: '😴', thumb: '/artifacts/morning-challenge/glute_bridge.jpg', isRest: true,
     title: 'Rest & Restore',
     focus: 'Full Rest',
     duration: '—', calories: 0,
@@ -419,7 +420,7 @@ const DAYS: ChallengeDay[] = [
 
   // ── WEEK 4: PEAK ──────────────────────────────────────
   {
-    day: 22, week: 4, emoji: '🏔️', isRest: false,
+    day: 22, week: 4, emoji: '🏔️', thumb: '/artifacts/morning-challenge/burpees.jpg', isRest: false,
     title: 'Power Circuit',
     focus: 'Maximum Full Body',
     duration: '15 min', calories: 200,
@@ -438,7 +439,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 23, week: 4, emoji: '🔱', isRest: false,
+    day: 23, week: 4, emoji: '🔱', thumb: '/artifacts/morning-challenge/squats.jpg', isRest: false,
     title: 'Leg Dominator',
     focus: 'Ultimate Leg Day',
     duration: '15 min', calories: 190,
@@ -458,7 +459,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 24, week: 4, emoji: '🧱', isRest: false,
+    day: 24, week: 4, emoji: '🧱', thumb: '/artifacts/morning-challenge/plank.jpg', isRest: false,
     title: 'Core Finisher',
     focus: 'Abs Max Effort',
     duration: '15 min', calories: 150,
@@ -477,7 +478,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 25, week: 4, emoji: '🧘', isRest: true,
+    day: 25, week: 4, emoji: '🧘', thumb: '/artifacts/morning-challenge/superman.jpg', isRest: true,
     title: 'Active Recovery',
     focus: 'Final Prep',
     duration: '15 min', calories: 40,
@@ -490,7 +491,7 @@ const DAYS: ChallengeDay[] = [
     cooldown: [],
   },
   {
-    day: 26, week: 4, emoji: '🌪️', isRest: false,
+    day: 26, week: 4, emoji: '🌪️', thumb: '/artifacts/morning-challenge/high_knees.jpg', isRest: false,
     title: 'HIIT Final',
     focus: 'Maximum Cardio Burn',
     duration: '15 min', calories: 210,
@@ -507,7 +508,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 27, week: 4, emoji: '👑', isRest: false,
+    day: 27, week: 4, emoji: '👑', thumb: '/artifacts/morning-challenge/mountain_climbers.jpg', isRest: false,
     title: 'Upper Body Final',
     focus: 'Push Everything',
     duration: '15 min', calories: 185,
@@ -527,7 +528,7 @@ const DAYS: ChallengeDay[] = [
     ],
   },
   {
-    day: 28, week: 4, emoji: '🏆', isRest: false,
+    day: 28, week: 4, emoji: '🏆', thumb: '/artifacts/morning-challenge/day28_trophy.jpg', isRest: false,
     title: '🏆 Day 28 — DONE',
     focus: 'Full Body Challenge',
     duration: '15 min', calories: 220,
@@ -682,44 +683,49 @@ export default function MorningChallengeContent() {
                       whileTap={canTap ? { scale: 0.93 } : {}}
                       onClick={() => canTap && setSelectedDay(day)}
                       disabled={isLocked}
-                      className={`relative flex flex-col items-center rounded-2xl border p-2.5 transition-all
+                      className={`relative overflow-hidden flex flex-col items-end justify-end rounded-2xl border transition-all aspect-square
                         ${isCurrent
-                          ? 'border-amber-500/60 bg-gradient-to-b from-amber-500/20 to-amber-500/5 shadow-[0_0_16px_rgba(245,158,11,0.2)]'
+                          ? 'border-amber-500/70 shadow-[0_0_20px_rgba(245,158,11,0.25)]'
                           : isDone
-                            ? 'border-white/10 bg-white/[0.04]'
-                            : 'border-white/[0.05] bg-white/[0.02] opacity-60'
+                            ? 'border-white/15'
+                            : 'border-white/[0.05] opacity-55'
                         }`}
                     >
-                      {/* Status indicator */}
-                      <div className="absolute top-1.5 right-1.5">
+                      {/* Background image */}
+                      <img
+                        src={day.thumb}
+                        alt={day.title}
+                        className={`absolute inset-0 h-full w-full object-cover transition-all ${
+                          isLocked ? 'grayscale brightness-50' : isDone ? 'brightness-75' : 'brightness-90'
+                        }`}
+                      />
+                      {/* Dark overlay gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                      {/* Status badge */}
+                      <div className="absolute top-1.5 right-1.5 z-10">
                         {isDone
-                          ? <CheckCircle className="h-3 w-3 text-amber-400 fill-amber-400/20" />
+                          ? <div className="rounded-full bg-amber-500 p-0.5"><CheckCircle className="h-3 w-3 text-black" /></div>
                           : isLocked
-                            ? <Lock className="h-2.5 w-2.5 text-foreground/30" />
+                            ? <Lock className="h-3 w-3 text-white/40" />
                             : isCurrent
-                              ? <Zap className="h-3 w-3 text-amber-400" />
+                              ? <div className="rounded-full bg-amber-500 p-0.5"><Zap className="h-3 w-3 text-black" /></div>
                               : null
                         }
                       </div>
 
-                      {/* Emoji */}
-                      <div className={`mb-1 text-lg leading-none ${isLocked ? 'grayscale opacity-40' : ''}`}>
-                        {day.emoji}
-                      </div>
-
-                      {/* Day number */}
-                      <div className={`font-mono text-[9px] font-black uppercase tracking-wider
-                        ${isCurrent ? 'text-amber-400' : isDone ? 'text-foreground/80' : 'text-foreground/30'}`}
-                      >
-                        Day {day.day}
-                      </div>
-
-                      {/* Rest tag */}
-                      {day.isRest && (
-                        <div className="mt-0.5 rounded-full bg-white/5 px-1.5 py-0.5 text-[8px] font-bold text-foreground/40 uppercase">
-                          Rest
+                      {/* Day label at bottom */}
+                      <div className="relative z-10 w-full px-1.5 pb-1.5">
+                        <div className={`font-mono text-[9px] font-black uppercase tracking-wider ${
+                          isCurrent ? 'text-amber-400' : 'text-white/80'
+                        }`}>
+                          Day {day.day}
                         </div>
-                      )}
+
+                        {day.isRest && (
+                          <div className="text-[8px] font-bold text-white/40 uppercase">Rest</div>
+                        )}
+                      </div>
 
                       {/* Current day pulse ring */}
                       {isCurrent && (
