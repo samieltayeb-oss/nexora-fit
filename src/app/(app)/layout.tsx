@@ -21,7 +21,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full mx-auto md:ml-[88px] relative pb-[100px] md:pb-8 pt-safe px-safe">
+      <main className="flex-1 w-full mx-auto md:ml-[96px] relative pb-[110px] md:pb-8 pt-safe px-safe">
         <div className="max-w-5xl mx-auto w-full pt-4 md:pt-10 px-4 md:px-8">
           <PageTransition>
             {children}
@@ -30,19 +30,19 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </main>
 
       {/* Mobile Premium Glass Dock Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 pb-safe pt-2 bg-gradient-to-t from-[var(--background)] via-[var(--background)] to-transparent pointer-events-none">
-        <div className="glass-panel rounded-[2rem] p-1.5 flex justify-around items-center shadow-2xl pointer-events-auto mx-auto max-w-sm mb-4">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-3 pb-safe pt-2 bg-gradient-to-t from-[var(--background)] via-[var(--background)] to-transparent pointer-events-none">
+        <div className="glass-panel rounded-[2rem] p-1.5 flex justify-around items-center shadow-2xl pointer-events-auto mx-auto max-w-md mb-3 border border-white/10">
           <NavItem href="/dashboard" icon={<CalendarDays className="w-5 h-5" />} label="Today" />
           <NavItem href="/workout" icon={<Dumbbell className="w-5 h-5" />} label="Train" />
           <NavItem href="/progress" icon={<TrendingUp className="w-5 h-5" />} label="Progress" />
-          <NavItem href="/health" icon={<HeartPulse className="w-5 h-5" />} label="Health" />
+          <NavItem href="/health" icon={<HeartPulse className="w-5 h-5" />} label="Health & Meds" />
           <NavItem href="/more" icon={<Menu className="w-5 h-5" />} label="More" />
         </div>
       </nav>
 
       {/* Desktop Minimal Navigation Rail */}
-      <nav className="hidden md:flex flex-col w-[88px] glass-panel border-r border-[var(--surface-border)] fixed left-0 top-0 bottom-0 z-50 py-8 items-center justify-between">
-        <div className="flex flex-col items-center gap-12">
+      <nav className="hidden md:flex flex-col w-[96px] glass-panel border-r border-[var(--surface-border)] fixed left-0 top-0 bottom-0 z-50 py-7 items-center justify-between">
+        <div className="flex flex-col items-center gap-10">
           {/* Logo / Avatar */}
           <Link href="/dashboard">
             <motion.div 
@@ -50,7 +50,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
               whileTap={{ scale: 0.95 }}
               className="cursor-pointer"
             >
-              <NexoraLogo size="md" showWordmark={false} />
+              <NexoraLogo size="lg" showWordmark={false} />
             </motion.div>
           </Link>
 
@@ -59,7 +59,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             <SidebarRailItem href="/dashboard" icon={<CalendarDays className="w-6 h-6" />} label="Today" />
             <SidebarRailItem href="/workout" icon={<Dumbbell className="w-6 h-6" />} label="Train" />
             <SidebarRailItem href="/progress" icon={<TrendingUp className="w-6 h-6" />} label="Progress" />
-            <SidebarRailItem href="/health" icon={<HeartPulse className="w-6 h-6" />} label="Health" />
+            <SidebarRailItem href="/health" icon={<HeartPulse className="w-6 h-6" />} label="Health & Meds" />
           </div>
         </div>
 
@@ -76,18 +76,18 @@ function NavItem({ href, icon, label }: { href: string; icon: React.ReactNode; l
   const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
 
   return (
-    <Link href={href} className="relative flex-1 py-4 px-2 rounded-full flex flex-col items-center justify-center group active:scale-95 transition-transform min-h-[48px]">
+    <Link href={href} className="relative flex-1 py-3 px-1 rounded-full flex flex-col items-center justify-center group active:scale-95 transition-transform min-h-[48px]">
       {isActive && (
         <motion.div 
           layoutId="mobile-nav-indicator"
-          className="absolute inset-0 bg-white/5 rounded-full" 
+          className="absolute inset-0 bg-white/10 rounded-full" 
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
         />
       )}
-      <div className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-[var(--accent-primary)]' : 'text-slate-500 group-hover:text-foreground/90'}`}>
+      <div className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-[var(--accent-primary)]' : 'text-slate-400 group-hover:text-foreground/90'}`}>
         {icon}
       </div>
-      <span className={`text-[10px] font-semibold mt-1 relative z-10 transition-colors duration-300 ${isActive ? 'text-[var(--foreground)]' : 'text-slate-500'}`}>
+      <span className={`text-[9px] sm:text-[10px] font-bold mt-1 relative z-10 transition-colors duration-300 text-center leading-tight whitespace-nowrap ${isActive ? 'text-[var(--foreground)]' : 'text-slate-400'}`}>
         {label}
       </span>
     </Link>
@@ -101,17 +101,18 @@ function SidebarRailItem({ href, icon, label }: { href: string; icon: React.Reac
   return (
     <Link href={href} className="group flex flex-col items-center gap-1.5 relative">
       <div 
-        className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+        className={`w-13 h-13 rounded-2xl flex items-center justify-center transition-all duration-300 ${
           isActive 
-            ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] shadow-[inset_0_0_0_1px_var(--accent-primary-glow)]' 
-            : 'text-slate-500 hover:text-foreground hover:bg-white/5'
+            ? 'bg-[var(--accent-primary)]/15 text-[var(--accent-primary)] shadow-[inset_0_0_0_1px_var(--accent-primary-glow)] ring-2 ring-teal-500/20' 
+            : 'text-slate-400 hover:text-foreground hover:bg-white/5'
         }`}
       >
         {icon}
       </div>
-      <span className={`text-[11px] font-medium transition-colors ${isActive ? 'text-[var(--foreground)]' : 'text-slate-500 opacity-0 group-hover:opacity-100 absolute left-14 bg-surface px-2 py-1 rounded shadow-lg pointer-events-none'}`}>
-        {isActive ? label : label}
+      <span className={`text-[10px] font-bold transition-colors text-center ${isActive ? 'text-teal-300' : 'text-slate-400'}`}>
+        {label}
       </span>
     </Link>
   )
 }
+

@@ -24,8 +24,10 @@ import {
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NexoraLogo } from '@/components/brand/nexora-logo'
+import { useUserProfile } from '@/context/user-profile-context'
 
 export default function MorePage() {
+  const { profile } = useUserProfile()
   const [showRemindersModal, setShowRemindersModal] = useState(false)
   const [showMedicalModal, setShowMedicalModal] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
@@ -44,7 +46,7 @@ export default function MorePage() {
   }
 
   return (
-    <div className="p-4 md:p-8 space-y-6 max-w-2xl mx-auto text-foreground font-sans pb-32">
+    <div className="p-4 md:p-8 space-y-6 max-w-2xl mx-auto text-foreground font-sans pb-36">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -52,83 +54,93 @@ export default function MorePage() {
             <NexoraLogo size="sm" showWordmark={true} />
           </div>
           <h1 className="text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2">
-            Executive Profile & Settings
+            Executive Profile &amp; Settings
           </h1>
-          <p className="text-foreground/70 text-sm">Clinical preferences, hardware sync & account telemetry</p>
+          <p className="text-foreground/70 text-sm">Clinical preferences, hardware sync &amp; account telemetry</p>
         </div>
       </div>
 
-      {/* User Profile Card — SAMI SULIMAN */}
+      {/* User Profile Card */}
       <div className="bg-gradient-to-br from-[#0c1417] via-[#0d1618] to-[#080d0f] border border-teal-500/30 rounded-3xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-xl">
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-teal-500/10 blur-[60px] pointer-events-none" />
         
         <div className="flex flex-col sm:flex-row sm:items-center gap-5 relative z-10">
           <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-teal-500/50 shadow-xl shadow-teal-500/30 flex-shrink-0 bg-slate-900">
             <img 
-              src="/brand/owner.png" 
-              alt="Sami Suliman" 
+              src={profile.avatarUrl} 
+              alt={profile.name} 
               className="w-full h-full object-cover object-top"
             />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-black text-white tracking-tight">Sami Suliman</h2>
+              <h2 className="text-xl font-black text-white tracking-tight">{profile.name}</h2>
               <span className="bg-teal-500/20 text-teal-300 border border-teal-500/30 text-[9px] font-black uppercase px-2 py-0.5 rounded-full">
                 Primary Account
               </span>
             </div>
-            <p className="text-xs text-foreground/70 mt-0.5">sami.suliman@gmail.com</p>
+            <p className="text-xs text-foreground/70 mt-0.5">{profile.email}</p>
 
             <div className="flex flex-wrap items-center gap-2 mt-3">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-500/15 border border-teal-500/40 rounded-full text-[10px] font-bold text-teal-300">
-                <ShieldCheck className="w-3.5 h-3.5 text-teal-400" /> Diabetic Type 2 Management
+                <ShieldCheck className="w-3.5 h-3.5 text-teal-400" /> {profile.medicalCondition}
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/15 border border-amber-500/40 rounded-full text-[10px] font-bold text-amber-300">
-                <Scale className="w-3.5 h-3.5 text-amber-400" /> 82.70 kg → 75.0 kg Target
+                <Scale className="w-3.5 h-3.5 text-amber-400" /> {profile.baselineWeightKg.toFixed(2)} kg → {profile.targetWeightKg.toFixed(2)} kg Target
               </span>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Section 0: Featured Primary Navigation Hub */}
+      <div className="space-y-3">
+        <h3 className="text-xs font-bold text-teal-400 uppercase tracking-wider px-1 flex items-center gap-1.5">
+          <Pill className="w-3.5 h-3.5" /> Clinical Health Hub
+        </h3>
+        
+        <div className="bg-gradient-to-r from-teal-950/40 to-[#0b1619] border border-teal-500/40 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-md">
+          <MenuLink 
+            href="/health"
+            icon={<Pill className="w-6 h-6 text-teal-300" />}
+            title="Health & Medication Center"
+            subtitle="Ozempic, Dapagliflozin, Ramipril, Blood Glucose & Blood Pressure logging"
+            badge="Featured • Alberta Netcare"
+          />
+        </div>
+      </div>
+
       {/* Section 1: Integrations & Hardware */}
       <div className="space-y-3">
-        <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-wider px-1">Hardware & Biometrics</h3>
+        <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-wider px-1">Hardware &amp; Biometrics</h3>
         
         <div className="bg-background/90 border border-border rounded-3xl overflow-hidden shadow-xl backdrop-blur-md divide-y divide-border/60">
           <MenuLink 
             href="/health"
             icon={<Watch className="w-5 h-5 text-rose-400" />}
-            title="Apple Watch & HealthKit"
-            subtitle="Live HR & active caloric burn sync • Active"
+            title="Apple Watch &amp; HealthKit"
+            subtitle="Live HR &amp; active caloric burn telemetry • Auto-sync"
             badge="Connected"
           />
           <MenuLink 
             href="/admin/exercises"
             icon={<Dumbbell className="w-5 h-5 text-primary" />}
-            title="Exercise Visuals & Library Admin"
-            subtitle="Inspect animated keyframes & form library"
+            title="Exercise Visuals &amp; Library Admin"
+            subtitle="Inspect animated keyframes &amp; form library"
           />
         </div>
       </div>
 
       {/* Section 2: Account & Settings */}
       <div className="space-y-3">
-        <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-wider px-1">Clinical Settings & Reminders</h3>
+        <h3 className="text-xs font-bold text-foreground/70 uppercase tracking-wider px-1">Clinical Settings &amp; Reminders</h3>
         
         <div className="bg-background/90 border border-border rounded-3xl overflow-hidden shadow-xl backdrop-blur-md divide-y divide-border/60">
           <MenuLink 
             href="/onboarding"
             icon={<User className="w-5 h-5 text-amber-400" />}
-            title="Fitness Profile & Weight Trajectory"
-            subtitle="Sami Suliman • 82.70 kg VeSync baseline • 75.0 kg goal"
-          />
-          <MenuLink 
-            href="/health"
-            icon={<Pill className="w-5 h-5 text-teal-400" />}
-            title="Prescriptions & Clinical Supplements"
-            subtitle="Ozempic, Dapagliflozin, Ramipril, Aspirin, Statin, Supplements"
-            badge="Netcare"
+            title="Fitness Profile &amp; Weight Trajectory"
+            subtitle={`${profile.name} • ${profile.baselineWeightKg.toFixed(2)} kg baseline • ${profile.targetWeightKg.toFixed(2)} kg goal`}
           />
           <div onClick={() => setShowRemindersModal(true)} className="cursor-pointer">
             <MenuLinkItem 
@@ -141,7 +153,7 @@ export default function MorePage() {
             <MenuLinkItem 
               icon={<ShieldCheck className="w-5 h-5 text-emerald-400" />}
               title="Type 2 Diabetes Safety Limits"
-              subtitle="RPE 5-6 cap • Valsalva prevention active"
+              subtitle="Conservative intensity ceiling • Valsalva avoidance active"
             />
           </div>
         </div>

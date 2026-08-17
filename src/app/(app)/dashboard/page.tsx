@@ -17,8 +17,11 @@ import { Card, CardContent } from '@/design/components/card'
 import { Button } from '@/design/components/button'
 import { fetchIntelligenceBrief } from '@/app/actions/intelligence'
 import type { HybridIntelligenceContext } from '@/lib/intelligence/types'
+import { useUserProfile } from '@/context/user-profile-context'
+import { Pill } from 'lucide-react'
 
 export default function DashboardPage() {
+  const { profile } = useUserProfile()
   const [brief, setBrief] = useState<string>('')
   const [context, setContext] = useState<HybridIntelligenceContext | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -39,24 +42,24 @@ export default function DashboardPage() {
   }, [])
 
   return (
-    <div className="space-y-8 md:space-y-12 pb-24">
+    <div className="space-y-8 md:space-y-10 pb-36">
       {/* ── HEADER ───────────────────────────────────────────────────────────── */}
-      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6 pt-2">
         <div>
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/15 border border-teal-500/30 text-teal-300">
               <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-              Diabetic Type 2 Protocol
+              {profile.medicalCondition}
             </span>
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/15 border border-amber-500/30 text-amber-300">
-              Weight: 82.70 kg → 75.0 kg Goal
+              Weight: {profile.baselineWeightKg.toFixed(2)} kg → {profile.targetWeightKg.toFixed(2)} kg Goal
             </span>
           </div>
           <h1 className="font-display text-3xl md:text-4xl font-black text-foreground tracking-tight">
-            Good morning, <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300">Sami Suliman</span>
+            Good morning, <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300">{profile.name}</span>
           </h1>
           <p className="font-mono text-xs uppercase tracking-wider text-foreground/70 mt-1">
-            28-Day Morning Transformation • Week 1 Phase 1
+            28-Day Morning Transformation • Active Protocol
           </p>
         </div>
         
@@ -68,14 +71,14 @@ export default function DashboardPage() {
           >
             <div className="h-11 w-11 rounded-xl overflow-hidden border border-teal-500/40 shadow-md shadow-teal-500/30 flex-shrink-0 bg-slate-900">
               <img 
-                src="/brand/owner.png" 
-                alt="Sami Suliman" 
+                src={profile.avatarUrl} 
+                alt={profile.name} 
                 className="w-full h-full object-cover object-top"
               />
             </div>
             <div className="text-left hidden sm:block">
-              <div className="text-xs font-black text-white">Sami Suliman</div>
-              <div className="text-[10px] text-teal-400 font-bold">Diabetic Type 2</div>
+              <div className="text-xs font-black text-white">{profile.name}</div>
+              <div className="text-[10px] text-teal-400 font-bold">{profile.medicalCondition}</div>
             </div>
           </motion.div>
         </Link>
@@ -102,14 +105,14 @@ export default function DashboardPage() {
         )}
       </section>
 
-      {/* ── 2. 28-DAY MORNING CHALLENGE (DAY 1) & READINESS ──────────────────── */}
+      {/* ── 2. QUICK ACCESS CARDS: MORNING CHALLENGE + HEALTH & MEDICATION CENTER ── */}
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Morning Challenge Day 1 Quick Start */}
         <Link href="/workout/morning-challenge">
           <motion.div 
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
-            className="group relative h-full min-h-[300px] cursor-pointer overflow-hidden rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-950/80 via-[#110f0c] to-black shadow-2xl p-6 sm:p-8 flex flex-col justify-between"
+            className="group relative h-full min-h-[280px] cursor-pointer overflow-hidden rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-950/80 via-[#110f0c] to-black shadow-2xl p-6 sm:p-7 flex flex-col justify-between"
           >
             <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-amber-500/10 blur-[90px] pointer-events-none" />
             
@@ -128,26 +131,65 @@ export default function DashboardPage() {
               </h3>
               
               <p className="text-xs sm:text-sm font-medium text-foreground/70 mt-2 line-clamp-2">
-                Jumping Jacks (3×20) · Bodyweight Squats (3×15) · Wall Push-Ups (2×10). Animated form GIFs included.
+                Jumping Jacks (3×20) · Bodyweight Squats (3×15) · Wall Push-Ups (2×10). Form coach GIFs included.
               </p>
             </div>
 
             <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/[0.08]">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs">
-                  1%
-                </div>
-                <span className="text-xs font-semibold text-foreground/80">Of your day • Fasting Glucose Drop</span>
+                <span className="text-xs font-semibold text-foreground/80">Stimulates GLUT-4 Muscle Glucose Translocation</span>
               </div>
 
-              <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black px-4 py-2.5 rounded-xl font-black text-xs shadow-lg group-hover:brightness-110 transition-all">
+              <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black px-4 py-2.5 rounded-xl font-black text-xs shadow-lg group-hover:brightness-110 transition-all min-h-[44px]">
                 Start Day 1 <ArrowRight className="h-3.5 w-3.5" />
               </div>
             </div>
           </motion.div>
         </Link>
 
-        {/* Readiness Card */}
+        {/* Health & Medication Center Quick Gateway */}
+        <Link href="/health">
+          <motion.div 
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            className="group relative h-full min-h-[280px] cursor-pointer overflow-hidden rounded-3xl border border-teal-500/40 bg-gradient-to-br from-[#0c181b] via-[#0d1618] to-black shadow-2xl p-6 sm:p-7 flex flex-col justify-between"
+          >
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-teal-500/10 blur-[90px] pointer-events-none" />
+            
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/20 text-teal-400 border border-teal-500/40">
+                  <Pill className="h-3 w-3 text-teal-400" />
+                  Prescriptions &amp; Telemetry
+                </span>
+                <span className="font-mono text-xs font-bold text-teal-300">Alberta Netcare</span>
+              </div>
+
+              <h3 className="font-display text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+                Health &amp; Medication<br />
+                <span className="text-teal-400">Clinical Center</span>
+              </h3>
+              
+              <p className="text-xs sm:text-sm font-medium text-foreground/70 mt-2">
+                Ozempic · Dapagliflozin · Ramipril · Aspirin · Rosuvastatin · Creatine (5g) &amp; Blood Glucose Logging.
+              </p>
+            </div>
+
+            <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/[0.08]">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-teal-300/90">Daily Doses &amp; Exercise Safety Cues</span>
+              </div>
+
+              <div className="flex items-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-400 text-black px-4 py-2.5 rounded-xl font-black text-xs shadow-lg group-hover:brightness-110 transition-all min-h-[44px]">
+                Open Health Hub <ArrowRight className="h-3.5 w-3.5" />
+              </div>
+            </div>
+          </motion.div>
+        </Link>
+      </section>
+
+      {/* ── 3. READINESS & RECOVERY ────────────────────────────────────────── */}
+      <section>
         {context ? (
           <Card className="relative overflow-hidden border-teal-500/30 bg-gradient-to-br from-teal-950/30 via-surface to-background">
             <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-teal-500/10 blur-[60px]" />
@@ -155,7 +197,7 @@ export default function DashboardPage() {
               <div>
                 <div className="mb-4 flex items-center justify-between">
                   <div className="inline-flex items-center gap-2 rounded-full bg-teal-500/15 border border-teal-500/30 px-3 py-1 text-xs font-semibold text-teal-400">
-                    <Zap className="h-3.5 w-3.5" /> Readiness & Metabolism
+                    <Zap className="h-3.5 w-3.5" /> Readiness &amp; Metabolism
                   </div>
                   <span className="font-mono text-[10px] uppercase tracking-wider text-teal-400 font-bold">
                     {context.recovery.confidence}
@@ -172,11 +214,11 @@ export default function DashboardPage() {
               <div className="mt-6 pt-4 border-t border-border/40 grid grid-cols-2 gap-3">
                 <div className="bg-background/60 p-3 rounded-2xl border border-border/60">
                   <div className="text-[10px] font-bold text-foreground/50 uppercase">Insulin Sensitivity</div>
-                  <div className="text-sm font-black text-teal-400 mt-0.5">High (GLUT-4 Ready)</div>
+                  <div className="text-sm font-black text-teal-400 mt-0.5">Optimal (GLUT-4 Ready)</div>
                 </div>
                 <div className="bg-background/60 p-3 rounded-2xl border border-border/60">
                   <div className="text-[10px] font-bold text-foreground/50 uppercase">Weight Baseline</div>
-                  <div className="text-sm font-black text-foreground mt-0.5">81.0 kg</div>
+                  <div className="text-sm font-black text-foreground mt-0.5">{profile.baselineWeightKg.toFixed(2)} kg</div>
                 </div>
               </div>
             </CardContent>

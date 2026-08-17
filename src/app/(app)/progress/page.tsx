@@ -24,10 +24,13 @@ import { createClient } from '@/utils/supabase/client'
 import { NumberCounter } from '@/components/ui/number-counter'
 import { triggerCelebrationConfetti } from '@/components/ui/celebration'
 
+import { useUserProfile } from '@/context/user-profile-context'
+
 const STORAGE_KEY_COMPOSITION = 'samfit_vesync_composition'
 
 export default function ProgressPage() {
-  const [weight, setWeight] = useState<number>(82.70)
+  const { profile, updateWeight } = useUserProfile()
+  const [weight, setWeight] = useState<number>(profile.baselineWeightKg)
   const [bodyFat, setBodyFat] = useState<number>(24.3)
   const [muscleMass, setMuscleMass] = useState<number>(59.37)
   const [visceralFat, setVisceralFat] = useState<number>(10)
@@ -44,7 +47,7 @@ export default function ProgressPage() {
 
   // Sync Modal State
   const [showSyncModal, setShowSyncModal] = useState<boolean>(false)
-  const [inputWeight, setInputWeight] = useState<string>('82.70')
+  const [inputWeight, setInputWeight] = useState<string>(profile.baselineWeightKg.toString())
   const [inputBodyFat, setInputBodyFat] = useState<string>('24.3')
   const [inputVisceral, setInputVisceral] = useState<string>('10')
   const [activeTab, setActiveTab] = useState<'quick_log' | 'watch_setup'>('quick_log')
@@ -82,11 +85,12 @@ export default function ProgressPage() {
   const handleSaveVeSync = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    const parsedWeight = parseFloat(inputWeight) || 82.70
+    const parsedWeight = parseFloat(inputWeight) || profile.baselineWeightKg
     const parsedBodyFat = parseFloat(inputBodyFat) || 24.3
     const parsedVisceral = parseInt(inputVisceral) || 10
 
     setWeight(parsedWeight)
+    updateWeight(parsedWeight)
     setBodyFat(parsedBodyFat)
     setVisceralFat(parsedVisceral)
     recalculateMetrics(parsedWeight, parsedBodyFat)
@@ -129,7 +133,7 @@ export default function ProgressPage() {
   }
 
   return (
-    <div className="space-y-6 md:space-y-8 pb-32">
+    <div className="space-y-6 md:space-y-8 pb-36">
       
       {/* ── TOP HEADER ────────────────────────────────────────────────────────── */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -145,12 +149,14 @@ export default function ProgressPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight mt-2 flex items-center gap-2">
             Body Composition
           </h1>
-          <p className="text-foreground/70 text-sm font-medium mt-1">Live metrics from your smart fitness scale</p>
+          <p className="text-foreground/70 text-sm font-medium mt-1">
+            Estimated body composition trends from your smart fitness scale (bioimpedance)
+          </p>
         </div>
 
         <button 
           onClick={() => setShowSyncModal(true)}
-          className="bg-gradient-to-r from-teal-500 to-cyan-400 text-slate-950 text-xs font-black px-5 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-teal-500/20 active:scale-95 cursor-pointer hover:brightness-110"
+          className="bg-gradient-to-r from-teal-500 to-cyan-400 text-slate-950 text-xs font-black px-5 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-teal-500/20 active:scale-95 cursor-pointer hover:brightness-110 min-h-[44px]"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> 
           <span>Sync Scale / Manual Input</span>
@@ -166,27 +172,27 @@ export default function ProgressPage() {
             <div className="flex items-center gap-2">
               <h2 className="text-xs font-black text-foreground/60 uppercase tracking-widest">Current Weight</h2>
               <span className="bg-teal-500/20 text-teal-300 border border-teal-500/30 text-[9px] font-black uppercase px-2 py-0.5 rounded-full">
-                VeSync Verified
+                VeSync Scale Telemetry
               </span>
             </div>
             <div className="text-6xl md:text-7xl font-black text-white tracking-tighter mt-1 flex items-baseline gap-2">
               <NumberCounter value={weight} decimals={2} /> <span className="text-2xl text-teal-400 font-bold tracking-normal">kg</span>
             </div>
             <p className="text-xs text-foreground/60 mt-1 font-medium">
-              Sami Suliman • Target: <span className="text-amber-300 font-bold">75.00 kg</span> ({Number((weight - 75.0).toFixed(2))} kg to goal)
+              {profile.name} • Target: <span className="text-amber-300 font-bold">{profile.targetWeightKg.toFixed(2)} kg</span> ({Number((weight - profile.targetWeightKg).toFixed(2))} kg to goal)
             </p>
           </div>
           
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5 text-amber-300 bg-amber-500/15 border border-amber-500/30 px-4 py-2.5 rounded-2xl text-xs font-bold shadow-lg">
-              <TrendingDown className="w-4 h-4 text-amber-400" /> {(weight - 75.0).toFixed(2)} kg to goal
+              <TrendingDown className="w-4 h-4 text-amber-400" /> {(weight - profile.targetWeightKg).toFixed(2)} kg to goal
             </div>
 
             <div className="relative">
               <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-teal-500/40 shadow-xl shadow-teal-500/20 bg-slate-900 flex-shrink-0">
                 <img 
-                  src="/brand/owner.png" 
-                  alt="Sami Suliman" 
+                  src={profile.avatarUrl} 
+                  alt={profile.name} 
                   className="w-full h-full object-cover object-center"
                 />
               </div>
@@ -318,9 +324,10 @@ export default function ProgressPage() {
                     <input 
                       type="number" 
                       step="0.05"
+                      inputMode="decimal"
                       value={inputWeight}
                       onChange={e => setInputWeight(e.target.value)}
-                      placeholder="82.70"
+                      placeholder={profile.baselineWeightKg.toString()}
                       className="w-full bg-black/60 border border-teal-500/30 rounded-xl p-3.5 text-2xl font-black text-teal-300 outline-hidden focus:border-teal-400"
                       required
                     />
@@ -329,25 +336,27 @@ export default function ProgressPage() {
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-bold text-foreground/70 mb-1">
-                        Body Fat %
+                        Body Fat % (Estimate)
                       </label>
                       <input 
                         type="number" 
                         step="0.1"
+                        inputMode="decimal"
                         value={inputBodyFat}
                         onChange={e => setInputBodyFat(e.target.value)}
-                        placeholder="23.8"
+                        placeholder="24.3"
                         className="w-full bg-black/60 border border-white/10 rounded-xl p-3 text-sm font-bold text-white outline-hidden"
                       />
                     </div>
 
                     <div>
                       <label className="block text-xs font-bold text-foreground/70 mb-1">
-                        Visceral Fat Level
+                        Visceral Fat (Level)
                       </label>
                       <input 
                         type="number" 
                         step="1"
+                        inputMode="numeric"
                         value={inputVisceral}
                         onChange={e => setInputVisceral(e.target.value)}
                         placeholder="10"
@@ -358,10 +367,10 @@ export default function ProgressPage() {
 
                   <button
                     type="submit"
-                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-teal-400 to-cyan-400 text-slate-950 font-black text-sm shadow-xl shadow-teal-500/20 hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-teal-400 to-cyan-400 text-slate-950 font-black text-sm shadow-xl shadow-teal-500/20 hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[48px]"
                   >
                     {syncSuccess ? (
-                      <><Check className="w-5 h-5" /> Saved &amp; Calibrated to 82.70 kg!</>
+                      <><Check className="w-5 h-5" /> Saved &amp; Calibrated to {inputWeight} kg!</>
                     ) : (
                       <><RefreshCw className="w-4 h-4" /> Save Scale Reading ({inputWeight} kg)</>
                     )}

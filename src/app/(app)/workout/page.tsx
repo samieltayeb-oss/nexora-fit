@@ -2,263 +2,172 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Dumbbell, PersonStanding, ChevronRight, Flame, Clock, Trophy, Star, Sun } from 'lucide-react'
-import { Card, CardContent } from '@/design/components/card'
+import { Dumbbell, ChevronRight, Flame, Clock, Trophy, Sun, Sparkles, Play, Star } from 'lucide-react'
 
 export default function WorkoutHubPage() {
   return (
-    <div className="min-h-screen pb-32">
+    <div className="min-h-screen pb-36 space-y-6">
       {/* Header */}
-      <div className="px-5 pb-6 pt-10">
-        <p className="mb-1 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-primary">NEXORA FIT</p>
-        <h1 className="font-display text-3xl font-black leading-tight tracking-tight text-foreground">
-          Choose Your<br />
-          <span className="text-primary">Training Style</span>
+      <div className="pt-4">
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/15 border border-teal-500/30 text-teal-300">
+            NEXORA FIT Training Hub
+          </span>
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/15 border border-amber-500/30 text-amber-300 flex items-center gap-1">
+            <Sparkles className="w-3 h-3" /> GIF Motion Coach Active
+          </span>
+        </div>
+        <h1 className="font-display text-3xl md:text-4xl font-black leading-tight tracking-tight text-foreground">
+          Select Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300">Transformation Program</span>
         </h1>
-        <p className="mt-2 text-sm font-medium text-foreground/70">Two complete 28-day transformation programs</p>
+        <p className="mt-1.5 text-xs sm:text-sm font-medium text-foreground/70">
+          Clinically structured for Type 2 Diabetes management, lean tissue preservation, and visceral fat reduction.
+        </p>
       </div>
 
-      {/* Program Cards */}
-      <div className="space-y-4 px-5">
+      {/* Program Cards Grid */}
+      <div className="space-y-5">
 
-        {/* Gym Machine Workout */}
-        <Link href="/workout/program?type=gym">
-          <motion.div
-            whileTap={{ scale: 0.97 }}
-            className="group relative overflow-hidden rounded-3xl border border-border-subtle bg-surface shadow-sm transition-shadow duration-500 hover:shadow-[0_0_30px_var(--color-primary)]"
-            style={{ minHeight: 200 }}
-          >
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              <img
-                src="/artifacts/exercises/chest_press_illustrated.jpg"
-                alt="Gym Workout"
-                className="h-full w-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-surface/95 via-surface/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-            </div>
-
-            {/* Content */}
-            <div className="relative z-10 p-6">
-              <div className="mb-3 flex items-center gap-2">
-                <div className="rounded-xl border border-primary/40 bg-primary/20 p-2">
-                  <Dumbbell className="h-5 w-5 text-primary" />
-                </div>
-                <span className="font-mono text-[10px] font-black uppercase tracking-[0.15em] text-primary">Machine Training</span>
-              </div>
-
-              <h2 className="mb-1 font-display text-2xl font-black tracking-tight text-foreground">GYM STRENGTH<br />CHALLENGE</h2>
-              <p className="mb-4 text-xs font-medium text-foreground/90">Leg Press · Chest Press · Lat Pulldown · Seated Row · and more</p>
-
-              <div className="mb-4 flex items-center gap-4">
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Clock className="h-3.5 w-3.5 text-primary" />
-                  35–50 min / session
-                </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Flame className="h-3.5 w-3.5 text-warning" />
-                  180–270 cal
-                </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Trophy className="h-3.5 w-3.5 text-primary" />
-                  28 Days
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div className="flex-1 overflow-hidden rounded-full bg-surface-elevated h-1.5">
-                  <div className="h-full w-[4%] rounded-full bg-primary" />
-                </div>
-                <span className="text-[10px] font-bold text-foreground/70">1 / 28 done</span>
-              </div>
-
-              <div className="mt-4 flex items-center justify-between">
-                <div className="flex gap-1">
-                  {['Beginner', 'Gym', 'Machine'].map(tag => (
-                    <span key={tag} className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-[9px] font-black text-primary">{tag}</span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-black text-background shadow-lg">
-                  Start <ChevronRight className="h-3.5 w-3.5" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </Link>
-
-        {/* Calisthenics / Bodyweight */}
-        <Link href="/workout/program?type=calisthenics">
-          <motion.div
-            whileTap={{ scale: 0.97 }}
-            className="group relative overflow-hidden rounded-3xl border border-border-subtle bg-surface shadow-sm transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(34,197,94,0.2)]"
-            style={{ minHeight: 200 }}
-          >
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              <img
-                src="/artifacts/morning-challenge/push_ups.jpg"
-                alt="Calisthenics"
-                className="h-full w-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-surface/95 via-surface/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-            </div>
-
-            {/* Content */}
-            <div className="relative z-10 p-6">
-              <div className="mb-3 flex items-center gap-2">
-                <div className="rounded-xl border border-success/40 bg-success/20 p-2">
-                  <PersonStanding className="h-5 w-5 text-success" />
-                </div>
-                <span className="font-mono text-[10px] font-black uppercase tracking-[0.15em] text-success">Bodyweight</span>
-              </div>
-
-              <h2 className="mb-1 font-display text-2xl font-black tracking-tight text-foreground">CALISTHENICS<br />CHALLENGE</h2>
-              <p className="mb-4 text-xs font-medium text-foreground/90">Push-Ups · Planks · Burpees · Mountain Climbers · Lunges · and more</p>
-
-              <div className="mb-4 flex items-center gap-4">
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Clock className="h-3.5 w-3.5 text-success" />
-                  15–30 min / day
-                </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Flame className="h-3.5 w-3.5 text-warning" />
-                  120–200 cal
-                </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Trophy className="h-3.5 w-3.5 text-success" />
-                  28 Days
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div className="flex-1 overflow-hidden rounded-full bg-surface-elevated h-1.5">
-                  <div className="h-full w-0 rounded-full bg-success" />
-                </div>
-                <span className="text-[10px] font-bold text-foreground/70">0 / 28 done</span>
-              </div>
-
-              <div className="mt-4 flex items-center justify-between">
-                <div className="flex gap-1">
-                  {['No Equipment', 'Home', 'Outdoor'].map(tag => (
-                    <span key={tag} className="rounded-full border border-success/20 bg-success/10 px-2 py-0.5 text-[9px] font-black text-success">{tag}</span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-1.5 rounded-xl bg-success px-4 py-2 text-xs font-black text-background shadow-lg">
-                  Start <ChevronRight className="h-3.5 w-3.5" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </Link>
-
-        {/* ✨ Morning Challenge — 15 Min Home */}
+        {/* 1. 28-DAY MORNING TRANSFORMATION (15-Min Home Challenge) */}
         <Link href="/workout/morning-challenge">
           <motion.div
-            whileTap={{ scale: 0.97 }}
-            className="group relative overflow-hidden rounded-3xl border border-amber-500/30 bg-surface shadow-sm transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]"
-            style={{ minHeight: 200 }}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
+            className="group relative overflow-hidden rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-950/70 via-[#100e0a] to-[#0a0a0c] shadow-2xl p-6 sm:p-7 transition-all hover:border-amber-400/60 cursor-pointer"
           >
-            {/* Sunrise gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-950/80 via-surface/90 to-surface" />
-            <div className="absolute top-0 right-0 w-[200px] h-[200px] rounded-full bg-amber-500/10 blur-[60px] pointer-events-none" />
-
-            {/* Content */}
-            <div className="relative z-10 p-6">
-              <div className="mb-3 flex items-center gap-2">
-                <div className="rounded-xl border border-amber-500/40 bg-amber-500/15 p-2">
-                  <Sun className="h-5 w-5 text-amber-400" />
+            {/* Ambient glow */}
+            <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-amber-500/10 blur-[90px] pointer-events-none" />
+            
+            <div className="relative z-10">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="rounded-xl border border-amber-500/40 bg-amber-500/20 p-2 text-amber-400">
+                    <Sun className="h-5 w-5" />
+                  </div>
+                  <span className="font-mono text-[10px] font-black uppercase tracking-[0.15em] text-amber-400">
+                    Morning Routine · Home Calisthenics
+                  </span>
                 </div>
-                <span className="font-mono text-[10px] font-black uppercase tracking-[0.15em] text-amber-400">
-                  Morning Routine · Home
+                <span className="px-2.5 py-1 bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-black uppercase rounded-lg flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" /> Looping Form GIFs
                 </span>
               </div>
 
-              <h2 className="mb-1 font-display text-2xl font-black tracking-tight text-foreground">
-                28-DAY MORNING<br />CHALLENGE
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white mb-1.5">
+                28-DAY MORNING CHALLENGE
               </h2>
-              <p className="mb-4 text-xs font-medium text-foreground/80">
-                Push-Ups · Squats · Plank · Burpees · Jumping Jacks · No gym needed
+              <p className="text-xs sm:text-sm text-foreground/80 font-medium mb-4 max-w-xl">
+                15 minutes every morning to stimulate muscle GLUT-4 glucose clearing without insulin spikes. Push-ups, Squats, Planks &amp; Lunges.
               </p>
 
-              <div className="mb-4 flex items-center gap-4">
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Clock className="h-3.5 w-3.5 text-amber-400" />
-                  15 min / morning
+              <div className="flex flex-wrap items-center gap-3 text-xs font-bold text-foreground/90 mb-5">
+                <div className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-xl border border-white/10">
+                  <Clock className="h-3.5 w-3.5 text-amber-400" /> 15 min / day
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Flame className="h-3.5 w-3.5 text-warning" />
-                  90–220 cal
+                <div className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-xl border border-white/10">
+                  <Flame className="h-3.5 w-3.5 text-amber-400" /> 90–220 cal
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-foreground/90">
-                  <Trophy className="h-3.5 w-3.5 text-amber-400" />
-                  28 Days
+                <div className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-xl border border-white/10">
+                  <Trophy className="h-3.5 w-3.5 text-amber-400" /> 28 Days Sequential
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <div className="flex-1 overflow-hidden rounded-full bg-surface-elevated h-1.5">
-                  <div className="h-full w-[11%] rounded-full bg-gradient-to-r from-amber-500 to-orange-400" />
-                </div>
-                <span className="text-[10px] font-bold text-foreground/70">3 / 28 done</span>
-              </div>
-
-              <div className="mt-4 flex items-center justify-between">
-                <div className="flex gap-1">
-                  {(['No Equipment', 'Home', '15 Min'] as const).map(tag => (
-                    <span key={tag} className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[9px] font-black text-amber-400">{tag}</span>
+              <div className="flex items-center justify-between pt-2 border-t border-white/[0.08]">
+                <div className="flex gap-1.5 flex-wrap">
+                  {['No Equipment', 'Home Floor', 'RPE 5–6 Safe'].map(tag => (
+                    <span key={tag} className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[9px] font-black text-amber-300">
+                      {tag}
+                    </span>
                   ))}
                 </div>
-                <div className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 text-xs font-black text-black shadow-lg">
-                  Start <ChevronRight className="h-3.5 w-3.5" />
+                <div className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-400 px-4 py-2 text-xs font-black text-slate-950 shadow-lg shadow-amber-500/30 group-hover:brightness-110 transition-all">
+                  Open Day 1 <ChevronRight className="h-4 w-4" />
                 </div>
               </div>
             </div>
           </motion.div>
         </Link>
 
-        {/* Quick Stats */}
-        <div className="mt-2 grid grid-cols-3 gap-3">
-          <Card className="cursor-pointer transition-colors hover:bg-surface-elevated">
-            <CardContent className="p-4 text-center">
-              <div className="font-display text-xl font-black text-primary">56</div>
-              <div className="mt-0.5 font-mono text-[10px] font-bold text-foreground/70">Total Days</div>
-            </CardContent>
-          </Card>
-          <Card className="cursor-pointer transition-colors hover:bg-surface-elevated">
-            <CardContent className="p-4 text-center">
-              <div className="font-display text-xl font-black text-primary">22</div>
-              <div className="mt-0.5 font-mono text-[10px] font-bold text-foreground/70">Exercises</div>
-            </CardContent>
-          </Card>
-          <Card className="cursor-pointer transition-colors hover:bg-surface-elevated">
-            <CardContent className="p-4 text-center">
-              <div className="font-display text-xl font-black text-primary">
-                <Star className="mx-auto h-5 w-5 fill-primary drop-shadow-[0_0_8px_var(--color-primary)]" />
+        {/* 2. GYM STRENGTH & MACHINE CHALLENGE */}
+        <Link href="/workout/program?type=gym">
+          <motion.div
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
+            className="group relative overflow-hidden rounded-3xl border border-teal-500/40 bg-gradient-to-br from-teal-950/60 via-[#0d1618] to-black shadow-2xl p-6 sm:p-7 transition-all hover:border-teal-400/60 cursor-pointer"
+          >
+            {/* Ambient glow */}
+            <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-teal-500/10 blur-[90px] pointer-events-none" />
+            
+            <div className="relative z-10">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="rounded-xl border border-teal-500/40 bg-teal-500/20 p-2 text-teal-400">
+                    <Dumbbell className="h-5 w-5" />
+                  </div>
+                  <span className="font-mono text-[10px] font-black uppercase tracking-[0.15em] text-teal-400">
+                    Gym Machine Foundation
+                  </span>
+                </div>
+                <span className="px-2.5 py-1 bg-teal-500/20 border border-teal-500/40 text-teal-300 text-[10px] font-black uppercase rounded-lg flex items-center gap-1">
+                  <Play className="w-3 h-3 fill-teal-300" /> Animated Motion Guide
+                </span>
               </div>
-              <div className="mt-0.5 font-mono text-[10px] font-bold text-foreground/70">Premium</div>
-            </CardContent>
-          </Card>
-        </div>
 
-        {/* Exercise Library Link */}
-        <Link href="/workout/library">
-          <Card className="group cursor-pointer transition-colors hover:bg-surface-elevated">
-            <CardContent className="flex items-center justify-between p-4">
-              <div className="flex items-center gap-3">
-                <div className="rounded-xl bg-surface-elevated p-2.5 transition-colors group-hover:bg-primary/20">
-                  <Dumbbell className="h-4 w-4 text-foreground/90 transition-colors group-hover:text-primary" />
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white mb-1.5">
+                GYM MACHINE ROUTINE
+              </h2>
+              <p className="text-xs sm:text-sm text-foreground/80 font-medium mb-4 max-w-xl">
+                Joint-friendly machine exercises with guided paths. Leg Press, Chest Press, Lat Pulldown, Seated Row, Leg Extension &amp; Cable Triceps.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 text-xs font-bold text-foreground/90 mb-5">
+                <div className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-xl border border-white/10">
+                  <Clock className="h-3.5 w-3.5 text-teal-400" /> 35–45 min / session
                 </div>
-                <div>
-                  <div className="text-sm font-bold text-foreground transition-colors group-hover:text-primary">Exercise Library</div>
-                  <div className="text-[11px] font-medium text-foreground/70">Form guides · Machine setup · Tips</div>
+                <div className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-xl border border-white/10">
+                  <Flame className="h-3.5 w-3.5 text-teal-400" /> 180–270 cal
+                </div>
+                <div className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-xl border border-white/10">
+                  <Trophy className="h-3.5 w-3.5 text-teal-400" /> 28 Days Program
                 </div>
               </div>
-              <ChevronRight className="h-4 w-4 text-foreground/50 transition-colors group-hover:text-primary" />
-            </CardContent>
-          </Card>
+
+              <div className="flex items-center justify-between pt-2 border-t border-white/[0.08]">
+                <div className="flex gap-1.5 flex-wrap">
+                  {['Gym Machines', 'Form Visualizer', 'Hypertrophy'].map(tag => (
+                    <span key={tag} className="rounded-full border border-teal-500/30 bg-teal-500/10 px-2.5 py-0.5 text-[9px] font-black text-teal-300">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-400 px-4 py-2 text-xs font-black text-slate-950 shadow-lg shadow-teal-500/30 group-hover:brightness-110 transition-all">
+                  Start Routine <ChevronRight className="h-4 w-4" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </Link>
+
+        {/* Quick Exercise Library Link */}
+        <Link href="/workout/library">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-teal-500/40 transition-all flex items-center justify-between cursor-pointer group">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-white/[0.04] text-foreground/80 group-hover:text-teal-400 transition-colors">
+                <Dumbbell className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-white group-hover:text-teal-300 transition-colors">
+                  Exercise Motion &amp; Technique Library
+                </h4>
+                <p className="text-xs text-foreground/60">
+                  Inspect all machine adjustments, form animations, and safety limits
+                </p>
+              </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-foreground/40 group-hover:text-teal-300 transition-colors" />
+          </div>
+        </Link>
+
       </div>
     </div>
   )

@@ -20,6 +20,7 @@ const fontMono = Space_Mono({
 });
 
 import { SyncStatusIndicator } from "@/design/components/sync-status-indicator";
+import { UserProfileProvider } from "@/context/user-profile-context";
 import "./globals.css";
 
 export const viewport = {
@@ -27,19 +28,19 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Nexora Health",
-  description: "Stronger Heart. Better Health. Sustainable Progress.",
+  title: "NEXORA FIT — Executive Health Architecture",
+  description: "Precision health management, clinical medication adherence & guided transformation.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "Nexora Health",
+    statusBarStyle: "black-translucent",
+    title: "NEXORA FIT",
   },
   openGraph: {
-    title: "Nexora Health",
-    description: "Stronger Heart. Better Health. Sustainable Progress.",
-    url: "https://health.nexora.ai",
-    siteName: "Nexora Health",
+    title: "NEXORA FIT",
+    description: "Precision health management & clinical fitness protocol.",
+    url: "https://nexora-fit.vercel.app",
+    siteName: "NEXORA FIT",
     type: "website",
   },
 };
@@ -54,10 +55,13 @@ export default function RootLayout({
       lang="en"
       className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-body">
-        {children}
-        <SyncStatusIndicator />
+      <body className="min-h-full flex flex-col font-body bg-[#0a0a0f] text-foreground">
+        <UserProfileProvider>
+          {children}
+          <SyncStatusIndicator />
+        </UserProfileProvider>
       </body>
     </html>
   );
 }
+
