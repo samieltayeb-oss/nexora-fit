@@ -1,5 +1,5 @@
 import { login, signup } from './actions'
-import { Activity } from 'lucide-react'
+import { NexoraLogo } from '@/components/brand/nexora-logo'
 
 export default async function LoginPage({
   searchParams,
@@ -11,15 +11,13 @@ export default async function LoginPage({
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
-          <div className="bg-primary/10 p-4 rounded-full border border-primary/20">
-            <Activity className="w-10 h-10 text-primary" />
-          </div>
+          <NexoraLogo size="lg" showWordmark={true} showTagline={true} />
         </div>
         
         <div className="bg-background border border-border rounded-2xl p-8 shadow-2xl backdrop-blur-xl">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">NEXORA FIT</h1>
-            <p className="text-foreground/70 text-sm">Stronger Heart. Better Health. Sustainable Progress.</p>
+            <h1 className="text-2xl font-bold text-foreground mb-1 tracking-tight">Executive Longevity Portal</h1>
+            <p className="text-foreground/70 text-xs">Precision Glycemic & Physical Conditioning</p>
           </div>
 
           <form className="space-y-6">

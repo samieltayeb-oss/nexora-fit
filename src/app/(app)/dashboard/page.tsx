@@ -66,12 +66,16 @@ export default function DashboardPage() {
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] hover:border-teal-500/40 p-2 pr-4 rounded-2xl cursor-pointer transition-all shadow-lg"
           >
-            <div className="h-11 w-11 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-400 flex items-center justify-center font-display text-slate-950 font-black text-lg shadow-md shadow-teal-500/30">
-              SS
+            <div className="h-11 w-11 rounded-xl overflow-hidden border border-teal-500/40 shadow-md shadow-teal-500/30 flex-shrink-0 bg-slate-900">
+              <img 
+                src="/brand/owner.png" 
+                alt="Sami Suliman" 
+                className="w-full h-full object-cover object-top"
+              />
             </div>
-            <div className="hidden sm:block text-left">
-              <div className="text-xs font-bold text-foreground">Sami Suliman</div>
-              <div className="text-[10px] font-semibold text-teal-400">81.0 kg · T2D Active</div>
+            <div className="text-left hidden sm:block">
+              <div className="text-xs font-black text-white">Sami Suliman</div>
+              <div className="text-[10px] text-teal-400 font-bold">Diabetic Type 2</div>
             </div>
           </motion.div>
         </Link>

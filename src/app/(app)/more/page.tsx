@@ -62,8 +62,12 @@ export default function MorePage() {
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-teal-500/10 blur-[60px] pointer-events-none" />
         
         <div className="flex flex-col sm:flex-row sm:items-center gap-5 relative z-10">
-          <div className="w-16 h-16 bg-gradient-to-tr from-teal-500 to-cyan-400 rounded-2xl flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg shadow-teal-500/30 flex-shrink-0">
-            SS
+          <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-teal-500/50 shadow-xl shadow-teal-500/30 flex-shrink-0 bg-slate-900">
+            <img 
+              src="/brand/owner.png" 
+              alt="Sami Suliman" 
+              className="w-full h-full object-cover object-top"
+            />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">

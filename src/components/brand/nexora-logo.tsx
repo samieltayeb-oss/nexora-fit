@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 
 interface NexoraLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl'
@@ -17,9 +18,16 @@ export function NexoraLogo({
 }: NexoraLogoProps) {
   const iconSizes = {
     sm: 'w-7 h-7',
-    md: 'w-9 h-9',
-    lg: 'w-12 h-12',
-    xl: 'w-16 h-16',
+    md: 'w-10 h-10',
+    lg: 'w-14 h-14',
+    xl: 'w-20 h-20',
+  }
+
+  const iconPx = {
+    sm: 28,
+    md: 40,
+    lg: 56,
+    xl: 80,
   }
 
   const textSizes = {
@@ -30,62 +38,17 @@ export function NexoraLogo({
   }
 
   return (
-    <div className={`flex items-center gap-2.5 ${className}`}>
-      {/* ── HEX-PULSE MONOGRAM ── */}
+    <div className={`flex items-center gap-3 ${className}`}>
+      {/* ── OFFICIAL BRAND LOGO ICON ── */}
       <div className={`relative ${iconSizes[size]} flex items-center justify-center flex-shrink-0`}>
-        {/* Glow backdrop */}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-teal-500/30 to-cyan-400/30 blur-md opacity-75 animate-pulse" />
+        {/* Ambient Teal/Cyan Glow */}
+        <div className="absolute inset-0 rounded-2xl bg-teal-500/20 blur-md opacity-80 animate-pulse pointer-events-none" />
         
-        <svg
-          viewBox="0 0 100 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full relative z-10 drop-shadow-[0_0_12px_rgba(20,184,166,0.5)]"
-        >
-          <defs>
-            <linearGradient id="nexoraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#2dd4bf" />
-              <stop offset="50%" stopColor="#06b6d4" />
-              <stop offset="100%" stopColor="#3b82f6" />
-            </linearGradient>
-            <linearGradient id="pulseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#f59e0b" />
-              <stop offset="50%" stopColor="#10b981" />
-              <stop offset="100%" stopColor="#06b6d4" />
-            </linearGradient>
-          </defs>
-
-          {/* Hex Shield Border */}
-          <polygon
-            points="50,4 92,26 92,74 50,96 8,74 8,26"
-            stroke="url(#nexoraGrad)"
-            strokeWidth="5"
-            fill="#080c10"
-            rx="4"
-          />
-
-          {/* Futuristic N + Health Vitality Pulse */}
-          <path
-            d="M 28,70 L 28,30 L 42,50 L 58,50 L 72,30 L 72,70"
-            stroke="url(#nexoraGrad)"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-
-          {/* Golden Center Vitality Pulse */}
-          <path
-            d="M 40,50 L 46,38 L 54,62 L 60,50"
-            stroke="url(#pulseGrad)"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-
-          {/* Corner Precision Dots */}
-          <circle cx="50" cy="14" r="2.5" fill="#2dd4bf" />
-          <circle cx="50" cy="86" r="2.5" fill="#3b82f6" />
-        </svg>
+        <img
+          src="/brand/logo-primary.png"
+          alt="NEXORA Logo"
+          className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_16px_rgba(45,212,191,0.4)]"
+        />
       </div>
 
       {/* ── WORDMARK ── */}
@@ -109,3 +72,4 @@ export function NexoraLogo({
     </div>
   )
 }
+
