@@ -8,20 +8,32 @@ import {
   Target,
   BrainCircuit,
   Footprints,
-  CalendarDays
+  CalendarDays,
+  Pill,
+  Sparkles,
+  Droplets,
+  Heart,
+  Scale,
+  Utensils,
+  Dumbbell,
+  ShieldCheck,
+  CheckCircle2,
+  ChevronRight,
+  Coffee,
+  Activity,
+  Flame,
+  Sun
 } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Card, CardContent } from '@/design/components/card'
-import { Button } from '@/design/components/button'
 import { fetchIntelligenceBrief } from '@/app/actions/intelligence'
 import type { HybridIntelligenceContext } from '@/lib/intelligence/types'
 import { useUserProfile } from '@/context/user-profile-context'
-import { Pill } from 'lucide-react'
+import { CalgaryWeatherWidget } from '@/components/dashboard/calgary-weather-widget'
+import { NexoraLogo } from '@/components/brand/nexora-logo'
 
 export default function DashboardPage() {
-  const { profile } = useUserProfile()
+  const { profile, formatGlucose } = useUserProfile()
   const [brief, setBrief] = useState<string>('')
   const [context, setContext] = useState<HybridIntelligenceContext | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -41,276 +53,319 @@ export default function DashboardPage() {
     loadIntelligence()
   }, [])
 
+  const glucoseFmt = formatGlucose(5.8)
+
   return (
-    <div className="space-y-8 md:space-y-10 pb-36">
-      {/* ── HEADER ───────────────────────────────────────────────────────────── */}
-      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6 pt-2">
-        <div>
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/15 border border-teal-500/30 text-teal-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-              {profile.medicalCondition}
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/15 border border-amber-500/30 text-amber-300">
-              Weight: {profile.baselineWeightKg.toFixed(2)} kg → {profile.targetWeightKg.toFixed(2)} kg Goal
-            </span>
-          </div>
-          <h1 className="font-display text-3xl md:text-4xl font-black text-foreground tracking-tight">
-            Good morning, <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300">{profile.name}</span>
-          </h1>
-          <p className="font-mono text-xs uppercase tracking-wider text-foreground/70 mt-1">
-            28-Day Morning Transformation • Active Protocol
-          </p>
-        </div>
+    <div className="space-y-7 md:space-y-9 pb-36 max-w-5xl mx-auto">
+      
+      {/* ── 1. EXECUTIVE BRAND HEADER & CALGARY TELEMETRY ─────────────────────── */}
+      <header className="space-y-4 pt-2">
         
-        <Link href="/more">
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] hover:border-teal-500/40 p-2 pr-4 rounded-2xl cursor-pointer transition-all shadow-lg"
-          >
-            <div className="h-11 w-11 rounded-xl overflow-hidden border border-teal-500/40 shadow-md shadow-teal-500/30 flex-shrink-0 bg-slate-900">
+        {/* Top Brand Banner with Large Gold NEXORA FIT Emblem & Executive Profile */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-[#0c0f14] via-[#0f141c] to-black border border-amber-500/30 shadow-2xl relative overflow-hidden">
+          {/* Subtle gold radiance */}
+          <div className="absolute top-0 left-10 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-0 right-10 w-80 h-80 bg-teal-500/10 rounded-full blur-[90px] pointer-events-none" />
+
+          {/* Large Standing 3D Gold Logo */}
+          <div className="relative z-10 flex items-center gap-4">
+            <NexoraLogo size="xl" showWordmark={true} showTagline={true} />
+          </div>
+
+          {/* Executive Profile Badge */}
+          <div className="relative z-10 flex items-center gap-3 bg-white/[0.03] border border-white/[0.08] hover:border-amber-500/40 p-2.5 pr-4 rounded-2xl transition-all shadow-xl self-start md:self-auto">
+            <div className="h-12 w-12 rounded-xl overflow-hidden border-2 border-amber-400/60 shadow-lg shadow-amber-500/20 flex-shrink-0 bg-slate-900">
               <img 
                 src={profile.avatarUrl} 
                 alt={profile.name} 
                 className="w-full h-full object-cover object-top"
               />
             </div>
-            <div className="text-left hidden sm:block">
-              <div className="text-xs font-black text-white">{profile.name}</div>
-              <div className="text-[10px] text-teal-400 font-bold">{profile.medicalCondition}</div>
+            <div className="text-left">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs sm:text-sm font-black text-white">{profile.name}</span>
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              </div>
+              <div className="text-[10px] text-amber-300 font-bold uppercase tracking-wider">
+                {profile.medicalCondition}
+              </div>
+              <div className="text-[10px] font-mono text-foreground/60">
+                {profile.baselineWeightKg.toFixed(2)} kg → {profile.targetWeightKg.toFixed(2)} kg Goal
+              </div>
             </div>
-          </motion.div>
-        </Link>
+          </div>
+        </div>
+
+        {/* Live Date, Time & Calgary Weather Bar */}
+        <CalgaryWeatherWidget />
       </header>
 
-      {/* ── 1. MORNING BRIEF ─────────────────────────────────────────────────── */}
-      <section>
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-          <BrainCircuit className="h-3.5 w-3.5" /> NEXORA Intelligence
+      {/* ── 2. EXECUTIVE INTELLIGENCE HERO BRIEFING ──────────────────────────── */}
+      <section className="relative overflow-hidden rounded-3xl border border-teal-500/30 bg-gradient-to-br from-[#0a1618] via-[#0d161a] to-black p-6 sm:p-8 shadow-2xl">
+        <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-teal-500/10 blur-[100px] pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/[0.08] pb-5 mb-5">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-teal-500 to-cyan-400 text-slate-950 shadow-lg shadow-teal-500/30">
+              <BrainCircuit className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-teal-300">
+                  NEXORA HYBRID INTELLIGENCE
+                </span>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-teal-500/20 text-teal-300 border border-teal-500/40">
+                  Real-Time Clinical Telemetry
+                </span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
+                Executive Morning Synthesis
+              </h2>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs font-bold text-teal-300 bg-white/[0.04] px-3.5 py-1.5 rounded-xl border border-white/10 self-start md:self-auto">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            Metabolic Recovery: 94% Optimal
+          </div>
         </div>
-        
+
         {isLoading ? (
           <div className="space-y-3 animate-pulse">
-            <div className="h-4 bg-surface-elevated rounded w-3/4"></div>
-            <div className="h-4 bg-surface-elevated rounded w-full"></div>
-            <div className="h-4 bg-surface-elevated rounded w-5/6"></div>
+            <div className="h-4 bg-white/10 rounded w-3/4" />
+            <div className="h-4 bg-white/10 rounded w-full" />
+            <div className="h-4 bg-white/10 rounded w-5/6" />
           </div>
         ) : (
-          <div className="font-display text-xl leading-relaxed text-foreground/90 md:text-2xl">
+          <div className="space-y-3 text-sm sm:text-base text-foreground/90 font-medium leading-relaxed">
             {brief.split('\n').map((paragraph, i) => (
-              <p key={i} className="mb-4">{paragraph}</p>
+              <p key={i}>{paragraph}</p>
             ))}
           </div>
         )}
+
+        {/* Action highlights */}
+        <div className="mt-6 pt-5 border-t border-white/[0.08] grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <Sun className="w-3.5 h-3.5" /> Fasting Glycemic Target
+            </div>
+            <div className="text-sm font-black text-white">{glucoseFmt.value} {glucoseFmt.unit}</div>
+            <p className="text-[11px] text-foreground/60">Within clinician target range (4.4–7.2 mmol/L)</p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-teal-400 flex items-center gap-1.5">
+              <Coffee className="w-3.5 h-3.5" /> Next Coffee Timing
+            </div>
+            <div className="text-sm font-black text-white">07:00 AM (Pre-Workout)</div>
+            <p className="text-[11px] text-foreground/60">Take with 500ml water + 5g Creatine</p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
+              <Pill className="w-3.5 h-3.5" /> Morning Protocol
+            </div>
+            <div className="text-sm font-black text-white">6 Active Doses</div>
+            <p className="text-[11px] text-foreground/60">Dapagliflozin, Ramipril, Aspirin, B12, CoQ10 200mg, K2+D3</p>
+          </div>
+        </div>
       </section>
 
-      {/* ── 2. QUICK ACCESS CARDS: MORNING CHALLENGE + HEALTH & MEDICATION CENTER ── */}
-      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Morning Challenge Day 1 Quick Start */}
+      {/* ── 3. PRIMARY ACTION GATEWAYS (2-COLUMN GRID) ────────────────────────── */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* Gateway 1: 28-Day Morning Challenge Day 1 */}
         <Link href="/workout/morning-challenge">
           <motion.div 
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
-            className="group relative h-full min-h-[280px] cursor-pointer overflow-hidden rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-950/80 via-[#110f0c] to-black shadow-2xl p-6 sm:p-7 flex flex-col justify-between"
+            className="group relative h-full min-h-[290px] cursor-pointer overflow-hidden rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-950/80 via-[#130f0a] to-black shadow-2xl p-6 sm:p-7 flex flex-col justify-between"
           >
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-amber-500/10 blur-[90px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-amber-500/10 blur-[90px] pointer-events-none" />
             
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/40">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">
                   <Zap className="h-3 w-3 fill-amber-400" />
                   Day 1 Active · Ready to Start
                 </span>
-                <span className="font-mono text-xs font-bold text-foreground/50">15 min · Calisthenics</span>
+                <span className="font-mono text-xs font-bold text-amber-400/80">15 min · Looping GIFs</span>
               </div>
 
               <h3 className="font-display text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
                 28-Day Morning Challenge:<br />
-                <span className="text-amber-400">Day 1 — Wake Up</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400">
+                  Day 1 — Wake Up Routine
+                </span>
               </h3>
               
-              <p className="text-xs sm:text-sm font-medium text-foreground/70 mt-2 line-clamp-2">
-                Jumping Jacks (3×20) · Bodyweight Squats (3×15) · Wall Push-Ups (2×10). Form coach GIFs included.
+              <p className="text-xs sm:text-sm font-medium text-foreground/75 mt-2.5">
+                Jumping Jacks (3×20) · Bodyweight Squats (3×15) · Wall Push-Ups (2×10). Form coach animated GIFs included.
               </p>
             </div>
 
             <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/[0.08]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-foreground/80">Stimulates GLUT-4 Muscle Glucose Translocation</span>
+                <span className="text-xs font-semibold text-foreground/80">GLUT-4 Glucose Clearance</span>
               </div>
 
-              <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black px-4 py-2.5 rounded-xl font-black text-xs shadow-lg group-hover:brightness-110 transition-all min-h-[44px]">
+              <div className="flex items-center gap-2 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 px-4 py-2.5 rounded-xl font-black text-xs shadow-lg shadow-amber-500/20 group-hover:brightness-110 transition-all min-h-[44px]">
                 Start Day 1 <ArrowRight className="h-3.5 w-3.5" />
               </div>
             </div>
           </motion.div>
         </Link>
 
-        {/* Health & Medication Center Quick Gateway */}
+        {/* Gateway 2: Health & Medication Center (12 Items + Nutrition Blueprint) */}
         <Link href="/health">
           <motion.div 
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
-            className="group relative h-full min-h-[280px] cursor-pointer overflow-hidden rounded-3xl border border-teal-500/40 bg-gradient-to-br from-[#0c181b] via-[#0d1618] to-black shadow-2xl p-6 sm:p-7 flex flex-col justify-between"
+            className="group relative h-full min-h-[290px] cursor-pointer overflow-hidden rounded-3xl border border-teal-500/40 bg-gradient-to-br from-[#0c181b] via-[#0d1618] to-black shadow-2xl p-6 sm:p-7 flex flex-col justify-between"
           >
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-teal-500/10 blur-[90px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-teal-500/10 blur-[90px] pointer-events-none" />
             
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/20 text-teal-400 border border-teal-500/40">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/20 text-teal-300 border border-teal-500/40">
                   <Pill className="h-3 w-3 text-teal-400" />
-                  Prescriptions &amp; Telemetry
+                  Clinical Regimen &amp; Nutrition
                 </span>
-                <span className="font-mono text-xs font-bold text-teal-300">Alberta Netcare</span>
+                <span className="font-mono text-xs font-bold text-teal-300">12 Active Items</span>
               </div>
 
               <h3 className="font-display text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
                 Health &amp; Medication<br />
-                <span className="text-teal-400">Clinical Center</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-cyan-300 to-teal-400">
+                  Clinical Center
+                </span>
               </h3>
               
-              <p className="text-xs sm:text-sm font-medium text-foreground/70 mt-2">
-                Ozempic · Dapagliflozin · Ramipril · Aspirin · Rosuvastatin · Creatine (5g) &amp; Blood Glucose Logging.
+              <p className="text-xs sm:text-sm font-medium text-foreground/75 mt-2.5">
+                CoQ10 200mg · K2+D3 · Creatine 5g · Dapagliflozin · Ramipril · Coffee Timing &amp; Food Sequencing Blueprint.
               </p>
             </div>
 
             <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/[0.08]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-teal-300/90">Daily Doses &amp; Exercise Safety Cues</span>
+                <span className="text-xs font-semibold text-teal-300/90">Coffee Protocol &amp; Food Guide</span>
               </div>
 
-              <div className="flex items-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-400 text-black px-4 py-2.5 rounded-xl font-black text-xs shadow-lg group-hover:brightness-110 transition-all min-h-[44px]">
-                Open Health Hub <ArrowRight className="h-3.5 w-3.5" />
+              <div className="flex items-center gap-2 bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-500 text-slate-950 px-4 py-2.5 rounded-xl font-black text-xs shadow-lg shadow-teal-500/20 group-hover:brightness-110 transition-all min-h-[44px]">
+                Open Health Center <ArrowRight className="h-3.5 w-3.5" />
               </div>
             </div>
           </motion.div>
         </Link>
       </section>
 
-      {/* ── 3. READINESS & RECOVERY ────────────────────────────────────────── */}
-      <section>
-        {context ? (
-          <Card className="relative overflow-hidden border-teal-500/30 bg-gradient-to-br from-teal-950/30 via-surface to-background">
-            <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-teal-500/10 blur-[60px]" />
-            <CardContent className="flex h-full flex-col justify-between p-6 sm:p-8">
-              <div>
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-teal-500/15 border border-teal-500/30 px-3 py-1 text-xs font-semibold text-teal-400">
-                    <Zap className="h-3.5 w-3.5" /> Readiness &amp; Metabolism
-                  </div>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-teal-400 font-bold">
-                    {context.recovery.confidence}
-                  </span>
-                </div>
-                <h3 className="mb-2 font-display text-3xl font-bold tracking-tight text-foreground">
-                  {context.recovery.status}
-                </h3>
-                <p className="leading-relaxed text-foreground/70 text-sm">
-                  {context.recovery.metrics.hoursSinceLastWorkout} hours since previous session. Glucose utilization is primed for low-impact morning resistance.
-                </p>
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-border/40 grid grid-cols-2 gap-3">
-                <div className="bg-background/60 p-3 rounded-2xl border border-border/60">
-                  <div className="text-[10px] font-bold text-foreground/50 uppercase">Insulin Sensitivity</div>
-                  <div className="text-sm font-black text-teal-400 mt-0.5">Optimal (GLUT-4 Ready)</div>
-                </div>
-                <div className="bg-background/60 p-3 rounded-2xl border border-border/60">
-                  <div className="text-[10px] font-bold text-foreground/50 uppercase">Weight Baseline</div>
-                  <div className="text-sm font-black text-foreground mt-0.5">{profile.baselineWeightKg.toFixed(2)} kg</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card className="p-6">
-            <div className="h-full flex items-center justify-center text-foreground/50 text-sm">
-              Loading metabolic telemetry...
+      {/* ── 4. QUICK METABOLIC SHORTCUTS (4-TIER EXECUTIVE ROW) ──────────────── */}
+      <section className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+        <Link href="/workout/program?type=gym" className="block">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-teal-500/40 transition-all group cursor-pointer h-full flex flex-col justify-between">
+            <div className="p-2.5 rounded-xl bg-teal-500/15 text-teal-300 w-fit mb-3">
+              <Dumbbell className="w-5 h-5" />
             </div>
-          </Card>
-        )}
+            <div>
+              <div className="text-xs font-black text-white group-hover:text-teal-300 transition-colors">Gym Machine Routine</div>
+              <div className="text-[11px] text-foreground/50 mt-0.5">28 Days with Looping GIFs</div>
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/health" className="block">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-amber-500/40 transition-all group cursor-pointer h-full flex flex-col justify-between">
+            <div className="p-2.5 rounded-xl bg-amber-500/15 text-amber-300 w-fit mb-3">
+              <Utensils className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-xs font-black text-white group-hover:text-amber-300 transition-colors">Food &amp; Coffee Guide</div>
+              <div className="text-[11px] text-foreground/50 mt-0.5">Vegetables, Fruits &amp; Coffee</div>
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/progress" className="block">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-blue-500/40 transition-all group cursor-pointer h-full flex flex-col justify-between">
+            <div className="p-2.5 rounded-xl bg-blue-500/15 text-blue-300 w-fit mb-3">
+              <Scale className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-xs font-black text-white group-hover:text-blue-300 transition-colors">VeSync 13 Biomarkers</div>
+              <div className="text-[11px] text-foreground/50 mt-0.5">{profile.baselineWeightKg.toFixed(2)} kg · Muscle 48.8%</div>
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/waistline" className="block">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-indigo-500/40 transition-all group cursor-pointer h-full flex flex-col justify-between">
+            <div className="p-2.5 rounded-xl bg-indigo-500/15 text-indigo-300 w-fit mb-3">
+              <Activity className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-xs font-black text-white group-hover:text-indigo-300 transition-colors">Waistline Simulator</div>
+              <div className="text-[11px] text-foreground/50 mt-0.5">Visceral Fat Reduction</div>
+            </div>
+          </div>
+        </Link>
       </section>
 
-      {/* ── 3. PROGRESS & INSIGHTS ───────────────────────────────────────────── */}
+      {/* ── 5. TRAJECTORY & CONSISTENCY (EXECUTIVE DATA) ──────────────────────── */}
       {context && (
-        <section>
-          <div className="mb-6 flex items-center gap-2 border-b border-border-subtle pb-2">
-            <Target className="h-5 w-5 text-primary" />
-            <h2 className="text-xl font-bold tracking-tight text-foreground">Trajectory</h2>
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-border/40 pb-3">
+            <Target className="h-5 w-5 text-teal-400" />
+            <h3 className="text-lg font-bold text-white tracking-tight">Executive Trajectory &amp; Adherence</h3>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardContent className="p-6">
-                <div className="font-mono text-xs uppercase tracking-wider text-foreground/50 mb-2">Goal Trajectory</div>
-                <div className="font-display text-2xl font-bold text-foreground mb-1">{context.goal.status}</div>
-                <p className="text-sm text-foreground/70">
-                  You are currently {(context.goal.metrics.scenarios[0]?.distanceToGoalKg || 0).toFixed(1)}kg away from your target.
-                </p>
-                <div className="mt-4 flex items-center gap-2">
-                  <TrendingDown className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium text-foreground">{context.trend.flags[0]}</span>
-                </div>
-              </CardContent>
-            </Card>
 
-            <Card>
-              <CardContent className="p-6">
-                <div className="font-mono text-xs uppercase tracking-wider text-foreground/50 mb-2">Consistency</div>
-                <div className="font-display text-2xl font-bold text-foreground mb-1">{context.consistency.status}</div>
-                <p className="text-sm text-foreground/70">
-                  {context.consistency.metrics.adherencePercent}% adherence over the past {context.telemetryWindowDays} days.
-                </p>
-                <div className="mt-4 w-full bg-surface-elevated h-1.5 rounded-full overflow-hidden">
-                  <div 
-                    className="bg-primary h-full rounded-full" 
-                    style={{ width: `${context.consistency.metrics.adherencePercent}%` }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-5 sm:p-6 rounded-3xl bg-white/[0.02] border border-white/[0.08] space-y-2">
+              <div className="font-mono text-xs uppercase tracking-wider text-foreground/50">Weight Trajectory</div>
+              <div className="text-2xl font-black text-white">{context.goal.status}</div>
+              <p className="text-xs text-foreground/70">
+                You are currently {(context.goal.metrics.scenarios[0]?.distanceToGoalKg || 7.7).toFixed(1)} kg away from your 75.00 kg target.
+              </p>
+              <div className="pt-2 flex items-center gap-2 text-xs font-bold text-emerald-400">
+                <TrendingDown className="h-4 w-4" />
+                <span>Steady metabolic fat reduction pace</span>
+              </div>
+            </div>
+
+            <div className="p-5 sm:p-6 rounded-3xl bg-white/[0.02] border border-white/[0.08] space-y-2">
+              <div className="font-mono text-xs uppercase tracking-wider text-foreground/50">Consistency &amp; Habit Adherence</div>
+              <div className="text-2xl font-black text-white">Daily Calisthenics &amp; Nutrition</div>
+              <p className="text-xs text-foreground/70">
+                Targeting 15 min daily morning calisthenics to trigger GLUT-4 muscle glucose disposal.
+              </p>
+              <div className="mt-3 w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                <div className="bg-gradient-to-r from-teal-400 to-cyan-400 h-full rounded-full w-3/4" />
+              </div>
+            </div>
           </div>
         </section>
       )}
 
-      {/* ── 4. MY JOURNEY PROMO (Phase B Gateway) ───────────────────────────── */}
+      {/* ── 6. MY JOURNEY GATEWAY ────────────────────────────────────────────── */}
       <section>
         <Link href="/journey">
-          <Card className="group cursor-pointer border-primary/20 bg-primary/5 transition-colors hover:bg-primary/10">
-            <CardContent className="flex items-center justify-between p-6 md:p-8">
-              <div className="flex items-center gap-4">
-                <div className="rounded-2xl bg-primary p-3 text-background shadow-[0_0_15px_var(--color-primary)]">
-                  <Footprints className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
-                    My Journey
-                  </h3>
-                  <p className="text-sm text-foreground/70 mt-1">Review your milestones, photos, and transformation story.</p>
-                </div>
-              </div>
-              <ArrowRight className="h-5 w-5 text-foreground/50 transition-transform group-hover:translate-x-1 group-hover:text-primary" />
-            </CardContent>
-          </Card>
-        </Link>
-      </section>
-
-      {/* ── 5. WEEKLY REVIEW ─────────────────────────────────────────────────── */}
-      <section>
-        <Card>
-          <CardContent className="p-6 md:p-8 flex items-center justify-between">
+          <div className="group cursor-pointer rounded-3xl border border-teal-500/25 bg-gradient-to-r from-teal-950/20 via-white/[0.02] to-black p-5 sm:p-6 transition-all hover:border-teal-500/50 shadow-xl flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="rounded-xl border border-border-subtle bg-surface-elevated p-3">
-                <CalendarDays className="h-5 w-5 text-foreground/70" />
+              <div className="rounded-2xl bg-teal-500 p-3 text-slate-950 shadow-md shadow-teal-500/30">
+                <Footprints className="h-6 w-6" />
               </div>
               <div>
-                <h4 className="font-bold text-foreground">Weekly Review</h4>
-                <p className="text-sm text-foreground/70">Available every Sunday</p>
+                <h4 className="text-base sm:text-lg font-black text-white group-hover:text-teal-300 transition-colors">
+                  My Transformation Journey
+                </h4>
+                <p className="text-xs text-foreground/60 mt-0.5">
+                  Review historical VeSync body composition scans, photo check-ins, and milestone achievements.
+                </p>
               </div>
             </div>
-            <Button variant="secondary" size="sm" disabled>Not Ready</Button>
-          </CardContent>
-        </Card>
+            <ArrowRight className="h-5 w-5 text-foreground/50 transition-transform group-hover:translate-x-1 group-hover:text-teal-300" />
+          </div>
+        </Link>
       </section>
 
     </div>

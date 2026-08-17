@@ -31,6 +31,11 @@ export const metadata: Metadata = {
   title: "NEXORA FIT — Executive Health Architecture",
   description: "Precision health management, clinical medication adherence & guided transformation.",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/brand/nexorafit.png",
+    shortcut: "/brand/nexorafit.png",
+    apple: "/brand/nexorafit.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
