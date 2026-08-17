@@ -107,6 +107,18 @@ const MEDICATION_REGIMEN: MedicationItem[] = [
     exerciseCue: 'Essential cofactor for mitochondrial ATP energy production.'
   },
   {
+    id: 'creatine',
+    name: 'CREATINE MONOHYDRATE',
+    generic: 'CREATINE MONOHYDRATE POWDER',
+    dose: '5g (Pre-Workout)',
+    schedule: 'Daily Morning',
+    category: 'Ergogenic & Glycemic Booster • Cellular ATP & GLUT-4 Translocation',
+    instructions: 'TAKE 5 GRAMS IN 500ML WATER 20–30 MINUTES BEFORE MORNING WORKOUT',
+    source: 'Patient Regimen',
+    dateStarted: 'Active Daily',
+    exerciseCue: 'Boosts phosphocreatine ATP replenishment during calisthenics reps and stimulates insulin-independent glucose uptake into muscle tissue. Drink with 500ml+ water.'
+  },
+  {
     id: 'rosuvastatin',
     name: 'ROSUVASTATIN 40 MG TABLET',
     generic: 'ROSUVASTATIN (ROSUVASTATIN CALCIUM)',

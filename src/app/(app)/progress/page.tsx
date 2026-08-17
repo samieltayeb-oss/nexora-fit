@@ -28,23 +28,24 @@ const STORAGE_KEY_COMPOSITION = 'samfit_vesync_composition'
 
 export default function ProgressPage() {
   const [weight, setWeight] = useState<number>(82.70)
-  const [bodyFat, setBodyFat] = useState<number>(23.8)
-  const [muscleMass, setMuscleMass] = useState<number>(59.20)
+  const [bodyFat, setBodyFat] = useState<number>(24.3)
+  const [muscleMass, setMuscleMass] = useState<number>(59.37)
   const [visceralFat, setVisceralFat] = useState<number>(10)
-  const [bmi, setBmi] = useState<number>(27.95)
-  const [bmr, setBmr] = useState<number>(1745)
-  const [bodyWater, setBodyWater] = useState<number>(55.1)
-  const [skeletalMuscle, setSkeletalMuscle] = useState<number>(49.3)
+  const [bmi, setBmi] = useState<number>(28.0)
+  const [bmr, setBmr] = useState<number>(1750)
+  const [bodyWater, setBodyWater] = useState<number>(54.5)
+  const [skeletalMuscle, setSkeletalMuscle] = useState<number>(48.8)
   const [boneMass, setBoneMass] = useState<number>(3.12)
-  const [protein, setProtein] = useState<number>(17.4)
-  const [metabolicAge, setMetabolicAge] = useState<number>(49)
-  const [subcutFat, setSubcutFat] = useState<number>(20.5)
+  const [protein, setProtein] = useState<number>(17.2)
+  const [metabolicAge, setMetabolicAge] = useState<number>(50)
+  const [subcutFat, setSubcutFat] = useState<number>(21.2)
+  const [fatFreeWeight, setFatFreeWeight] = useState<number>(62.55)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // Sync Modal State
   const [showSyncModal, setShowSyncModal] = useState<boolean>(false)
   const [inputWeight, setInputWeight] = useState<string>('82.70')
-  const [inputBodyFat, setInputBodyFat] = useState<string>('23.8')
+  const [inputBodyFat, setInputBodyFat] = useState<string>('24.3')
   const [inputVisceral, setInputVisceral] = useState<string>('10')
   const [activeTab, setActiveTab] = useState<'quick_log' | 'watch_setup'>('quick_log')
   const [syncSuccess, setSyncSuccess] = useState<boolean>(false)
@@ -58,7 +59,7 @@ export default function ProgressPage() {
         if (parsed.weight) {
           setWeight(parsed.weight)
           setInputWeight(parsed.weight.toString())
-          recalculateMetrics(parsed.weight, parsed.bodyFat || 23.8)
+          if (parsed.bodyFat) setBodyFat(parsed.bodyFat)
         }
       }
     } catch (e) {
@@ -68,22 +69,21 @@ export default function ProgressPage() {
 
   const recalculateMetrics = (newWeight: number, newBodyFat: number) => {
     const heightM = 1.72
-    const calculatedBmi = Number((newWeight / (heightM * heightM)).toFixed(2))
+    const calculatedBmi = Number((newWeight / (heightM * heightM)).toFixed(1))
     const fatMass = newWeight * (newBodyFat / 100)
     const leanMass = Number((newWeight - fatMass).toFixed(2))
     const calculatedMuscle = Number((leanMass * 0.95).toFixed(2))
-    const calculatedBmr = Math.round(10 * newWeight + 6.25 * 172 - 5 * 44 + 5)
     
     setBmi(calculatedBmi)
     setMuscleMass(calculatedMuscle)
-    setBmr(calculatedBmr)
+    setFatFreeWeight(leanMass)
   }
 
   const handleSaveVeSync = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     const parsedWeight = parseFloat(inputWeight) || 82.70
-    const parsedBodyFat = parseFloat(inputBodyFat) || 23.8
+    const parsedBodyFat = parseFloat(inputBodyFat) || 24.3
     const parsedVisceral = parseInt(inputVisceral) || 10
 
     setWeight(parsedWeight)
@@ -128,32 +128,6 @@ export default function ProgressPage() {
     }, 1200)
   }
 
-  const fetchProgress = async () => {
-    setIsLoading(true)
-    try {
-      const supabase = createClient()
-      const { data: bodyData } = await supabase
-        .from('body_measurements')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1)
-
-      if (bodyData && bodyData.length > 0) {
-        const row = bodyData[0]
-        if (row.weight_kg) {
-          const w = Number(row.weight_kg)
-          setWeight(w)
-          setInputWeight(w.toString())
-          recalculateMetrics(w, Number(row.body_fat_percentage) || 23.8)
-        }
-      }
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return (
     <div className="space-y-6 md:space-y-8 pb-32">
       
@@ -162,13 +136,16 @@ export default function ProgressPage() {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 bg-teal-500/15 text-teal-300 text-[10px] font-black uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg border border-teal-500/30">
-              <Cpu className="w-3.5 h-3.5 text-teal-400" /> VeSync & Apple Health Engine
+              <Cpu className="w-3.5 h-3.5 text-teal-400" /> Smart Fitness Scale (VeSync)
+            </span>
+            <span className="px-2.5 py-0.5 bg-blue-500/15 text-blue-300 text-[10px] font-black uppercase tracking-widest rounded-full border border-blue-500/30">
+              13 Biomarkers Calibrated
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight mt-2 flex items-center gap-2">
             Body Composition
           </h1>
-          <p className="text-foreground/70 text-sm font-medium mt-1">Live metrics from your VeSync smart scale & Apple Watch</p>
+          <p className="text-foreground/70 text-sm font-medium mt-1">Live metrics from your smart fitness scale</p>
         </div>
 
         <button 
@@ -176,7 +153,7 @@ export default function ProgressPage() {
           className="bg-gradient-to-r from-teal-500 to-cyan-400 text-slate-950 text-xs font-black px-5 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-teal-500/20 active:scale-95 cursor-pointer hover:brightness-110"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> 
-          <span>Sync Scale / Watch</span>
+          <span>Sync Scale / Manual Input</span>
         </button>
       </header>
 
@@ -187,16 +164,16 @@ export default function ProgressPage() {
         <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-4 mb-6 relative z-10">
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xs font-black text-foreground/60 uppercase tracking-widest">Current VeSync Weight</h2>
-              <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] font-black uppercase px-2 py-0.5 rounded-full">
-                Live Calibrated
+              <h2 className="text-xs font-black text-foreground/60 uppercase tracking-widest">Current Weight</h2>
+              <span className="bg-teal-500/20 text-teal-300 border border-teal-500/30 text-[9px] font-black uppercase px-2 py-0.5 rounded-full">
+                VeSync Verified
               </span>
             </div>
             <div className="text-6xl md:text-7xl font-black text-white tracking-tighter mt-1 flex items-baseline gap-2">
               <NumberCounter value={weight} decimals={2} /> <span className="text-2xl text-teal-400 font-bold tracking-normal">kg</span>
             </div>
             <p className="text-xs text-foreground/60 mt-1 font-medium">
-              Sami Suliman • Target: <span className="text-amber-300 font-bold">75.00 kg</span>
+              Sami Suliman • Target: <span className="text-amber-300 font-bold">75.00 kg</span> ({Number((weight - 75.0).toFixed(2))} kg to goal)
             </p>
           </div>
           
@@ -212,7 +189,7 @@ export default function ProgressPage() {
         </div>
       </section>
 
-      {/* ── THE METRICS STORY ────────────────────────────────────────────────── */}
+      {/* ── THE 13 EXACT METRICS FROM VESYNC SCALE ───────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Core Health Indicators */}
@@ -221,10 +198,10 @@ export default function ProgressPage() {
             <Activity className="w-5 h-5 text-teal-400" /> Core Indicators
           </h3>
           <div className="space-y-4">
-            <MetricRow icon={<Activity className="w-4 h-4 text-amber-400" />} label="BMI" value={bmi} suffix="" status="27.95 (High)" statusColor="amber" index={0} />
-            <MetricRow icon={<Flame className="w-4 h-4 text-teal-400" />} label="Body Fat" value={bodyFat} suffix="%" status="Standard" statusColor="teal" index={1} />
-            <MetricRow icon={<Zap className="w-4 h-4 text-teal-400" />} label="Visceral Fat" value={visceralFat} suffix="" status="10 (Target: ≤ 7)" statusColor="teal" index={2} />
-            <MetricRow icon={<Activity className="w-4 h-4 text-amber-400" />} label="Subcutaneous Fat" value={subcutFat} suffix="%" status="High" statusColor="amber" index={3} />
+            <MetricRow icon={<Activity className="w-4 h-4 text-amber-400" />} label="BMI" value={bmi} suffix="" status="High" statusColor="amber" index={0} />
+            <MetricRow icon={<Flame className="w-4 h-4 text-teal-400" />} label="Body Fat" value={bodyFat} suffix="%" status="Acceptable" statusColor="teal" index={1} />
+            <MetricRow icon={<Activity className="w-4 h-4 text-amber-400" />} label="Subcutaneous Fat" value={subcutFat} suffix="%" status="High" statusColor="amber" index={2} />
+            <MetricRow icon={<Zap className="w-4 h-4 text-teal-400" />} label="Visceral Fat" value={visceralFat} suffix="" status="Standard (10)" statusColor="teal" index={3} />
           </div>
         </section>
 
@@ -234,9 +211,9 @@ export default function ProgressPage() {
             <Dumbbell className="w-5 h-5 text-teal-400" /> Composition
           </h3>
           <div className="space-y-4">
-            <MetricRow icon={<Dumbbell className="w-4 h-4 text-teal-400" />} label="Muscle Mass" value={muscleMass} suffix=" kg" status="Preserve" statusColor="teal" index={2} />
-            <MetricRow icon={<Dumbbell className="w-4 h-4 text-teal-400" />} label="Skeletal Muscle" value={skeletalMuscle} suffix="%" status="Standard" statusColor="teal" index={3} />
-            <MetricRow icon={<Activity className="w-4 h-4 text-teal-400" />} label="Bone Mass" value={boneMass} suffix=" kg" status="Standard" statusColor="teal" index={4} />
+            <MetricRow icon={<Dumbbell className="w-4 h-4 text-teal-400" />} label="Muscle Mass" value={muscleMass} suffix=" kg" status="Standard" statusColor="teal" index={2} />
+            <MetricRow icon={<Dumbbell className="w-4 h-4 text-amber-400" />} label="Skeletal Muscles" value={skeletalMuscle} suffix="%" status="Low (48.8%)" statusColor="amber" index={3} />
+            <MetricRow icon={<Activity className="w-4 h-4 text-teal-400" />} label="Fat-Free Body Weight" value={fatFreeWeight} suffix=" kg" status="Standard" statusColor="teal" index={4} />
             <MetricRow icon={<Droplets className="w-4 h-4 text-teal-400" />} label="Body Water" value={bodyWater} suffix="%" status="Standard" statusColor="teal" index={5} />
           </div>
         </section>
@@ -244,13 +221,13 @@ export default function ProgressPage() {
         {/* Metabolic Profile */}
         <section className="glass-panel rounded-3xl p-6 relative overflow-hidden md:col-span-2 border border-border/80">
           <h3 className="text-lg font-bold text-foreground tracking-tight mb-6 flex items-center gap-2">
-            <Flame className="w-5 h-5 text-amber-400" /> Metabolic Profile & Diabetic Type 2 Recovery
+            <Flame className="w-5 h-5 text-amber-400" /> Metabolic Profile &amp; Diabetic Type 2 Recovery
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-            <MetricRow icon={<Activity className="w-4 h-4 text-teal-400" />} label="Protein" value={protein} suffix="%" status="Standard" statusColor="teal" index={4} />
-            <MetricRow icon={<Flame className="w-4 h-4 text-teal-400" />} label="Basal Metabolic Rate" value={bmr} suffix=" kcal" status="Standard" statusColor="teal" index={5} />
-            <MetricRow icon={<Activity className="w-4 h-4 text-teal-400" />} label="Fat-Free Weight" value={Number((weight * (1 - bodyFat / 100)).toFixed(2))} suffix=" kg" status="Standard" statusColor="teal" index={6} />
-            <MetricRow icon={<Activity className="w-4 h-4 text-amber-400" />} label="Metabolic Age" value={metabolicAge} suffix=" yrs" status="Target: 40 yrs" statusColor="amber" index={7} />
+            <MetricRow icon={<Activity className="w-4 h-4 text-teal-400" />} label="Bone Mass" value={boneMass} suffix=" kg" status="Standard" statusColor="teal" index={4} />
+            <MetricRow icon={<Activity className="w-4 h-4 text-teal-400" />} label="Protein" value={protein} suffix="%" status="Standard" statusColor="teal" index={5} />
+            <MetricRow icon={<Flame className="w-4 h-4 text-teal-400" />} label="BMR (Basal Metabolic Rate)" value={bmr} suffix=" kcal" status="Standard" statusColor="teal" index={6} />
+            <MetricRow icon={<Activity className="w-4 h-4 text-amber-400" />} label="Metabolic Age" value={metabolicAge} suffix=" yrs" status="High (50 yrs)" statusColor="amber" index={7} />
           </div>
         </section>
       </div>

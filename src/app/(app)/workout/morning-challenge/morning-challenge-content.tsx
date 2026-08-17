@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ChevronLeft, Sun, Lock, CheckCircle, Play,
-  Flame, Clock, X, Target, Zap, Trophy, Sparkles
+  Flame, Clock, X, Target, Zap, Trophy, Sparkles, Droplets
 } from 'lucide-react'
 import FormCoachModal from './form-coach-modal'
 
@@ -658,32 +658,58 @@ export default function MorningChallengeContent() {
           )}
         </AnimatePresence>
 
-        {/* ── INTERACTIVE FORM ANIMATION BANNER ── */}
-        <div className="mb-4 rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-transparent p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl bg-amber-500/20 p-2.5 text-amber-400 border border-amber-500/30 flex-shrink-0">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-[9px] font-black uppercase tracking-widest text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/30">
-                  MOTION COACH
-                </span>
-                <span className="text-xs font-bold text-white">Live Form Motion Animations</span>
+        {/* ── INTERACTIVE FORM ANIMATION & PRE-WORKOUT BANNER ── */}
+        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-transparent p-3.5 sm:p-4 flex flex-col justify-between gap-2.5 shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="rounded-xl bg-amber-500/20 p-2 text-amber-400 border border-amber-500/30 flex-shrink-0">
+                <Sparkles className="h-4 w-4" />
               </div>
-              <p className="text-[11px] text-foreground/70 font-medium mt-0.5">
-                Every exercise now includes a looping animated GIF with breathing & biomechanics cues.
-              </p>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[9px] font-black uppercase tracking-widest text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/30">
+                    MOTION COACH
+                  </span>
+                  <span className="text-xs font-bold text-white">Live GIF Animations</span>
+                </div>
+                <p className="text-[11px] text-foreground/70 font-medium mt-0.5">
+                  Looping form GIFs with breathing &amp; biomechanics cues for all 28 days.
+                </p>
+              </div>
             </div>
+
+            <button
+              onClick={() => setActiveCoachExercise('push-up')}
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black px-4 py-2 rounded-xl text-xs font-black shadow-[0_4px_16px_rgba(245,158,11,0.3)] hover:brightness-110 transition-all cursor-pointer w-full mt-1"
+            >
+              <Play className="h-3.5 w-3.5 fill-black" />
+              Browse Form Animations
+            </button>
           </div>
 
-          <button
-            onClick={() => setActiveCoachExercise('push-up')}
-            className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black px-4 py-2 rounded-xl text-xs font-black shadow-[0_4px_16px_rgba(245,158,11,0.3)] hover:brightness-110 transition-all cursor-pointer flex-shrink-0"
-          >
-            <Play className="h-3.5 w-3.5 fill-black" />
-            Browse Form Animations
-          </button>
+          <div className="rounded-2xl border border-teal-500/40 bg-gradient-to-r from-teal-500/15 via-cyan-500/10 to-transparent p-3.5 sm:p-4 flex flex-col justify-between gap-2.5 shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="rounded-xl bg-teal-500/20 p-2 text-teal-400 border border-teal-500/30 flex-shrink-0">
+                <Droplets className="h-4 w-4" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[9px] font-black uppercase tracking-widest text-teal-400 bg-teal-500/20 px-2 py-0.5 rounded-full border border-teal-500/30">
+                    PRE-WORKOUT FUEL
+                  </span>
+                  <span className="text-xs font-bold text-white">5g Creatine + 500ml Water</span>
+                </div>
+                <p className="text-[11px] text-teal-200/80 font-medium mt-0.5">
+                  Take 20-30 min prior to stimulate GLUT-4 glucose clearing &amp; cellular ATP power.
+                </p>
+              </div>
+            </div>
+
+            <div className="text-[10px] text-foreground/60 font-semibold bg-black/40 px-3 py-1.5 rounded-xl border border-teal-500/20 flex items-center justify-between">
+              <span>Sami's T2D Protocol</span>
+              <span className="text-teal-300 font-bold">Hydration Critical with Dapagliflozin</span>
+            </div>
+          </div>
         </div>
 
         {/* ── HERO HEADER ─────────────────────────────── */}
