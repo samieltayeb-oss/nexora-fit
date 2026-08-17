@@ -571,7 +571,7 @@ const CURRENT_DAY = 4
 export default function MorningChallengeContent() {
   const router = useRouter()
   const [selectedDay, setSelectedDay] = useState<ChallengeDay | null>(null)
-  const [showFormCoach, setShowFormCoach] = useState(false)
+  const [activeCoachExercise, setActiveCoachExercise] = useState<string | null>(null)
 
   const completedCount = COMPLETED_DAYS.length
   const progressPercent = (completedCount / 28) * 100
@@ -581,7 +581,7 @@ export default function MorningChallengeContent() {
     <div className="min-h-screen pb-36 text-foreground">
       <div className="max-w-3xl mx-auto">
 
-        {/* ── INTERACTIVE FORM ANIMATION SAMPLE BANNER ── */}
+        {/* ── INTERACTIVE FORM ANIMATION BANNER ── */}
         <div className="mb-4 rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-transparent p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="rounded-xl bg-amber-500/20 p-2.5 text-amber-400 border border-amber-500/30 flex-shrink-0">
@@ -590,22 +590,22 @@ export default function MorningChallengeContent() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[9px] font-black uppercase tracking-widest text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/30">
-                  NEW FEATURE
+                  MOTION COACH
                 </span>
-                <span className="text-xs font-bold text-white">Form Animation & Biomechanics</span>
+                <span className="text-xs font-bold text-white">Live Form Motion Animations</span>
               </div>
               <p className="text-[11px] text-foreground/70 font-medium mt-0.5">
-                Watch real-time rep cadence, breathing cues, and joint angle alignment.
+                Every exercise now includes a looping animated GIF with breathing & biomechanics cues.
               </p>
             </div>
           </div>
 
           <button
-            onClick={() => setShowFormCoach(true)}
+            onClick={() => setActiveCoachExercise('push-up')}
             className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black px-4 py-2 rounded-xl text-xs font-black shadow-[0_4px_16px_rgba(245,158,11,0.3)] hover:brightness-110 transition-all cursor-pointer flex-shrink-0"
           >
             <Play className="h-3.5 w-3.5 fill-black" />
-            Watch Push-Up Sample
+            Browse Form Animations
           </button>
         </div>
 
@@ -639,7 +639,7 @@ export default function MorningChallengeContent() {
               <span className="text-amber-400">MORNING</span> CHALLENGE
             </h1>
             <p className="mb-5 text-xs md:text-sm font-medium text-foreground/60">
-              Calisthenics · 15 min every morning · 100% bodyweight
+              Calisthenics · 15 min every morning · 100% bodyweight · Animated Form Guide
             </p>
 
             {/* Stats Row */}
@@ -786,7 +786,7 @@ export default function MorningChallengeContent() {
 
       </div>
 
-      {/* ── DAY DETAIL MODAL / DIALOG (Responsive: Bottom Sheet on Mobile, Centered Modal on Desktop) ── */}
+      {/* ── DAY DETAIL MODAL / DIALOG ── */}
       <AnimatePresence>
         {selectedDay && (
           <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-6">
@@ -841,7 +841,7 @@ export default function MorningChallengeContent() {
 
               <div className="p-5 md:p-6 pt-2">
                 {/* Focus subtitle & stats */}
-                <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
                   <p className="text-xs md:text-sm font-semibold text-foreground/70">{selectedDay.focus}</p>
                   
                   {!selectedDay.isRest && (
@@ -880,7 +880,12 @@ export default function MorningChallengeContent() {
                         </div>
                         <div className="space-y-2">
                           {selectedDay.warmup.map((ex, i) => (
-                            <ExerciseRow key={i} ex={ex} accent="amber" />
+                            <ExerciseRow 
+                              key={i} 
+                              ex={ex} 
+                              accent="amber" 
+                              onOpenFormCoach={() => setActiveCoachExercise(ex.name)}
+                            />
                           ))}
                         </div>
                       </div>
@@ -890,7 +895,7 @@ export default function MorningChallengeContent() {
                     <div>
                       <div className="mb-2 flex items-center gap-2">
                         <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-orange-400">
-                          🔥 11 Min Work
+                          🔥 11 Min Work · Tap Any Exercise for Form Animation
                         </span>
                         <div className="h-px flex-1 bg-orange-500/20" />
                       </div>
@@ -900,7 +905,7 @@ export default function MorningChallengeContent() {
                             key={i} 
                             ex={ex} 
                             accent="orange" 
-                            onOpenFormCoach={ex.name.toLowerCase().includes('push-up') ? () => setShowFormCoach(true) : undefined}
+                            onOpenFormCoach={() => setActiveCoachExercise(ex.name)}
                           />
                         ))}
                       </div>
@@ -917,7 +922,12 @@ export default function MorningChallengeContent() {
                         </div>
                         <div className="space-y-2">
                           {selectedDay.cooldown.map((ex, i) => (
-                            <ExerciseRow key={i} ex={ex} accent="blue" />
+                            <ExerciseRow 
+                              key={i} 
+                              ex={ex} 
+                              accent="blue" 
+                              onOpenFormCoach={() => setActiveCoachExercise(ex.name)}
+                            />
                           ))}
                         </div>
                       </div>
@@ -942,8 +952,9 @@ export default function MorningChallengeContent() {
 
       {/* ── INTERACTIVE FORM COACH ANIMATION MODAL ── */}
       <FormCoachModal
-        isOpen={showFormCoach}
-        onClose={() => setShowFormCoach(false)}
+        isOpen={activeCoachExercise !== null}
+        onClose={() => setActiveCoachExercise(null)}
+        exerciseQuery={activeCoachExercise ?? undefined}
       />
     </div>
   )
