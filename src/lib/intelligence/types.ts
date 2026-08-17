@@ -1,10 +1,12 @@
+import type { WorkoutRow, BodyMeasurementRow, HealthLogRow } from './telemetry-schema'
+
 export type ConfidenceLevel = 'High' | 'Medium' | 'Low' | 'None'
 
 export interface TelemetryData {
   userId: string
-  recentWorkouts: any[] // TODO: Define strict types based on DB schema
-  recentBodyMeasurements: any[]
-  recentHealthLogs: any[]
+  recentWorkouts: WorkoutRow[]
+  recentBodyMeasurements: BodyMeasurementRow[]
+  recentHealthLogs: HealthLogRow[]
   programStartDate: string | null
 }
 
@@ -12,9 +14,10 @@ export interface EngineResult {
   engineName: string
   confidence: ConfidenceLevel
   status: string
-  metrics?: Record<string, any>
+  metrics?: Record<string, string | number | boolean | object | null>
   flags?: string[]
 }
+
 
 // 1. Recovery Engine
 export interface RecoveryOutput extends EngineResult {

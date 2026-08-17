@@ -187,7 +187,7 @@ export default function WorkoutProgramContent() {
           }`}
         >
           <Play className="w-5 h-5 fill-slate-950" />
-          START TODAY'S WORKOUT · Day {current}
+          START TODAY&apos;S WORKOUT &middot; Day {current}
         </motion.button>
       </div>
 
