@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -572,14 +572,91 @@ export default function MorningChallengeContent() {
   const router = useRouter()
   const [selectedDay, setSelectedDay] = useState<ChallengeDay | null>(null)
   const [activeCoachExercise, setActiveCoachExercise] = useState<string | null>(null)
+  const [completedDays, setCompletedDays] = useState<number[]>([])
+  const [justCompletedDay, setJustCompletedDay] = useState<number | null>(null)
 
-  const completedCount = COMPLETED_DAYS.length
+  // Load persisted completed days from localStorage on mount (defaults to empty: Day 1 only)
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('samfit_morning_completed_days')
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        if (Array.isArray(parsed)) {
+          setCompletedDays(parsed)
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load completed days from localStorage', e)
+    }
+  }, [])
+
+  const currentDay = Math.min(28, completedDays.length + 1)
+  const completedCount = completedDays.length
   const progressPercent = (completedCount / 28) * 100
-  const currentDayData = DAYS.find(d => d.day === CURRENT_DAY)
+  const currentDayData = DAYS.find(d => d.day === currentDay)
+
+  const handleCompleteDay = (dayNumber: number) => {
+    if (!completedDays.includes(dayNumber)) {
+      const updated = [...completedDays, dayNumber].sort((a, b) => a - b)
+      setCompletedDays(updated)
+      try {
+        localStorage.setItem('samfit_morning_completed_days', JSON.stringify(updated))
+      } catch (e) {
+        console.error('Failed to save to localStorage', e)
+      }
+      setJustCompletedDay(dayNumber)
+      setTimeout(() => setJustCompletedDay(null), 4000)
+    }
+    setSelectedDay(null)
+  }
+
+  const handleResetChallenge = () => {
+    if (confirm('Are you sure you want to reset your 28-day morning challenge to Day 1?')) {
+      setCompletedDays([])
+      try {
+        localStorage.removeItem('samfit_morning_completed_days')
+      } catch (e) {
+        console.error('Failed to clear localStorage', e)
+      }
+      setSelectedDay(null)
+    }
+  }
 
   return (
     <div className="min-h-screen pb-36 text-foreground">
       <div className="max-w-3xl mx-auto">
+
+        {/* ── CONGRATULATIONS TOAST ── */}
+        <AnimatePresence>
+          {justCompletedDay && (
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              className="mb-4 rounded-2xl border border-emerald-500/50 bg-gradient-to-r from-emerald-950/80 to-black p-4 flex items-center justify-between gap-3 shadow-[0_10px_40px_rgba(16,185,129,0.3)]"
+            >
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl bg-emerald-500/20 p-2 text-emerald-400 border border-emerald-500/40">
+                  <Trophy className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="font-display text-sm font-black text-white">
+                    🎉 Day {justCompletedDay} Completed!
+                  </div>
+                  <div className="text-xs text-emerald-300 font-medium mt-0.5">
+                    {justCompletedDay < 28 ? `Day ${justCompletedDay + 1} is now unlocked!` : 'You completed the entire 28-Day Challenge! 🏆'}
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setJustCompletedDay(null)}
+                className="text-white/60 hover:text-white text-xs px-2 py-1"
+              >
+                ✕
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* ── INTERACTIVE FORM ANIMATION BANNER ── */}
         <div className="mb-4 rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-transparent p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
@@ -616,13 +693,24 @@ export default function MorningChallengeContent() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full bg-amber-500/15 blur-[80px] pointer-events-none" />
 
           <div className="relative z-10 px-5 pt-6 pb-6 border border-amber-500/20 rounded-3xl">
-            {/* Back */}
-            <button
-              onClick={() => router.push('/workout')}
-              className="mb-5 flex items-center gap-1.5 text-xs font-bold text-foreground/60 hover:text-foreground transition-colors"
-            >
-              <ChevronLeft className="h-4 w-4" /> Back to Programs
-            </button>
+            {/* Top Bar with Back and Reset */}
+            <div className="mb-5 flex items-center justify-between">
+              <button
+                onClick={() => router.push('/workout')}
+                className="flex items-center gap-1.5 text-xs font-bold text-foreground/60 hover:text-foreground transition-colors cursor-pointer"
+              >
+                <ChevronLeft className="h-4 w-4" /> Back to Programs
+              </button>
+
+              {completedDays.length > 0 && (
+                <button
+                  onClick={handleResetChallenge}
+                  className="font-mono text-[10px] font-bold text-foreground/50 hover:text-rose-400 bg-white/5 hover:bg-rose-500/10 border border-white/10 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+                >
+                  ↺ Reset to Day 1
+                </button>
+              )}
+            </div>
 
             {/* Badge */}
             <div className="mb-3 flex items-center gap-2">
@@ -666,7 +754,7 @@ export default function MorningChallengeContent() {
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercent}%` }}
-                transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
                 className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-400"
               />
             </div>
@@ -682,7 +770,7 @@ export default function MorningChallengeContent() {
               className="w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 py-4 flex items-center justify-center gap-2.5 font-black text-sm text-black shadow-[0_8px_32px_rgba(245,158,11,0.3)] hover:brightness-110 transition-all cursor-pointer"
             >
               <Play className="h-5 w-5 fill-black" />
-              START TODAY&apos;S WORKOUT · Day {CURRENT_DAY}
+              START TODAY&apos;S WORKOUT · Day {currentDay}
             </motion.button>
           </div>
         )}
@@ -703,9 +791,9 @@ export default function MorningChallengeContent() {
                 {/* Day Cards — 4 column grid */}
                 <div className="grid grid-cols-4 sm:grid-cols-4 gap-3">
                   {weekDays.map(day => {
-                    const isDone = COMPLETED_DAYS.includes(day.day)
-                    const isCurrent = day.day === CURRENT_DAY
-                    const isLocked = !isDone && !isCurrent && day.day > CURRENT_DAY
+                    const isDone = completedDays.includes(day.day)
+                    const isCurrent = day.day === currentDay
+                    const isLocked = day.day > currentDay
                     const canTap = isDone || isCurrent
 
                     return (
@@ -718,7 +806,7 @@ export default function MorningChallengeContent() {
                           ${isCurrent
                             ? 'border-amber-500/90 shadow-[0_0_24px_rgba(245,158,11,0.35)] ring-2 ring-amber-500/40'
                             : isDone
-                              ? 'border-white/20'
+                              ? 'border-emerald-500/40 shadow-[0_0_12px_rgba(16,185,129,0.2)]'
                               : 'border-white/[0.05] opacity-45 cursor-not-allowed'
                           }`}
                       >
@@ -727,7 +815,7 @@ export default function MorningChallengeContent() {
                           src={day.thumb}
                           alt={day.title}
                           className={`absolute inset-0 h-full w-full object-cover transition-all ${
-                            isLocked ? 'grayscale brightness-40' : isDone ? 'brightness-75' : 'brightness-95'
+                            isLocked ? 'grayscale brightness-40' : isDone ? 'brightness-85' : 'brightness-95'
                           }`}
                         />
                         {/* Dark overlay gradient */}
@@ -736,9 +824,9 @@ export default function MorningChallengeContent() {
                         {/* Status badge */}
                         <div className="absolute top-2 right-2 z-10">
                           {isDone
-                            ? <div className="rounded-full bg-amber-500 p-0.5"><CheckCircle className="h-3.5 w-3.5 text-black" /></div>
+                            ? <div className="rounded-full bg-emerald-500 p-0.5"><CheckCircle className="h-3.5 w-3.5 text-black" /></div>
                             : isLocked
-                              ? <div className="rounded-full bg-black/50 backdrop-blur-xs p-1"><Lock className="h-3 w-3 text-white/50" /></div>
+                              ? <div className="rounded-full bg-black/60 backdrop-blur-xs p-1 border border-white/10"><Lock className="h-3 w-3 text-white/50" /></div>
                               : isCurrent
                                 ? <div className="rounded-full bg-amber-500 p-0.5 shadow-[0_0_10px_rgba(245,158,11,0.8)]"><Zap className="h-3.5 w-3.5 text-black" /></div>
                                 : null
@@ -748,7 +836,7 @@ export default function MorningChallengeContent() {
                         {/* Day label at bottom */}
                         <div className="relative z-10 w-full px-2 pb-2">
                           <div className={`font-mono text-[10px] sm:text-xs font-black uppercase tracking-wider ${
-                            isCurrent ? 'text-amber-400' : 'text-white/90'
+                            isCurrent ? 'text-amber-400' : isDone ? 'text-emerald-300' : 'text-white/60'
                           }`}>
                             Day {day.day}
                           </div>
@@ -832,6 +920,11 @@ export default function MorningChallengeContent() {
                     <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-400 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-amber-500/30">
                       Day {selectedDay.day} · Week {selectedDay.week}
                     </span>
+                    {completedDays.includes(selectedDay.day) && (
+                      <span className="font-mono text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-500/40 flex items-center gap-1">
+                        <CheckCircle className="h-3 w-3" /> Completed
+                      </span>
+                    )}
                   </div>
                   <h2 className="font-display text-2xl font-black tracking-tight text-white drop-shadow-md">
                     {selectedDay.title}
@@ -866,6 +959,12 @@ export default function MorningChallengeContent() {
                     <p className="mt-2 text-xs md:text-sm font-medium text-foreground/70 leading-relaxed max-w-md mx-auto">
                       {selectedDay.work[0]?.tip}
                     </p>
+                    <button
+                      onClick={() => handleCompleteDay(selectedDay.day)}
+                      className="mt-5 rounded-2xl bg-amber-500/20 border border-amber-500/40 px-6 py-3 font-bold text-xs text-amber-300 hover:bg-amber-500/30 transition-all cursor-pointer"
+                    >
+                      ✓ Mark Rest Day Completed
+                    </button>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -933,14 +1032,25 @@ export default function MorningChallengeContent() {
                   </div>
                 )}
 
-                {/* Start Button */}
+                {/* Complete / Start Workout Action Button */}
                 {!selectedDay.isRest && (
-                  <motion.button
-                    whileTap={{ scale: 0.97 }}
-                    className="mt-6 w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 py-4 font-black text-sm text-black shadow-[0_8px_32px_rgba(245,158,11,0.3)] hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-2"
-                  >
-                    <Play className="h-4 w-4 fill-black" /> Start Day {selectedDay.day} Now
-                  </motion.button>
+                  <div className="mt-6 space-y-2">
+                    <motion.button
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => handleCompleteDay(selectedDay.day)}
+                      className="w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 py-4 font-black text-sm text-black shadow-[0_8px_32px_rgba(245,158,11,0.3)] hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-2"
+                    >
+                      {completedDays.includes(selectedDay.day) ? (
+                        <>
+                          <CheckCircle className="h-4 w-4" /> Day {selectedDay.day} Completed (Tap to Re-Save)
+                        </>
+                      ) : (
+                        <>
+                          <Trophy className="h-4 w-4 fill-black" /> Complete Day {selectedDay.day} & Unlock Next Day
+                        </>
+                      )}
+                    </motion.button>
+                  </div>
                 )}
               </div>
             </motion.div>

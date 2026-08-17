@@ -90,8 +90,8 @@ const CALI_DAYS = [
   { day:28, title:'🏆 Day 28 — DONE',    focus:'Full Body Challenge',     sets:'Max effort — all exercises', duration:'40 min', calories:260, thumb:'/artifacts/morning-challenge/day28_trophy.jpg', week:4, isRest:false },
 ]
 
-const GYM_COMPLETED = [1]
-const GYM_CURRENT   = 2
+const GYM_COMPLETED: number[] = []
+const GYM_CURRENT   = 1
 const CALI_COMPLETED: number[] = []
 const CALI_CURRENT  = 1
 
