@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'
+import { createClient } from '@/utils/supabase/client'
 
 export type GlucoseUnit = 'mmol/L' | 'mg/dL'
 
@@ -43,7 +44,7 @@ export const DEFAULT_USER_PROFILE: UserProfile = {
   email: 'sami.suliman@gmail.com',
   avatarUrl: '/brand/owner.png',
   medicalCondition: 'Diabetic Type 2 Protocol',
-  baselineWeightKg: 82.70,
+  baselineWeightKg: 81.60,
   targetWeightKg: 75.00,
   glucoseUnit: 'mmol/L',
   targetGlucoseRange: {
@@ -55,20 +56,20 @@ export const DEFAULT_USER_PROFILE: UserProfile = {
     diastolic: 80,
   },
   scaleComposition: {
-    weightKg: 82.70,
-    bmi: 28.0,
-    bodyFatPercent: 24.3,
-    subcutaneousFatPercent: 21.2,
-    skeletalMusclesPercent: 48.8,
-    fatFreeBodyWeightKg: 62.55,
+    weightKg: 81.60,
+    bmi: 27.5,
+    bodyFatPercent: 23.6,
+    subcutaneousFatPercent: 20.5,
+    skeletalMusclesPercent: 49.3,
+    fatFreeBodyWeightKg: 62.23,
     visceralFat: 10,
-    bodyWaterPercent: 54.5,
-    muscleMassKg: 59.37,
-    boneMassKg: 3.12,
+    bodyWaterPercent: 55.1,
+    muscleMassKg: 59.06,
+    boneMassKg: 3.11,
     proteinPercent: 17.2,
     bmrKcal: 1750,
-    metabolicAge: 50,
-    recordedDate: '2026-08-17',
+    metabolicAge: 49,
+    recordedDate: '2026-08-18',
   },
 }
 
@@ -83,32 +84,66 @@ interface UserProfileContextType {
 
 const UserProfileContext = createContext<UserProfileContextType | undefined>(undefined)
 
-const STORAGE_KEY = 'samfit_user_profile_v2'
+const STORAGE_KEY = 'samfit_user_profile_v3'
 
 export function UserProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile>(DEFAULT_USER_PROFILE)
   const [isLoaded, setIsLoaded] = useState(false)
+  const supabase = createClient()
 
-  // Load from local storage
+  // Load from local storage and Supabase
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        const parsed = JSON.parse(stored)
-        setProfile(prev => ({
-          ...prev,
-          ...parsed,
-          scaleComposition: {
-            ...prev.scaleComposition,
-            ...(parsed.scaleComposition || {}),
-          },
-        }))
+    async function loadData() {
+      let currentProf = { ...DEFAULT_USER_PROFILE }
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY)
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          currentProf = {
+            ...currentProf,
+            ...parsed,
+            scaleComposition: {
+              ...currentProf.scaleComposition,
+              ...(parsed.scaleComposition || {}),
+            },
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load user profile from storage', e)
       }
-    } catch (e) {
-      console.warn('Failed to load user profile from storage', e)
-    } finally {
+
+      // Fetch latest live weight from Supabase body_measurements
+      try {
+        const { data: latestMeasurement } = await supabase
+          .from('body_measurements')
+          .select('weight_kg, date, body_fat_percentage, muscle_mass_kg')
+          .order('date', { ascending: false })
+          .limit(1)
+          .maybeSingle()
+
+        if (latestMeasurement && latestMeasurement.weight_kg) {
+          const liveWeight = Number(latestMeasurement.weight_kg)
+          currentProf.baselineWeightKg = liveWeight
+          currentProf.scaleComposition.weightKg = liveWeight
+          if (latestMeasurement.body_fat_percentage) {
+            currentProf.scaleComposition.bodyFatPercent = Number(latestMeasurement.body_fat_percentage)
+          }
+          if (latestMeasurement.muscle_mass_kg) {
+            currentProf.scaleComposition.muscleMassKg = Number(latestMeasurement.muscle_mass_kg)
+          }
+          if (latestMeasurement.date) {
+            currentProf.scaleComposition.recordedDate = latestMeasurement.date
+          }
+        }
+      } catch (err) {
+        console.warn('Could not fetch latest live weight from Supabase', err)
+      }
+
+      setProfile(currentProf)
       setIsLoaded(true)
     }
+
+    loadData()
   }, [])
 
   // Save to local storage
@@ -158,34 +193,40 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
   const toggleGlucoseUnit = useCallback(() => {
     setProfile(prev => {
       const nextUnit: GlucoseUnit = prev.glucoseUnit === 'mmol/L' ? 'mg/dL' : 'mmol/L'
-      const nextTargetMin = convertGlucose(prev.targetGlucoseRange.min, prev.glucoseUnit, nextUnit)
-      const nextTargetMax = convertGlucose(prev.targetGlucoseRange.max, prev.glucoseUnit, nextUnit)
-      const updated: UserProfile = {
-        ...prev,
-        glucoseUnit: nextUnit,
-        targetGlucoseRange: {
-          min: nextTargetMin,
-          max: nextTargetMax,
-        },
-      }
+      const next = { ...prev, glucoseUnit: nextUnit }
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
       } catch (e) {
-        console.warn('Failed to save glucose unit', e)
+        console.warn('Failed to persist glucose unit toggle', e)
       }
-      return updated
+      return next
     })
-  }, [convertGlucose])
+  }, [])
 
-  const formatGlucose = useCallback((valInMmol: number) => {
-    if (profile.glucoseUnit === 'mmol/L') {
-      return { value: valInMmol.toFixed(1), unit: 'mmol/L' }
+  const formatGlucose = useCallback((valInMmol: number): { value: string; unit: string } => {
+    if (profile.glucoseUnit === 'mg/dL') {
+      return {
+        value: (valInMmol * 18.018).toFixed(0),
+        unit: 'mg/dL'
+      }
     }
-    return { value: (valInMmol * 18.018).toFixed(0), unit: 'mg/dL' }
+    return {
+      value: valInMmol.toFixed(1),
+      unit: 'mmol/L'
+    }
   }, [profile.glucoseUnit])
 
   return (
-    <UserProfileContext.Provider value={{ profile, updateProfile, updateWeight, toggleGlucoseUnit, convertGlucose, formatGlucose }}>
+    <UserProfileContext.Provider
+      value={{
+        profile,
+        updateProfile,
+        updateWeight,
+        toggleGlucoseUnit,
+        convertGlucose,
+        formatGlucose,
+      }}
+    >
       {children}
     </UserProfileContext.Provider>
   )
@@ -194,16 +235,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
 export function useUserProfile() {
   const context = useContext(UserProfileContext)
   if (!context) {
-    // Fallback if rendered outside provider
-    return {
-      profile: DEFAULT_USER_PROFILE,
-      updateProfile: () => {},
-      updateWeight: () => {},
-      toggleGlucoseUnit: () => {},
-      convertGlucose: (v: number) => v,
-      formatGlucose: (v: number) => ({ value: v.toFixed(1), unit: 'mmol/L' }),
-    }
+    throw new Error('useUserProfile must be used within a UserProfileProvider')
   }
   return context
 }
-

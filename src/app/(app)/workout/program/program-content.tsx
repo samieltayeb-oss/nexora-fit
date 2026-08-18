@@ -739,7 +739,7 @@ export default function WorkoutProgramContent() {
               <div className="text-[10px] text-foreground/70 font-bold uppercase tracking-wider mb-0.5">Your Weight Arc</div>
               <div className="text-xs font-black text-teal-300 flex items-center gap-1">
                 <Flame className="w-3.5 h-3.5 text-teal-400" />
-                82.70 kg → 75.00 kg
+                {profile?.baselineWeightKg ? profile.baselineWeightKg.toFixed(2) : '81.60'} kg → {profile?.targetWeightKg ? profile.targetWeightKg.toFixed(2) : '75.00'} kg
               </div>
             </div>
             <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-3">
