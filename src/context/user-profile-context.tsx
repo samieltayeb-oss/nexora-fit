@@ -84,67 +84,85 @@ interface UserProfileContextType {
 
 const UserProfileContext = createContext<UserProfileContextType | undefined>(undefined)
 
-const STORAGE_KEY = 'samfit_user_profile_v3'
+const STORAGE_KEY = 'samfit_user_profile_v4'
 
 export function UserProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile>(DEFAULT_USER_PROFILE)
   const [isLoaded, setIsLoaded] = useState(false)
   const supabase = createClient()
 
-  // Load from local storage and Supabase
-  useEffect(() => {
-    async function loadData() {
-      let currentProf = { ...DEFAULT_USER_PROFILE }
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY)
-        if (stored) {
-          const parsed = JSON.parse(stored)
-          currentProf = {
-            ...currentProf,
-            ...parsed,
+  const syncLatestLiveWeight = useCallback(async () => {
+    try {
+      // Query newest body_measurement by created_at
+      const { data: measurement } = await supabase
+        .from('body_measurements')
+        .select('weight_kg, date, body_fat_percentage, muscle_mass_kg, created_at')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (measurement && measurement.weight_kg) {
+        const liveWeight = Number(measurement.weight_kg)
+        setProfile(prev => {
+          const next = {
+            ...prev,
+            baselineWeightKg: liveWeight,
             scaleComposition: {
-              ...currentProf.scaleComposition,
-              ...(parsed.scaleComposition || {}),
-            },
+              ...prev.scaleComposition,
+              weightKg: liveWeight,
+              bodyFatPercent: measurement.body_fat_percentage ? Number(measurement.body_fat_percentage) : prev.scaleComposition.bodyFatPercent,
+              muscleMassKg: measurement.muscle_mass_kg ? Number(measurement.muscle_mass_kg) : prev.scaleComposition.muscleMassKg,
+              recordedDate: measurement.date || prev.scaleComposition.recordedDate,
+            }
           }
-        }
-      } catch (e) {
-        console.warn('Failed to load user profile from storage', e)
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+          } catch (e) {
+            // ignore
+          }
+          return next
+        })
       }
+    } catch (err) {
+      console.warn('Could not sync latest weight from Supabase', err)
+    }
+  }, [supabase])
 
-      // Fetch latest live weight from Supabase body_measurements
-      try {
-        const { data: latestMeasurement } = await supabase
-          .from('body_measurements')
-          .select('weight_kg, date, body_fat_percentage, muscle_mass_kg')
-          .order('date', { ascending: false })
-          .limit(1)
-          .maybeSingle()
-
-        if (latestMeasurement && latestMeasurement.weight_kg) {
-          const liveWeight = Number(latestMeasurement.weight_kg)
-          currentProf.baselineWeightKg = liveWeight
-          currentProf.scaleComposition.weightKg = liveWeight
-          if (latestMeasurement.body_fat_percentage) {
-            currentProf.scaleComposition.bodyFatPercent = Number(latestMeasurement.body_fat_percentage)
-          }
-          if (latestMeasurement.muscle_mass_kg) {
-            currentProf.scaleComposition.muscleMassKg = Number(latestMeasurement.muscle_mass_kg)
-          }
-          if (latestMeasurement.date) {
-            currentProf.scaleComposition.recordedDate = latestMeasurement.date
-          }
-        }
-      } catch (err) {
-        console.warn('Could not fetch latest live weight from Supabase', err)
+  // Initial load
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        setProfile(prev => ({
+          ...prev,
+          ...parsed,
+          scaleComposition: {
+            ...prev.scaleComposition,
+            ...(parsed.scaleComposition || {}),
+          },
+        }))
       }
-
-      setProfile(currentProf)
+    } catch (e) {
+      console.warn('Failed to load user profile from storage', e)
+    } finally {
       setIsLoaded(true)
     }
 
-    loadData()
-  }, [])
+    // Always fetch live latest reading from database on mount & on window focus
+    syncLatestLiveWeight()
+
+    const handleFocus = () => {
+      syncLatestLiveWeight()
+    }
+    window.addEventListener('focus', handleFocus)
+    window.addEventListener('visibilitychange', handleFocus)
+
+    return () => {
+      window.removeEventListener('focus', handleFocus)
+      window.removeEventListener('visibilitychange', handleFocus)
+    }
+  }, [syncLatestLiveWeight])
 
   // Save to local storage
   const updateProfile = useCallback((updates: Partial<UserProfile>) => {
