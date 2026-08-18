@@ -10,7 +10,7 @@ const withSerwist = withSerwistInit({
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  assetPrefix: process.env.NODE_ENV === "production" ? "https://nexora-fit.vercel.app" : undefined,
 };
 
 export default withSerwist(nextConfig);
