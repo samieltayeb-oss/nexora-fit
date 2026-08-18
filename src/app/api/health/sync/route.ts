@@ -167,21 +167,78 @@ export async function POST(req: NextRequest) {
     }
 
     const body = parseResult.data
-    let rawItems: unknown[] = []
-
-    if (Array.isArray(body)) {
-      rawItems = body
-    } else if (typeof body === 'object' && body !== null) {
-      if ('data' in body && Array.isArray((body as any).data)) {
-        rawItems = (body as any).data
-      } else {
-        rawItems = Object.values(body).flat()
-      }
-    } else if (body !== undefined && body !== null) {
-      rawItems = [body]
+    interface ParsedSample {
+      type: string
+      value: number
+      date: string
+      unit?: string
     }
 
-    if (rawItems.length > 500) {
+    const parsedSamples: ParsedSample[] = []
+
+    const processItem = (keyHint: string, item: unknown) => {
+      if (item === null || item === undefined) return
+
+      let numVal: number | null = null
+      let rawType = keyHint ? keyHint.toLowerCase() : 'steps'
+      let date = new Date().toISOString()
+      let unit = ''
+
+      if (typeof item === 'number' || (typeof item === 'string' && !isNaN(Number(item)))) {
+        numVal = Number(item)
+        if (!keyHint || keyHint === 'data' || keyHint === 'items') {
+          rawType = (numVal >= 35 && numVal <= 250) ? 'weight' : 'steps'
+        }
+      } else if (typeof item === 'object' && item !== null) {
+        const obj = item as Record<string, unknown>
+        const val = obj.Value ?? obj.value ?? obj.Qty ?? obj.qty ?? obj.avg ?? obj.Count ?? obj.count ?? obj.Quantity ?? obj.quantity ?? obj.Amount ?? obj.amount ?? obj.val ?? obj.num ?? obj.weight ?? obj.Weight ?? obj.energy ?? obj.calories ?? obj.steps
+        const t = obj.Type || obj.type || obj.SampleType || obj.sampleType || obj.Name || obj.name || obj['Health Sample Type'] || keyHint || 'steps'
+        rawType = t.toString().toLowerCase()
+        const itemDate = obj.Date || obj.date || obj.StartDate || obj.startDate || obj.EndDate || obj.endDate
+        date = typeof itemDate === 'string' ? itemDate : new Date().toISOString()
+        unit = (obj.Unit || obj.unit || '').toString().toLowerCase()
+
+        if (val !== undefined && val !== null && !isNaN(Number(val))) {
+          numVal = Number(val)
+        }
+      }
+
+      if (numVal !== null && !isNaN(numVal)) {
+        // Handle lbs to kg conversion if unit is lb or lbs
+        if ((unit.includes('lb') || unit.includes('pound')) && numVal > 70) {
+          numVal = Number((numVal * 0.45359237).toFixed(2))
+        }
+
+        parsedSamples.push({
+          type: rawType,
+          value: numVal,
+          date,
+          unit
+        })
+      }
+    }
+
+    if (Array.isArray(body)) {
+      body.forEach((item) => processItem('', item))
+    } else if (typeof body === 'object' && body !== null) {
+      const objBody = body as Record<string, unknown>
+      if ('data' in objBody && Array.isArray(objBody.data)) {
+        objBody.data.forEach((item) => processItem('', item))
+      } else {
+        // Iterate every key-value pair in the object
+        for (const [key, value] of Object.entries(objBody)) {
+          if (Array.isArray(value)) {
+            value.forEach((v) => processItem(key, v))
+          } else {
+            processItem(key, value)
+          }
+        }
+      }
+    } else if (body !== undefined && body !== null) {
+      processItem('', body)
+    }
+
+    if (parsedSamples.length > 500) {
       syncStatus = 'failed'
       errorCode = 'too_many_samples'
       await logSync()
@@ -191,74 +248,66 @@ export async function POST(req: NextRequest) {
     const healthLogsToInsert: Record<string, unknown>[] = []
     const bodyMeasurementsToInsert: Record<string, unknown>[] = []
 
-    if (rawItems.length > 0) {
-      rawItems.forEach((item: unknown) => {
-        let numVal: number | null = null
-        let rawType = 'steps'
-        let date = new Date().toISOString()
+    parsedSamples.forEach((sample) => {
+      acceptedRecords++
+      const rawType = sample.type
+      const numVal = sample.value
+      const date = sample.date
 
-        if (typeof item === 'number' || (typeof item === 'string' && !isNaN(Number(item)))) {
-          numVal = Number(item)
-          rawType = (numVal >= 40 && numVal <= 200) ? 'weight' : 'steps'
-        } 
-        else if (typeof item === 'object' && item !== null) {
-          const typedItem = item as Record<string, unknown>
-          const val = typedItem.Qty ?? typedItem.qty ?? typedItem.Value ?? typedItem.value ?? typedItem.avg ?? typedItem.Count ?? typedItem.count ?? typedItem.Quantity ?? typedItem.quantity ?? typedItem.Amount ?? typedItem.amount ?? typedItem.val ?? typedItem.num ?? typedItem.weight ?? typedItem.Weight ?? typedItem.energy ?? typedItem.calories ?? typedItem.steps
-          rawType = (typedItem.Type || typedItem.type || typedItem.SampleType || typedItem.sampleType || typedItem.Name || typedItem.name || typedItem['Health Sample Type'] || 'steps').toString().toLowerCase()
-          const itemDate = typedItem.Date || typedItem.date || typedItem.StartDate || typedItem.startDate
-          date = typeof itemDate === 'string' ? itemDate : new Date().toISOString()
-          if (val !== undefined && val !== null && !isNaN(Number(val))) {
-            numVal = Number(val)
-          }
-        }
-
-        if (numVal !== null && !isNaN(numVal)) {
-          acceptedRecords++
-          // Strictly stamp with authenticatedUserId — ignore any user_id injected into the payload!
-          if (rawType.includes('weight') || rawType.includes('mass') || rawType.includes('body_weight')) {
-            bodyMeasurementsToInsert.push({
-              user_id: authenticatedUserId,
-              date: date.split('T')[0],
-              weight_kg: numVal,
-              notes: 'Secure Apple Health Sync'
-            })
-            healthLogsToInsert.push({
-              user_id: authenticatedUserId,
-              log_type: 'weight',
-              log_date: date,
-              value_numeric: numVal,
-              notes: 'Secure Apple Health Sync'
-            })
-          }
-          else if (rawType.includes('fat')) {
-            healthLogsToInsert.push({
-              user_id: authenticatedUserId,
-              log_type: 'body_fat',
-              log_date: date,
-              value_numeric: numVal,
-              notes: 'Secure Apple Health Sync'
-            })
-            bodyMeasurementsToInsert.push({
-              user_id: authenticatedUserId,
-              date: date.split('T')[0],
-              body_fat_percentage: numVal,
-              notes: 'Secure Apple Health Sync'
-            })
-          }
-          else {
-            healthLogsToInsert.push({
-              user_id: authenticatedUserId,
-              log_type: rawType.includes('step') ? 'steps' : rawType.includes('energy') || rawType.includes('calorie') || rawType.includes('active') ? 'active_calories' : 'heart_rate',
-              log_date: date,
-              value_numeric: numVal,
-              notes: 'Secure Apple Health Sync'
-            })
-          }
-        } else {
-          rejectedRecords++
-        }
-      })
-    }
+      if (rawType.includes('weight') || rawType.includes('mass') || rawType.includes('body_weight')) {
+        bodyMeasurementsToInsert.push({
+          user_id: authenticatedUserId,
+          date: date.split('T')[0],
+          weight_kg: numVal,
+          notes: 'Secure Apple Health Sync'
+        })
+        healthLogsToInsert.push({
+          user_id: authenticatedUserId,
+          log_type: 'weight',
+          log_date: date,
+          value_numeric: numVal,
+          notes: 'Secure Apple Health Sync'
+        })
+      } else if (rawType.includes('fat')) {
+        healthLogsToInsert.push({
+          user_id: authenticatedUserId,
+          log_type: 'body_fat',
+          log_date: date,
+          value_numeric: numVal,
+          notes: 'Secure Apple Health Sync'
+        })
+        bodyMeasurementsToInsert.push({
+          user_id: authenticatedUserId,
+          date: date.split('T')[0],
+          body_fat_percentage: numVal,
+          notes: 'Secure Apple Health Sync'
+        })
+      } else if (rawType.includes('glucose') || rawType.includes('sugar')) {
+        healthLogsToInsert.push({
+          user_id: authenticatedUserId,
+          log_type: 'blood_glucose',
+          log_date: date,
+          value_numeric: numVal,
+          notes: 'Secure Apple Health Sync'
+        })
+      } else if (rawType.includes('energy') || rawType.includes('calorie') || rawType.includes('active') || rawType.includes('burn')) {
+        healthLogsToInsert.push({
+          user_id: authenticatedUserId,
+          log_type: 'active_calories',
+          log_date: date,
+          value_numeric: numVal,
+          notes: 'Secure Apple Health Sync'
+        })
+      } else {
+        healthLogsToInsert.push({
+          user_id: authenticatedUserId,
+          log_type: rawType.includes('step') ? 'steps' : 'heart_rate',
+          log_date: date,
+          value_numeric: numVal,
+          notes: 'Secure Apple Health Sync'
+        })
+      }
+    })
 
     if (healthLogsToInsert.length > 0) {
       await supabase.from('health_logs').insert(healthLogsToInsert)
