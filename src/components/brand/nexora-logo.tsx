@@ -17,20 +17,20 @@ export function NexoraLogo({
 }: NexoraLogoProps) {
   // Height presets for the full horizontal logo
   const logoHeights = {
-    sm: 'h-9',
-    md: 'h-13 sm:h-14',
-    lg: 'h-16 sm:h-20',
-    xl: 'h-20 sm:h-24 md:h-28',
-    '2xl': 'h-28 sm:h-36 md:h-44',
+    sm: 'h-8',
+    md: 'h-12',
+    lg: 'h-16',
+    xl: 'h-20 sm:h-24',
+    '2xl': 'h-28 sm:h-36',
   }
 
   // Square emblem sizes
   const emblemSizes = {
-    sm: 'w-9 h-9',
-    md: 'w-13 h-13',
-    lg: 'w-18 h-18',
-    xl: 'w-24 h-24',
-    '2xl': 'w-32 h-32',
+    sm: 'w-8 h-8',
+    md: 'w-12 h-12',
+    lg: 'w-14 h-14',
+    xl: 'w-20 h-20',
+    '2xl': 'w-28 h-28',
   }
 
   if (showWordmark) {
@@ -43,6 +43,8 @@ export function NexoraLogo({
         <img
           src="/brand/nexorafit.png"
           alt="NEXORA FIT — Train. Transform. Become."
+          width={280}
+          height={70}
           className={`${logoHeights[size]} w-auto object-contain relative z-10 drop-shadow-[0_10px_30px_rgba(245,158,11,0.35)] transition-transform duration-300 group-hover:scale-[1.02]`}
         />
       </div>
@@ -58,6 +60,8 @@ export function NexoraLogo({
       <img
         src="/brand/emblem.png"
         alt="NEXORA Emblem"
+        width={56}
+        height={56}
         className={`${emblemSizes[size]} object-contain relative z-10 drop-shadow-[0_8px_20px_rgba(245,158,11,0.4)] transition-transform duration-300 group-hover:scale-105`}
       />
     </div>

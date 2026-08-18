@@ -411,7 +411,7 @@ export default function ProgressPage() {
                       <li>Add Action: <strong>Get Health Samples</strong> (Weight &amp; Active Energy).</li>
                       <li>Add Action: <strong>Get Contents of URL</strong>:
                         <code className="block bg-black/60 text-teal-300 p-2 rounded-lg mt-1 font-mono text-[10px] break-all border border-teal-500/20">
-                          https://nexora-fit.vercel.app/api/health/sync
+                          https://nexorayyc.io/api/health/sync
                         </code>
                       </li>
                     </ol>

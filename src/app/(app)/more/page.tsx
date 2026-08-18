@@ -173,11 +173,10 @@ export default function MorePage() {
         
         <div className="bg-background/90 border border-border rounded-3xl overflow-hidden shadow-xl backdrop-blur-md divide-y divide-border/60">
           <MenuLink 
-            href="https://nexora-fit.vercel.app"
-            external
-            icon={<Smartphone className="w-5 h-5 text-cyan-400" />}
-            title="Production Deployment"
-            subtitle="nexora-fit.vercel.app"
+            href="/nexora-fit"
+            icon={<Smartphone className="w-5 h-5 text-[#C49A10]" />}
+            title="NEXORA FIT Experience"
+            subtitle="nexorayyc.io/nexora-fit"
           />
           <div onClick={() => setShowHelpModal(true)} className="cursor-pointer">
             <MenuLinkItem 

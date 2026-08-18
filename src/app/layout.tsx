@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "NEXORA FIT",
     description: "Precision health management & clinical fitness protocol.",
-    url: "https://nexora-fit.vercel.app",
+    url: "https://nexorayyc.io/dashboard",
     siteName: "NEXORA FIT",
     type: "website",
   },
