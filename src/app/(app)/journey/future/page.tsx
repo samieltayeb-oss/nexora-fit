@@ -47,7 +47,7 @@ export default function FutureMePage() {
       {/* Narrative Section */}
       <div className="rounded-3xl bg-surface-elevated p-6 md:p-8 border border-border-subtle shadow-sm mb-12">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-          <BrainCircuit className="h-3.5 w-3.5" /> Intelligence Engine
+          <BrainCircuit className="h-3.5 w-3.5" /> Intelligence Engine · [PROJECTED ALGORITHMIC TRAJECTORY]
         </div>
         
         {goal.confidence === 'None' ? (

@@ -17,7 +17,8 @@ import {
   X, 
   ExternalLink,
   ShieldCheck,
-  Scale
+  Scale,
+  Info
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
@@ -209,6 +210,15 @@ export default function ProgressPage() {
       </section>
 
       {/* ── THE 13 EXACT METRICS FROM VESYNC SCALE ───────────────────────────── */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[10px] font-black uppercase tracking-wider bg-teal-500/20 text-teal-300 border border-teal-500/30 px-2.5 py-1 rounded-full">
+            [ESTIMATED BIOIMPEDANCE METRICS]
+          </span>
+          <span className="text-xs text-foreground/60 font-medium">Smart scale multi-frequency estimations</span>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Core Health Indicators */}
@@ -240,7 +250,7 @@ export default function ProgressPage() {
         {/* Metabolic Profile */}
         <section className="glass-panel rounded-3xl p-6 relative overflow-hidden md:col-span-2 border border-border/80">
           <h3 className="text-lg font-bold text-foreground tracking-tight mb-6 flex items-center gap-2">
-            <Flame className="w-5 h-5 text-amber-400" /> Metabolic Profile &amp; Diabetic Type 2 Recovery
+            <Flame className="w-5 h-5 text-amber-400" /> Metabolic Profile
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
             <MetricRow icon={<Activity className="w-4 h-4 text-teal-400" />} label="Bone Mass" value={boneMass} suffix=" kg" status="Standard" statusColor="teal" index={4} />
@@ -249,6 +259,14 @@ export default function ProgressPage() {
             <MetricRow icon={<Activity className="w-4 h-4 text-amber-400" />} label="Metabolic Age" value={metabolicAge} suffix=" yrs" status="High (50 yrs)" statusColor="amber" index={7} />
           </div>
         </section>
+      </div>
+
+      {/* Smart Scale Disclaimer */}
+      <div className="p-4 rounded-2xl border border-white/10 bg-white/[0.02] flex items-start gap-3">
+        <Info className="w-4 h-4 text-teal-400 flex-shrink-0 mt-0.5" />
+        <p className="text-[11px] text-white/60 font-medium leading-relaxed">
+          <strong>Bioimpedance Estimation Notice:</strong> Body fat percentage, visceral fat level, skeletal muscle mass, bone mass, and metabolic age are algorithmic estimations calculated via smart scale bioelectrical impedance analysis (BIA). They provide longitudinal trend visibility and do not replace clinical DEXA or hydrostatic body composition imaging.
+        </p>
       </div>
 
       {/* ── INTERACTIVE SYNC MODAL (VESYNC & APPLE WATCH) ───────────────────── */}

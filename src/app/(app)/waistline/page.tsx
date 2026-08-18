@@ -168,8 +168,13 @@ export default function WaistlineCoachPage() {
                 <Sliders className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-black text-foreground uppercase tracking-wider">Belly Goal Simulator</h3>
-                <p className="text-xs text-foreground/70 font-medium">Projected waist & fit as weight decreases</p>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-black text-foreground uppercase tracking-wider">Belly Goal Simulator</h3>
+                  <span className="text-[9px] font-black uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded">
+                    [PROJECTED MODEL · ESTIMATED]
+                  </span>
+                </div>
+                <p className="text-xs text-foreground/70 font-medium">Mathematical model of projected waist &amp; fit as overall body mass changes (individual results vary)</p>
               </div>
             </div>
             <span className="text-xs font-black text-cyan-400 px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-full">
@@ -196,33 +201,33 @@ export default function WaistlineCoachPage() {
 
             <div className="flex justify-between text-xs font-bold text-slate-500">
               <span>Target: 75.0 kg</span>
-              <span>Current: 81.0 kg</span>
+              <span>Baseline: 82.7 kg</span>
             </div>
           </div>
 
           {/* Projected Outcomes Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="bg-background/80 p-4 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-foreground/70 uppercase">Est. Waist</span>
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Proj. Waist</span>
               <div className="text-xl font-black text-primary">{estimatedWaistSim} cm</div>
-              <span className="text-[10px] text-primary font-bold">-{ (currentWaist - parseFloat(estimatedWaistSim)).toFixed(1) } cm change</span>
+              <span className="text-[10px] text-primary font-bold">-{ (currentWaist - parseFloat(estimatedWaistSim)).toFixed(1) } cm model target</span>
             </div>
             <div className="bg-background/80 p-4 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-foreground/70 uppercase">Est. BMI</span>
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Proj. BMI</span>
               <div className="text-xl font-black text-foreground">{estimatedBmiSim}</div>
-              <span className="text-[10px] text-foreground/70 font-bold">Normal Range</span>
+              <span className="text-[10px] text-foreground/70 font-bold">Estimated</span>
             </div>
             <div className="bg-background/80 p-4 rounded-2xl border border-white/5 space-y-1">
-              <span className="text-[10px] font-bold text-foreground/70 uppercase">Est. Body Fat</span>
+              <span className="text-[10px] font-bold text-foreground/70 uppercase">Proj. Body Fat</span>
               <div className="text-xl font-black text-cyan-300">{estimatedBodyFatSim}%</div>
-              <span className="text-[10px] text-cyan-400 font-bold">-{ (23.4 - parseFloat(estimatedBodyFatSim)).toFixed(1) }% fat loss</span>
+              <span className="text-[10px] text-cyan-400 font-bold">-{ (23.4 - parseFloat(estimatedBodyFatSim)).toFixed(1) }% model</span>
             </div>
             <div className="bg-background/80 p-4 rounded-2xl border border-white/5 space-y-1">
               <span className="text-[10px] font-bold text-foreground/70 uppercase">Belt Notch</span>
               <div className="text-xs font-black text-amber-400 mt-1">
                 {simulatedWeight <= 77.0 ? 'Notch 1 (Tighter)' : 'Notch 2'}
               </div>
-              <span className="text-[10px] text-foreground/70 font-bold">Looser Fit</span>
+              <span className="text-[10px] text-foreground/70 font-bold">Projected Fit</span>
             </div>
           </div>
         </div>
@@ -427,6 +432,14 @@ export default function WaistlineCoachPage() {
           />
         </div>
       )}
+
+      {/* Comprehensive Medical & Projection Disclaimer */}
+      <div className="p-4 rounded-2xl border border-white/10 bg-white/[0.02] flex items-start gap-3">
+        <Info className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+        <p className="text-[11px] text-white/60 font-medium leading-relaxed">
+          <strong>Projection &amp; Health Disclaimer:</strong> All waistline measurements, body fat calculations, and belt notch estimates generated in this simulator are mathematical models based on general body composition formulas. Individual biological rates of visceral fat mobilization and metabolic adaptation vary. This module does not provide medical diagnosis or guaranteed physiological outcomes.
+        </p>
+      </div>
 
     </div>
   )

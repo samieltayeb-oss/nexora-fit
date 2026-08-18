@@ -1,28 +1,24 @@
 'use client'
 
-import React, { useState } from 'react'
-import { 
-  ShieldCheck, 
-  Zap, 
-  Heart, 
-  Flame, 
-  Activity, 
-  Sparkles, 
-  Clock, 
-  CheckCircle2, 
-  Droplets, 
-  Scale, 
-  Brain, 
-  ChevronRight,
-  TrendingDown,
-  Pill,
-  Sun,
-  Moon,
-  Info
-} from 'lucide-react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { 
+  Pill, Sparkles, Shield, HeartPulse, Activity, Zap, CheckCircle2, 
+  Clock, ArrowUpRight, Flame, Layers, Info, ChevronRight, X, AlertCircle 
+} from 'lucide-react'
 
-export interface SupplementBenefit {
+interface Ingredient {
+  name: string
+  dose: string
+  role: string
+}
+
+interface Mechanism {
+  title: string
+  detail: string
+}
+
+export interface SupplementData {
   id: string
   name: string
   subtitle: string
@@ -34,465 +30,518 @@ export interface SupplementBenefit {
   targetBiomarkers: string[]
   primaryOrgans: string[]
   overview: string
-  clinicalMechanisms: {
-    title: string
-    detail: string
-  }[]
+  ingredients?: Ingredient[]
+  clinicalMechanisms: Mechanism[]
   samiSpecificBenefit: string
   absorptionSynergy: string
-  ingredients?: {
-    name: string
-    dose: string
-    role: string
-  }[]
 }
 
-export const SUPPLEMENT_BENEFITS: SupplementBenefit[] = [
+export const CLINICAL_SUPPLEMENTS: SupplementData[] = [
   {
-    id: 'ultra-testo-boost',
-    name: 'Webber Naturals Ultra Testosterone Boost',
-    subtitle: 'Androgen Axis & Anti-Cortisol Formula',
-    dose: '2 Tablets Daily with Food',
-    timing: 'Morning Breakfast or Lunch (with Meal)',
-    category: 'Endocrine & Androgen Optimization',
+    id: 'testosterone-boost',
+    name: 'Ultra Testosterone Boost',
+    subtitle: 'Clinically Standardized Bioactive Multi-Herb Complex',
+    dose: '2 Tablets Daily',
+    timing: '08:30 AM (With Breakfast & Healthy Fats)',
+    category: 'Endocrine & Metabolic Support',
     badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
     icon: '⚡',
-    targetBiomarkers: ['Free Testosterone ↑', 'Salivary Cortisol ↓', 'hs-CRP Inflammation ↓', 'Lean Muscle Retention ↑'],
-    primaryOrgans: ['Testes / Hypothalamus-Pituitary Axis', 'Adrenal Glands', 'Skeletal Muscle Tissue', 'Cardiovascular System'],
-    overview: 'Clinical multi-pathway botanical formula designed to counteract age-related androgen decline, liberate bioavailable free testosterone, reduce systemic stress cortisol, and accelerate lean muscle protein synthesis.',
+    targetBiomarkers: ['Free Testosterone Support', 'Healthy Cortisol Balance', 'Inflammatory Marker Balance', 'Lean Muscle Retention'],
+    primaryOrgans: ['Hypothalamus-Pituitary Axis', 'Adrenal System', 'Skeletal Muscle Tissue', 'Cardiovascular System'],
+    overview: 'Educational botanical formula designed to support healthy androgen balance, promote bioavailable free testosterone modulation, assist healthy stress cortisol regulation, and support lean muscle recovery.',
     ingredients: [
       {
         name: 'Testofen® Fenugreek Extract 33:1 (50% saponins)',
         dose: '300 mg (equiv. to 9,900 mg raw fenugreek)',
-        role: 'Standardized fenuside saponins liberate testosterone from SHBG (Sex Hormone-Binding Globulin), boosting active free testosterone and anabolic muscle recovery.'
+        role: 'Standardized fenuside saponins assist in supporting healthy free testosterone bioavailability and active muscle recovery.'
       },
       {
         name: 'Maca Extract 6:1 (Lepidium meyenii)',
         dose: '125 mg (equiv. to 750 mg raw maca root)',
-        role: 'Peruvian adaptogen that enhances cellular stamina, neuro-endocrine drive, and physical energy without jitteriness.'
+        role: 'Peruvian adaptogen traditionally utilized to support cellular stamina, neuro-endocrine drive, and vitality.'
       },
       {
         name: 'Sensoril® Ashwagandha Extract (Withania somnifera)',
         dose: '62.5 mg (32–45% oligosaccharides, 10–20% withanolides)',
-        role: 'Clinically proven to reduce cortisol (catabolic stress hormone) and C-reactive protein (CRP), preventing stress-induced visceral fat accumulation.'
+        role: 'Shown in clinical studies to support healthy cortisol modulation and assist metabolic balance under physical demand.'
       },
       {
         name: 'Zinc (Citrate)',
         dose: '15 mg',
-        role: 'Critical mineral cofactor for luteinizing hormone (LH) release, testosterone synthesis, and pancreatic insulin storage.'
+        role: 'Essential mineral cofactor for cellular enzyme function, endocrine synthesis, and immune health.'
       },
       {
         name: 'Boron (Citrate)',
         dose: '0.35 mg',
-        role: 'Trace mineral that rapidly lowers SHBG, freeing up more circulating testosterone and downregulating inflammatory cytokines.'
+        role: 'Trace mineral that supports healthy SHBG balance and assists free testosterone availability.'
       }
     ],
     clinicalMechanisms: [
       {
-        title: 'Unbinding Free Testosterone',
-        detail: 'Fenugreek saponins bind competitively to SHBG, freeing up bioactive testosterone to enter muscle cell nuclei and trigger protein synthesis.'
+        title: 'Free Testosterone Availability Support',
+        detail: 'Fenugreek saponins interact with SHBG binding dynamics, supporting bioactive testosterone circulation to muscle tissues.'
       },
       {
-        title: 'HPA Axis Stress Dampening',
-        detail: 'Sensoril® withanolides down-regulate hyperactive adrenal cortisol secretion, preventing muscle breakdown (catabolism) and abdominal visceral fat storage.'
+        title: 'HPA Axis Stress Modulation',
+        detail: 'Sensoril® withanolides assist in down-regulating excessive adrenal cortisol secretion, supporting muscle retention and metabolic stability.'
       },
       {
-        title: 'Cardiovascular Inflammatory Protection',
-        detail: 'Lowers high-sensitivity C-Reactive Protein (hs-CRP), soothing vascular endothelial lining and protecting cardiac vessels.'
+        title: 'Vascular Endothelial Support',
+        detail: 'Supports balanced systemic inflammatory markers (hs-CRP), promoting cardiovascular and endothelial wellness.'
       }
     ],
-    samiSpecificBenefit: 'For Sami (aiming from 82.70 kg → 75.00 kg with Type 2 management), maintaining high free testosterone prevents muscle loss during caloric restriction, while reducing cortisol keeps morning fasting glucose stable.',
-    absorptionSynergy: 'Take 2 tablets with breakfast or lunch. Dietary fats in the meal (egg yolks or avocado) optimize the bioavailability of the lipid-soluble withanolides and saponins.'
+    samiSpecificBenefit: 'Supports lean muscle retention during structured caloric management and promotes balanced morning energy while pursuing healthy body composition goals.',
+    absorptionSynergy: 'Take 2 tablets with breakfast or lunch. Dietary fats in the meal (egg yolks or avocado) optimize the bioavailability of lipid-soluble botanicals.'
   },
   {
     id: 'taurine',
     name: 'Taurine 1000 mg (1g)',
-    subtitle: 'Cardiac Contractility & Cellular Osmolyte',
+    subtitle: 'Cardiac Rhythm & Cellular Osmolyte Support',
     dose: '1000 mg (1g) Daily',
     timing: '07:00 AM (Pre-Workout with 500ml Water & Coffee)',
-    category: 'Amino Acid & Cardiovascular Osmoregulation',
+    category: 'Amino Acid & Cellular Hydration',
     badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
     icon: '💧',
-    targetBiomarkers: ['Left Ventricular Stroke Volume ↑', 'Vascular Endothelial Tone', 'Muscle Intracellular Hydration ↑', 'Exercise Capacity ↑'],
+    targetBiomarkers: ['Cardiac Rhythm Support', 'Vascular Endothelial Tone', 'Intracellular Hydration', 'Exercise Capacity'],
     primaryOrgans: ['Heart (Cardiomyocytes)', 'Vascular Endothelium', 'Skeletal Muscle Cells', 'Central Nervous System'],
-    overview: 'Essential organic sulfonic amino acid that acts as the primary intracellular osmolyte in the heart and skeletal muscles, regulating calcium fluxes, mitochondrial stability, and vascular elasticity.',
+    overview: 'Essential organic sulfonic amino acid that acts as a major intracellular osmolyte in heart and skeletal muscles, supporting calcium flux regulation, mitochondrial health, and vascular elasticity.',
     clinicalMechanisms: [
       {
-        title: 'Myocardial Calcium Handling',
-        detail: 'Modulates sarcoplasmic reticulum calcium ATPase (SERCA2a), optimizing the force of cardiac contractions (inotropy) while preventing intracellular calcium overload.'
+        title: 'Myocardial Ion Handling',
+        detail: 'Assists sarcoplasmic reticulum calcium ATPase (SERCA2a) function, supporting optimal cardiomyocyte contractility and cellular balance.'
       },
       {
-        title: 'Endothelial Nitric Oxide Synergy',
-        detail: 'Enhances endothelial nitric oxide synthase (eNOS) phosphorylation, promoting smooth vessel relaxation and reducing arterial resistance alongside Ramipril.'
+        title: 'Endothelial Nitric Oxide Support',
+        detail: 'Supports endothelial nitric oxide synthase (eNOS) activity, promoting smooth vessel relaxation and healthy vascular tone.'
       },
       {
-        title: 'Intracellular Osmoregulation & Anti-Cramping',
-        detail: 'Pulls water and electrolytes directly inside muscle cells (cellular volumization), preventing exercise-induced cramps and stabilizing cell membranes during morning calisthenics.'
+        title: 'Intracellular Osmoregulation',
+        detail: 'Assists water and electrolyte retention inside muscle cells (cellular volumization), supporting muscle endurance and membrane stability.'
       }
     ],
-    samiSpecificBenefit: 'Synergizes with Creatine Monohydrate (5g) and Ramipril (5mg) to ensure maximum cardiovascular efficiency during morning workouts, protecting heart tissues under exertion.',
-    absorptionSynergy: 'Drink with 500ml water and morning coffee 20–30 minutes before training. Free-form Taurine is rapidly absorbed on an empty stomach.'
+    samiSpecificBenefit: 'Synergizes with Creatine Monohydrate and hydration protocols to support cardiovascular performance and muscle hydration during morning training.',
+    absorptionSynergy: 'Take with 500ml water and morning coffee 20–30 minutes before training. Free-form Taurine is rapidly absorbed on an empty stomach.'
   },
   {
     id: 'coq10',
     name: 'Coenzyme Q-10 (CoQ10) 200 mg',
-    subtitle: 'Cellular ATP & Statin Protection',
+    subtitle: 'Cellular ATP & Mitochondrial Defense',
     dose: '200 mg Daily',
     timing: '08:30 AM (Breakfast with Healthy Fats)',
     category: 'Mitochondrial Bioenergetics',
     badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/40',
     icon: '⚡',
-    targetBiomarkers: ['Mitochondrial ATP Synthesis ↑', 'Statin-Induced Myalgia Prevention', 'Vascular LDL Oxidation ↓'],
+    targetBiomarkers: ['Mitochondrial ATP Synthesis', 'Cellular Antioxidant Defense', 'Vascular Lipid Balance'],
     primaryOrgans: ['Heart Muscle', 'Liver', 'Skeletal Muscle Mitochondria', 'Blood Vessel Walls'],
-    overview: 'Essential lipid-soluble cofactor for the mitochondrial electron transport chain (Complex I, II, and III). Crucial for replenishing CoQ10 depleted by Rosuvastatin statin therapy.',
+    overview: 'Essential lipid-soluble cofactor for the mitochondrial electron transport chain (Complexes I, II, and III). Supports natural mitochondrial energy generation in cardiovascular and muscle tissues.',
     clinicalMechanisms: [
       {
-        title: 'Overcoming Statin Depletion',
-        detail: 'Rosuvastatin inhibits HMG-CoA reductase, which inadvertently reduces the body’s natural synthesis of CoQ10 by up to 50%. 200mg daily restores tissue CoQ10 levels, eliminating muscle fatigue and aches.'
+        title: 'Mitochondrial Enzyme Support',
+        detail: 'Helps support endogenous tissue CoQ10 concentrations in high-demand cardiac and skeletal muscle cells.'
       },
       {
-        title: 'Mitochondrial ATP Energy',
-        detail: 'Transports electrons across the inner mitochondrial membrane to generate cellular ATP for the heart (which has the highest CoQ10 concentration in the human body).'
+        title: 'Mitochondrial ATP Synthesis',
+        detail: 'Facilitates electron transport across the inner mitochondrial membrane, supporting cellular ATP generation.'
       },
       {
-        title: 'Lipophilic Antioxidant Defense',
-        detail: 'Directly protects circulating LDL particles from peroxidation, preventing them from oxidizing into atherogenic plaques.'
+        title: 'Lipophilic Antioxidant Support',
+        detail: 'Assists in defending circulating lipid particles against oxidative stress and free radical damage.'
       }
     ],
-    samiSpecificBenefit: 'Since Sami takes Rosuvastatin 40mg daily, CoQ10 200mg is mandatory to maintain high physical energy, eliminate muscle heaviness, and protect cardiovascular pump function.',
-    absorptionSynergy: 'Must be taken with breakfast containing healthy fats (whole eggs or avocado) because CoQ10 is lipid-soluble and requires dietary lipids for intestinal micelle absorption.'
+    samiSpecificBenefit: 'Supports cellular energy production and muscle endurance, promoting cardiovascular resilience alongside comprehensive medical management.',
+    absorptionSynergy: 'Take with breakfast containing dietary fats (eggs or avocado) for optimal lipid-phase intestinal absorption.'
   },
   {
     id: 'k2d3',
     name: 'Vitamin K2 + D3 (120 mcg / 1000 IU)',
-    subtitle: 'Arterial Elasticity & Insulin Sensitivity',
+    subtitle: 'Vascular Mineral Matrix & Bone Synergy',
     dose: '120 mcg MK-7 + 1000 IU D3 Daily',
     timing: '08:30 AM (With Breakfast)',
-    category: 'Vascular Mineral Matrix & Glycemic Control',
+    category: 'Vascular Mineral Matrix & Bone Support',
     badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
     icon: '🦴',
-    targetBiomarkers: ['Arterial Calcification Prevention (MGP Activation)', 'Insulin Receptor Sensitivity ↑', 'Bone Mineral Density ↑'],
+    targetBiomarkers: ['Matrix Gla Protein (MGP) Activation', 'Insulin Receptor Support', 'Bone Mineral Matrix Density'],
     primaryOrgans: ['Coronary Arteries', 'Aorta & Heart Valves', 'Bone Matrix', 'Pancreatic Beta Cells'],
-    overview: 'Synergistic arterial and bone health protocol. Vitamin D3 facilitates calcium absorption, while Vitamin K2 (Menaquinone-7) activates Matrix Gla Protein (MGP) to redirect calcium away from arterial walls into bone mineral matrix.',
+    overview: 'Synergistic arterial and skeletal health protocol. Vitamin D3 facilitates calcium absorption, while Vitamin K2 (Menaquinone-7) activates Matrix Gla Protein (MGP) to support healthy calcium utilization into bone structures.',
     clinicalMechanisms: [
       {
-        title: 'The Calcium Paradox Solution',
-        detail: 'Carboxylates Matrix Gla Protein (MGP), the most potent inhibitor of soft-tissue and arterial wall calcification known in clinical medicine.'
+        title: 'Calcium Directing Mechanism',
+        detail: 'Carboxylates Matrix Gla Protein (MGP), supporting the natural regulation of soft-tissue and vascular calcium balance.'
       },
       {
-        title: 'Insulin Receptor Gene Upregulation',
-        detail: 'Vitamin D3 activates nuclear Vitamin D Receptors (VDR) on skeletal muscle cells and pancreatic beta-cells, enhancing insulin sensitivity and glucose disposal.'
+        title: 'Osteocalcin Activation',
+        detail: 'Carboxylates osteocalcin, binding circulating calcium into the hydroxyapatite crystal lattice of bones.'
       },
       {
-        title: 'Long-Acting MK-7 Half-Life',
-        detail: 'Menaquinone-7 has a 72-hour circulating half-life, maintaining 24/7 protection against arterial stiffness.'
+        title: 'Immune & Glycemic Modulation',
+        detail: 'Vitamin D3 binds to VDR receptors on pancreatic beta cells, supporting healthy insulin sensitivity.'
       }
     ],
-    samiSpecificBenefit: 'Protects Sami’s arterial flexibility and coronary vessels from calcification while boosting the metabolic action of Dapagliflozin and morning workouts on insulin sensitivity.',
-    absorptionSynergy: 'Fat-soluble vitamins: take with morning whole eggs, olive oil, or avocado for maximum bioavailability.'
+    samiSpecificBenefit: 'Promotes arterial elasticity and healthy vascular compliance while maintaining strong bone density during fat-loss resistance training.',
+    absorptionSynergy: 'Lipid-soluble vitamins requiring dietary fats for optimal micelle formation and absorption.'
   },
   {
     id: 'creatine',
-    name: 'Creatine Monohydrate (5g)',
-    subtitle: 'Cellular ATP & GLUT-4 Translocation',
-    dose: '5 grams Daily',
+    name: 'Creatine Monohydrate (Creapure) 5g',
+    subtitle: 'Cellular Phosphagen & Cognitive Energy',
+    dose: '5000 mg (5g) Daily',
     timing: '07:00 AM (Pre-Workout with 500ml Water)',
-    category: 'Ergogenic & Glycemic Booster',
-    badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40',
-    icon: '🏋️',
-    targetBiomarkers: ['Phosphocreatine (PCr) Muscle Stores ↑', 'Insulin-Independent Glucose Uptake ↑', 'Lean Muscle Power ↑'],
-    primaryOrgans: ['Skeletal Muscle', 'Brain / Neurons', 'Mitochondria'],
-    overview: 'The most clinically researched ergogenic aid in sports medicine. Regenerates ATP during high-intensity muscle contractions and triggers insulin-independent GLUT-4 glucose transport into muscle cells.',
+    category: 'Phosphagen Bioenergetics & Neural Support',
+    badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+    icon: '🧬',
+    targetBiomarkers: ['Intracellular Phosphocreatine (PCr) ↑', 'GLUT-4 Translocation Support', 'Glycogen Storage Capacity'],
+    primaryOrgans: ['Skeletal Muscle Fast-Twitch Fibers', 'Brain Cortex & Neurons', 'Kidneys', 'Heart'],
+    overview: 'Heavily researched ergogenic aid. Replenishes intracellular phosphocreatine stores to rapidly re-phosphorylate ADP into ATP during anaerobic calisthenics and gym machine training.',
     clinicalMechanisms: [
       {
-        title: 'Rapid Phosphagen ATP Regeneration',
-        detail: 'Donates a phosphate group to ADP, instantly regenerating ATP during bodyweight squats, push-ups, and gym machine presses.'
+        title: 'ATP Regeneration Shuttle',
+        detail: 'Donates a high-energy phosphate group to ADP, generating instant ATP without creating lactic acid.'
       },
       {
-        title: 'GLUT-4 Glucose Translocation',
-        detail: 'Increases intracellular osmotic pressure and activates AMPK signaling, pulling glucose out of the bloodstream into muscle tissue without requiring insulin spikes.'
+        title: 'GLUT-4 Glucose Uptake Support',
+        detail: 'Upregulates skeletal muscle GLUT-4 glucose transporter expression, supporting muscle glucose clearance.'
       },
       {
-        title: 'Muscle Protein Synthesis & Anti-Sarcopenia',
-        detail: 'Increases muscle cell hydration and myoblast differentiation, preserving functional lean mass while losing fat.'
+        title: 'Cognitive & Neuro-Protection',
+        detail: 'Supplies high-energy phosphate buffers to cortical neurons, supporting focus and executive cognition under stress.'
       }
     ],
-    samiSpecificBenefit: 'Allows Sami to burn more calories and clear circulating blood sugar rapidly during the 15-minute morning routine, accelerating fat loss from 82.70 kg to 75.00 kg.',
-    absorptionSynergy: 'Mix 5g with 500ml water and take with pre-workout morning coffee. Exercise increases creatine transporter activity into skeletal muscle.'
+    samiSpecificBenefit: 'Supports strength output on gym machines while assisting peripheral glucose utilization during morning workouts.',
+    absorptionSynergy: 'Drink with 500ml water. Caffeine from morning coffee enhances mental sharpness without impairing creatine saturation.'
   },
   {
     id: 'b12',
-    name: 'Vitamin B12 (1000 mcg Methylcobalamin)',
-    subtitle: 'Nerve Health & Cellular Metabolism',
-    dose: '1000 mcg Daily',
-    timing: '08:30 AM (Morning Meal)',
-    category: 'Neuro-Metabolic Vitamin',
-    badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
-    icon: '🧠',
-    targetBiomarkers: ['Homocysteine Clearance', 'Myelin Sheath Integrity', 'RBC Hemoglobin Synthesis'],
-    primaryOrgans: ['Peripheral Nerves', 'Bone Marrow', 'Brain & Spinal Cord'],
-    overview: 'Bioavailable active coenzyme form of B12. Essential for myelin sheath nerve preservation, methylation cycles, and red blood cell hemoglobin oxygenation.',
+    name: 'Vitamin B12 (Methylcobalamin) 1000 mcg',
+    subtitle: 'Neurological Myelin & Methylation Support',
+    dose: '1000 mcg (Sublingual / Dissolvable)',
+    timing: '08:30 AM (With Breakfast)',
+    category: 'Neurological & Cellular Methylation',
+    badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+    icon: '🩸',
+    targetBiomarkers: ['Serum Cobalamin Support', 'Homocysteine Balance', 'Erythrocyte Mean Corpuscular Volume'],
+    primaryOrgans: ['Peripheral Nerves', 'Bone Marrow', 'Liver', 'Brain'],
+    overview: 'Bioactive coenzyme form of Vitamin B12. Essential for homocysteine recycling into methionine, DNA synthesis, and peripheral nerve myelin sheath maintenance.',
     clinicalMechanisms: [
       {
-        title: 'Diabetic Nerve Myelin Protection',
-        detail: 'Supports the production of phospholipids that insulate peripheral nerves, guarding against diabetic peripheral neuropathy and tingling.'
+        title: 'Cellular Myelin Maintenance',
+        detail: 'Serves as an essential cofactor for methionine synthase, maintaining peripheral nerve fiber health.'
       },
       {
-        title: 'Homocysteine Methylation',
-        detail: 'Converts vascular-toxic homocysteine into benign methionine, protecting the endothelial lining of coronary and brain vessels.'
+        title: 'Homocysteine Clearance',
+        detail: 'Converts toxic homocysteine into methionine, supporting cardiovascular and endothelial health.'
+      },
+      {
+        title: 'Red Blood Cell Synthesis',
+        detail: 'Essential for erythropoiesis in bone marrow, supporting oxygen delivery and physical stamina.'
       }
     ],
-    samiSpecificBenefit: 'Essential neuro-protective support for diabetic nerve health, cognitive sharpness, and daily cellular energy output.',
-    absorptionSynergy: 'Take sublingually or with breakfast.'
+    samiSpecificBenefit: 'Supports optimal nutritional status and neurological wellness as part of an integrated, physician-supervised protocol.',
+    absorptionSynergy: 'Sublingual absorption bypasses intrinsic factor requirements, delivering active methylcobalamin directly to the bloodstream.'
   },
   {
     id: 'omega3',
-    name: 'Omega-3 Select (1000 mg Purified EPA/DHA)',
-    subtitle: 'Cardiovascular & Anti-Inflammatory Lipids',
-    dose: '1000 mg EPA/DHA Daily',
-    timing: '07:00 PM (Evening Dinner)',
-    category: 'Essential Fatty Acids',
+    name: 'Omega-3 Select EPA / DHA (1000 mg)',
+    subtitle: 'Vascular Triglyceride & Anti-Inflammatory Balance',
+    dose: '1000 mg (High EPA/DHA) Daily',
+    timing: '12:30 PM (With Lunch)',
+    category: 'Cardiovascular Lipid & Cellular Membrane',
     badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/40',
     icon: '🐟',
-    targetBiomarkers: ['Serum Triglycerides ↓', 'Resolvins / Protectins ↑', 'Endothelial Flow-Mediated Dilation ↑'],
-    primaryOrgans: ['Heart', 'Vascular Endothelium', 'Joint Cartilage', 'Brain Cell Membranes'],
-    overview: 'Concentrated marine EPA (Eicosapentaenoic Acid) and DHA (Docosahexaenoic Acid) fatty acids that lower circulating blood triglycerides and reduce systemic joint and vascular inflammation.',
+    targetBiomarkers: ['Serum Triglyceride Support', 'Omega-3 Index >8%', 'Healthy Inflammatory Signaling'],
+    primaryOrgans: ['Vascular Endothelium', 'Heart Muscle', 'Liver', 'Cellular Phospholipid Bilayers'],
+    overview: 'Ultra-purified marine triglyceride oil. EPA and DHA incorporate directly into cell membranes, supporting healthy triglyceride levels and promoting balanced inflammatory eicosanoid signaling.',
     clinicalMechanisms: [
       {
-        title: 'Hepatic Triglyceride Reduction',
-        detail: 'Downregulates sterol regulatory element-binding protein 1c (SREBP-1c) in the liver, suppressing VLDL triglyceride production.'
+        title: 'Vascular Lipid Balance',
+        detail: 'Supports hepatic fatty acid oxidation, assisting in maintaining healthy circulating triglyceride levels.'
       },
       {
-        title: 'Anti-Inflammatory Resolvins',
-        detail: 'Converts into specialized pro-resolving mediators (SPMs) that actively turn off chronic inflammatory signaling in blood vessels and joints.'
+        title: 'Specialized Pro-Resolving Mediators (SPMs)',
+        detail: 'Precursor for resolvins, protectins, and maresins that support natural tissue recovery and arterial health.'
+      },
+      {
+        title: 'Cellular Membrane Fluidity',
+        detail: 'Improves membrane elasticity in red blood cells and vascular walls, promoting smooth capillary microcirculation.'
       }
     ],
-    samiSpecificBenefit: 'Works synergistically with Rosuvastatin to keep blood clean, plaques stabilized, and knees/joints smooth during squats and machine workouts.',
-    absorptionSynergy: 'Take with evening dinner containing dietary fats for maximum emulsification and lymphatic absorption.'
+    samiSpecificBenefit: 'Supports healthy lipid ratios and joint comfort during daily calisthenics and gym machine training.',
+    absorptionSynergy: 'Take with lunch containing dietary fats. Emulsified by bile salts for optimal lymphatic absorption.'
   },
   {
     id: 'magnesium',
-    name: 'Magnesium Citrate (200–400 mg)',
-    subtitle: 'Insulin Receptor & Nocturnal Recovery',
-    dose: '200–400 mg Daily',
-    timing: '09:30 PM (30–60m Before Bed)',
-    category: 'Electrolyte & Neuromuscular Relaxant',
-    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    name: 'Magnesium Citrate 150 mg',
+    subtitle: 'Insulin Sensitivity & Neuromuscular Relaxation',
+    dose: '150 mg Daily',
+    timing: '09:30 PM (Before Bed with Water)',
+    category: 'Electrolyte & Neuromuscular Balance',
+    badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40',
     icon: '🌙',
-    targetBiomarkers: ['Insulin Tyrosine Kinase Activation ↑', 'Nocturnal Heart Rate Variability (HRV) ↑', 'GABA Receptor Binding ↑'],
-    primaryOrgans: ['Skeletal Muscle', 'Heart Conductive System', 'Central Nervous System', 'Pancreas'],
-    overview: 'Essential mineral cofactor for over 300 enzymatic reactions, crucial for insulin receptor phosphorylation, smooth muscle relaxation, and deep restorative sleep.',
+    targetBiomarkers: ['Insulin Tyrosine Kinase Activity', 'Parasympathetic HRV', 'Nocturnal Muscle Relaxation'],
+    primaryOrgans: ['Skeletal Muscle Cells', 'Pancreatic Beta Cells', 'Central Nervous System', 'Heart'],
+    overview: 'Essential mineral cofactor for over 300 biochemical enzymatic reactions, including ATP stabilization, insulin receptor tyrosine kinase phosphorylation, and GABAergic sleep recovery.',
     clinicalMechanisms: [
       {
-        title: 'Insulin Receptor Tyrosine Kinase',
-        detail: 'Magnesium is the obligate cofactor for tyrosine kinase phosphorylation inside cells; deficiency induces immediate peripheral insulin resistance.'
+        title: 'Insulin Receptor Kinase Support',
+        detail: 'Required for the tyrosine kinase phosphorylation of insulin receptors, facilitating healthy intracellular glucose uptake.'
       },
       {
-        title: 'GABA-A Receptor Activation & Muscle Relaxation',
-        detail: 'Binds to GABA neuro-receptors in the brain and displaces intracellular calcium in muscle fibers, releasing physical tension and improving sleep architecture.'
+        title: 'NMDA Receptor Balance',
+        detail: 'Acts as a natural physiological calcium channel blocker, reducing neuronal excitability and promoting restorative sleep.'
+      },
+      {
+        title: 'Vascular Smooth Muscle Relaxation',
+        detail: 'Promotes arterial smooth muscle relaxation, supporting healthy nocturnal blood pressure balance.'
       }
     ],
-    samiSpecificBenefit: 'Promotes deep Stage 3/4 slow-wave sleep (where growth hormone and recovery peak) and keeps morning fasting glucose low.',
-    absorptionSynergy: 'Take with a glass of water before bed.'
+    samiSpecificBenefit: 'Supports overnight muscle recovery, restful sleep, and healthy morning fasting glucose regulation.',
+    absorptionSynergy: 'Take 30–60 minutes before bed with water. Organic citrate salt provides gentle absorption and muscle relaxation.'
   }
 ]
 
 export function SupplementBenefitsCockpit() {
-  const [selectedId, setSelectedId] = useState<string>('ultra-testo-boost')
-
-  const selected = SUPPLEMENT_BENEFITS.find(s => s.id === selectedId) || SUPPLEMENT_BENEFITS[0]
+  const [selectedSupplement, setSelectedSupplement] = useState<SupplementData | null>(null)
 
   return (
-    <div className="space-y-6">
-      
-      {/* Top Banner */}
-      <div className="rounded-3xl border border-amber-500/30 bg-gradient-to-br from-[#120e0a] via-[#10141a] to-black p-6 sm:p-7 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-amber-500/10 blur-[90px] pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
+    <div className="space-y-4 select-none">
+      {/* Header Banner */}
+      <div className="relative overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-r from-amber-950/40 via-[#0d1416] to-[#0a0a0f] p-5 sm:p-6 shadow-2xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 border border-amber-500/40 text-amber-300">
-                Evidence-Based Pharmacognosy
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-500/30 flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-amber-400" />
+                [CLINICIAN-DEFINED PROTOCOL]
               </span>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/20 border border-teal-500/40 text-teal-300">
-                8 Active Supplements
-              </span>
+              <span className="text-[10px] font-mono font-bold text-white/50">8 Active Formulas</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-amber-400" /> Clinical Supplement Benefits &amp; Bio-Mechanisms
-            </h2>
-            <p className="text-xs sm:text-sm text-foreground/70 font-medium">
-              Detailed biological mechanisms, target organs, absorption synergies, and metabolic rationale for Sami Suliman.
+            <h2 className="text-xl sm:text-2xl font-black text-white">Clinical Supplement Matrix</h2>
+            <p className="text-xs text-foreground/75 font-medium max-w-xl">
+              Tap any supplement to view its biochemical rationale, active ingredients, target biomarkers, and metabolic absorption synergies.
             </p>
           </div>
         </div>
-
-        {/* Horizontal Selector Pill Buttons */}
-        <div className="mt-5 flex items-center gap-2 overflow-x-auto scrollbar-none pb-2">
-          {SUPPLEMENT_BENEFITS.map(supp => {
-            const isSelected = supp.id === selectedId
-            return (
-              <button
-                key={supp.id}
-                type="button"
-                onClick={() => setSelectedId(supp.id)}
-                className={`px-3.5 py-2.5 rounded-2xl text-xs font-black transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap min-h-[44px] ${
-                  isSelected
-                    ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 shadow-lg shadow-amber-500/20 scale-105'
-                    : 'bg-white/[0.03] text-foreground/70 border border-white/[0.08] hover:bg-white/[0.08] hover:text-white'
-                }`}
-              >
-                <span>{supp.icon}</span>
-                <span>{supp.name.split('(')[0].replace('Webber Naturals ', '')}</span>
-              </button>
-            )
-          })}
-        </div>
       </div>
 
-      {/* Selected Supplement Deep-Dive Hero Card */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={selected.id}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-          className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#0e1217] via-[#0f151c] to-black p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden"
-        >
-          {/* Ambient Glow */}
-          <div className="absolute top-0 right-1/4 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          {/* Header Info */}
-          <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-4 pb-5 border-b border-white/[0.08]">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${selected.badgeColor}`}>
-                  {selected.category}
+      {/* 2-Column Responsive Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        {CLINICAL_SUPPLEMENTS.map(supp => (
+          <motion.div
+            key={supp.id}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setSelectedSupplement(supp)}
+            className="group cursor-pointer rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-black/60 p-4 hover:border-amber-500/40 hover:bg-white/[0.06] transition-all shadow-lg flex flex-col justify-between"
+          >
+            <div>
+              {/* Top Meta Bar */}
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black uppercase border ${supp.badgeColor}`}>
+                  {supp.category}
                 </span>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/[0.05] border border-white/10 text-foreground/80">
-                  Dose: {selected.dose}
+                <span className="text-xs font-mono font-bold text-white/60 flex items-center gap-1">
+                  <Clock className="w-3 h-3 text-amber-400" /> {supp.timing.split('(')[0]}
                 </span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-3">
-                <span className="text-3xl">{selected.icon}</span> {selected.name}
-              </h3>
-              <p className="text-xs sm:text-sm font-semibold text-amber-300">
-                {selected.subtitle}
+
+              {/* Title & Dose */}
+              <div className="flex items-start gap-2.5 mb-2">
+                <div className="w-9 h-9 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center text-lg flex-shrink-0 group-hover:scale-105 transition-transform">
+                  {supp.icon}
+                </div>
+                <div>
+                  <h3 className="text-sm font-black text-white group-hover:text-amber-300 transition-colors leading-snug">
+                    {supp.name}
+                  </h3>
+                  <div className="text-[11px] font-bold text-teal-300/90">{supp.dose}</div>
+                </div>
+              </div>
+
+              <p className="text-[11px] text-foreground/70 font-medium line-clamp-2 leading-relaxed mb-3">
+                {supp.overview}
               </p>
             </div>
 
-            <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/10 text-left md:text-right self-start md:self-auto space-y-0.5">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/50 flex items-center gap-1 md:justify-end">
-                <Clock className="w-3 h-3 text-teal-400" /> Optimal Clinical Timing
+            {/* Bottom Target Biomarkers Pills */}
+            <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between">
+              <div className="flex items-center gap-1.5 overflow-hidden">
+                <Activity className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                <span className="text-[10px] font-bold text-foreground/75 truncate">
+                  {supp.targetBiomarkers.slice(0, 2).join(' · ')}
+                </span>
               </div>
-              <div className="text-xs font-black text-teal-300">{selected.timing}</div>
+              <span className="text-[10px] font-black text-amber-400 flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform flex-shrink-0">
+                Details <ChevronRight className="w-3 h-3" />
+              </span>
             </div>
-          </div>
+          </motion.div>
+        ))}
+      </div>
 
-          {/* Overview Statement */}
-          <div className="relative z-10 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] text-xs sm:text-sm text-foreground/85 leading-relaxed font-medium">
-            {selected.overview}
-          </div>
+      {/* Comprehensive Medical Disclaimer Box */}
+      <div className="p-4 rounded-2xl border border-white/10 bg-white/[0.02] flex items-start gap-3">
+        <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+        <p className="text-[11px] text-white/60 font-medium leading-relaxed">
+          <strong>Educational &amp; Clinical Disclaimer:</strong> Supplement biochemical mechanisms and target biomarker pathways are provided for educational and progress-tracking reference only. They do not guarantee disease prevention, diagnosis, or treatment. Always follow your prescribing physician&apos;s directives before making changes to medications or supplements.
+        </p>
+      </div>
 
-          {/* Target Biomarkers & Primary Organs Grid */}
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <div className="p-4 rounded-2xl bg-teal-500/10 border border-teal-500/25 space-y-2">
-              <div className="text-[11px] font-black uppercase tracking-wider text-teal-300 flex items-center gap-1.5">
-                <Activity className="w-3.5 h-3.5" /> Target Biomarkers &amp; Clinical Endpoints
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {selected.targetBiomarkers.map((bm, i) => (
-                  <span key={i} className="px-2.5 py-1 rounded-lg bg-teal-500/20 text-white font-bold text-[11px]">
-                    {bm}
-                  </span>
-                ))}
-              </div>
-            </div>
+      {/* Deep-Dive Slide-Over / Modal */}
+      <AnimatePresence>
+        {selectedSupplement && (
+          <div className="fixed inset-0 z-[120] flex items-end md:items-center justify-center p-0 md:p-6 select-none">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedSupplement(null)}
+              className="fixed inset-0 bg-black/85 backdrop-blur-md cursor-pointer"
+            />
 
-            <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/25 space-y-2">
-              <div className="text-[11px] font-black uppercase tracking-wider text-blue-300 flex items-center gap-1.5">
-                <Heart className="w-3.5 h-3.5" /> Primary Target Organs
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {selected.primaryOrgans.map((organ, i) => (
-                  <span key={i} className="px-2.5 py-1 rounded-lg bg-blue-500/20 text-white font-bold text-[11px]">
-                    {organ}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Multi-Ingredient Breakdown (if formula like Testo Boost) */}
-          {selected.ingredients && (
-            <div className="relative z-10 space-y-3">
-              <div className="text-xs font-black uppercase tracking-wider text-amber-300 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-400" /> Active Standardized Botanical &amp; Mineral Ingredients
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {selected.ingredients.map((ing, i) => (
-                  <div key={i} className="p-3.5 rounded-2xl bg-amber-500/5 border border-amber-500/20 space-y-1">
-                    <div className="flex items-center justify-between text-xs font-black text-white">
-                      <span>{ing.name}</span>
-                      <span className="font-mono text-[10px] text-amber-300 bg-amber-500/15 px-2 py-0.5 rounded-md">
-                        {ing.dose}
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-foreground/70 font-medium leading-relaxed">
-                      {ing.role}
+            {/* Modal Drawer */}
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 50, scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+              className="relative z-[121] w-full md:max-w-xl max-h-[90vh] overflow-y-auto rounded-t-[2.5rem] md:rounded-[2.5rem] bg-[#0c1415] border border-amber-500/40 shadow-[0_20px_70px_rgba(0,0,0,0.9)] p-5 md:p-6 space-y-5"
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between gap-3 border-b border-white/[0.08] pb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center text-2xl flex-shrink-0">
+                    {selectedSupplement.icon}
+                  </div>
+                  <div>
+                    <span className={`inline-block px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider mb-1 border ${selectedSupplement.badgeColor}`}>
+                      {selectedSupplement.category}
+                    </span>
+                    <h2 className="text-xl font-black text-white leading-tight">
+                      {selectedSupplement.name}
+                    </h2>
+                    <p className="text-xs text-amber-300/90 font-bold mt-0.5">
+                      {selectedSupplement.subtitle}
                     </p>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Biological Modes of Action */}
-          <div className="relative z-10 space-y-3">
-            <div className="text-xs font-black uppercase tracking-wider text-teal-300 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-teal-400" /> Key Biological Modes of Action
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {selected.clinicalMechanisms.map((mech, i) => (
-                <div key={i} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-1.5">
-                  <div className="font-bold text-xs text-white flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
-                    <span>{mech.title}</span>
-                  </div>
-                  <p className="text-[11px] text-foreground/70 font-medium leading-relaxed">
-                    {mech.detail}
-                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Sami-Specific Metabolic Impact & Absorption Synergy */}
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-4 border-t border-white/[0.08]">
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/30 space-y-1">
-              <div className="text-[10px] font-black uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
-                <Scale className="w-3.5 h-3.5 text-amber-400" /> Sami&apos;s Specific Clinical Target
+                <button
+                  onClick={() => setSelectedSupplement(null)}
+                  className="rounded-full bg-white/10 hover:bg-white/20 p-2 text-white/80 hover:text-white transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
-              <p className="text-xs text-foreground/90 font-semibold leading-relaxed">
-                {selected.samiSpecificBenefit}
-              </p>
-            </div>
 
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-teal-500/10 to-transparent border border-teal-500/30 space-y-1">
-              <div className="text-[10px] font-black uppercase tracking-wider text-teal-300 flex items-center gap-1.5">
-                <Droplets className="w-3.5 h-3.5 text-teal-400" /> Clinical Absorption &amp; Timing Synergy
+              {/* Dosage & Timing Cards */}
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/10 space-y-0.5">
+                  <div className="text-[9px] font-mono uppercase tracking-wider text-white/50">Daily Dosage</div>
+                  <div className="text-xs font-black text-white">{selectedSupplement.dose}</div>
+                </div>
+                <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/10 space-y-0.5">
+                  <div className="text-[9px] font-mono uppercase tracking-wider text-white/50">Optimal Timing</div>
+                  <div className="text-xs font-black text-amber-300 truncate">{selectedSupplement.timing}</div>
+                </div>
               </div>
-              <p className="text-xs text-foreground/90 font-semibold leading-relaxed">
-                {selected.absorptionSynergy}
-              </p>
-            </div>
-          </div>
 
-        </motion.div>
+              {/* Overview */}
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-950/20 to-transparent border border-amber-500/25 space-y-1">
+                <div className="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Info className="w-3.5 h-3.5 text-amber-400" /> Biochemical Overview
+                </div>
+                <p className="text-xs text-white/85 font-medium leading-relaxed">
+                  {selectedSupplement.overview}
+                </p>
+              </div>
+
+              {/* Ingredients List (if complex formula) */}
+              {selectedSupplement.ingredients && selectedSupplement.ingredients.length > 0 && (
+                <div className="space-y-2">
+                  <div className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-teal-400" /> Active Ingredients &amp; Rationale
+                  </div>
+                  <div className="space-y-2">
+                    {selectedSupplement.ingredients.map((ing, i) => (
+                      <div key={i} className="p-3 rounded-xl bg-white/[0.02] border border-white/10 space-y-1">
+                        <div className="flex items-center justify-between text-xs font-bold text-teal-300">
+                          <span>{ing.name}</span>
+                          <span className="font-mono text-[10px] text-white/60 bg-black/40 px-2 py-0.5 rounded border border-white/10">{ing.dose}</span>
+                        </div>
+                        <p className="text-[11px] text-white/70 font-medium leading-relaxed">
+                          {ing.role}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Clinical Mechanisms */}
+              <div className="space-y-2">
+                <div className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                  <HeartPulse className="w-3.5 h-3.5 text-cyan-400" /> Cellular Mechanisms of Action
+                </div>
+                <div className="space-y-2">
+                  {selectedSupplement.clinicalMechanisms.map((mech, i) => (
+                    <div key={i} className="p-3.5 rounded-2xl bg-white/[0.02] border border-cyan-500/20 space-y-1">
+                      <div className="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" /> {mech.title}
+                      </div>
+                      <p className="text-[11px] text-white/75 font-medium leading-relaxed pl-5">
+                        {mech.detail}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Target Biomarkers & Organs */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-1.5">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold">Target Biomarkers</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedSupplement.targetBiomarkers.map((b, i) => (
+                      <span key={i} className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/15 text-amber-200 border border-amber-500/30">
+                        {b}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-1.5">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-teal-400 font-bold">Primary Target Organs</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedSupplement.primaryOrgans.map((o, i) => (
+                      <span key={i} className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-teal-500/15 text-teal-200 border border-teal-500/30">
+                        {o}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Absorption Synergy */}
+              <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-1">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-bold">Bioavailability &amp; Timing</div>
+                <p className="text-xs text-white/80 font-medium leading-relaxed">
+                  {selectedSupplement.absorptionSynergy}
+                </p>
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedSupplement(null)}
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg hover:brightness-110 transition-all cursor-pointer"
+              >
+                Close Protocol Details
+              </button>
+            </motion.div>
+          </div>
+        )}
       </AnimatePresence>
-
     </div>
   )
 }
+
+export default SupplementBenefitsCockpit
