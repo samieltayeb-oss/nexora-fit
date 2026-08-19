@@ -54,22 +54,39 @@ export default function ProgressPage() {
   const [activeTab, setActiveTab] = useState<'quick_log' | 'watch_setup'>('quick_log')
   const [syncSuccess, setSyncSuccess] = useState<boolean>(false)
 
-  // Load persisted composition
+  // Load persisted composition & sync with profile
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_COMPOSITION)
-      if (saved) {
-        const parsed = JSON.parse(saved)
-        if (parsed.weight) {
-          setWeight(parsed.weight)
-          setInputWeight(parsed.weight.toString())
-          if (parsed.bodyFat) setBodyFat(parsed.bodyFat)
-        }
-      }
-    } catch (e) {
-      console.warn('Could not read localStorage', e)
+    if (profile.baselineWeightKg) {
+      setWeight(profile.baselineWeightKg)
+      setInputWeight(profile.baselineWeightKg.toString())
+      recalculateMetrics(profile.baselineWeightKg, profile.scaleComposition?.bodyFatPercent || 23.6)
     }
-  }, [])
+
+    async function loadLatestDb() {
+      try {
+        const supabase = createClient()
+        const { data: latest } = await supabase
+          .from('body_measurements')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle()
+
+        if (latest && latest.weight_kg) {
+          const w = Number(latest.weight_kg)
+          const bf = latest.body_fat_percentage ? Number(latest.body_fat_percentage) : 23.6
+          setWeight(w)
+          setInputWeight(w.toString())
+          if (latest.body_fat_percentage) setBodyFat(bf)
+          recalculateMetrics(w, bf)
+        }
+      } catch (err) {
+        console.warn('Could not load latest body measurement from Supabase', err)
+      }
+    }
+
+    loadLatestDb()
+  }, [profile.baselineWeightKg, profile.scaleComposition])
 
   const recalculateMetrics = (newWeight: number, newBodyFat: number) => {
     const heightM = 1.72
