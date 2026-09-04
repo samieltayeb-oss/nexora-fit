@@ -20,9 +20,9 @@ const serwist = new Serwist({
     {
       matcher: ({ url }) => {
         return (
-          url.pathname.startsWith('/api/health/sync') ||
-          url.pathname.startsWith('/auth') ||
-          url.pathname.startsWith('/login')
+          url.pathname.includes('/api/health/sync') ||
+          url.pathname.includes('/auth') ||
+          url.pathname.includes('/login')
         );
       },
       handler: new NetworkOnly(),

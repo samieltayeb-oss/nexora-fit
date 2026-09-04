@@ -7,6 +7,7 @@ import { CalendarDays, Dumbbell, TrendingUp, HeartPulse, Menu } from 'lucide-rea
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageTransition } from '@/design/components/page-transition'
 import { NexoraLogo } from '@/components/brand/nexora-logo'
+import { NexoraGlobalBar } from '@/components/navigation/nexora-global-bar'
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
@@ -21,8 +22,9 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full mx-auto md:ml-[96px] relative pb-[110px] md:pb-8 pt-safe px-safe">
-        <div className="max-w-5xl mx-auto w-full pt-4 md:pt-10 px-4 md:px-8">
+      <main className="flex-1 w-full mx-auto md:ml-[96px] relative pb-[110px] md:pb-8 pt-safe">
+        <NexoraGlobalBar />
+        <div className="max-w-5xl mx-auto w-full pt-4 md:pt-8 px-4 md:px-8">
           <PageTransition>
             {children}
           </PageTransition>

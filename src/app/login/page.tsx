@@ -10,6 +10,16 @@ export default async function LoginPage({
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-md">
+        <div className="flex justify-between items-center mb-6">
+          <a
+            href="https://nexorayyc.io/"
+            className="text-xs text-slate-400 hover:text-amber-300 transition-colors flex items-center gap-1.5"
+          >
+            ← Return to NEXORA Flagship
+          </a>
+          <span className="text-[10px] font-mono text-slate-500 uppercase">nexorayyc.io</span>
+        </div>
+
         <div className="flex justify-center mb-8">
           <NexoraLogo size="lg" showWordmark={true} showTagline={true} />
         </div>
