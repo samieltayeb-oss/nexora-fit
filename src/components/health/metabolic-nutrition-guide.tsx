@@ -391,7 +391,7 @@ export function MetabolicNutritionGuide() {
               <Utensils className="w-6 h-6 text-teal-400" /> Metabolic Food &amp; Coffee Blueprint
             </h2>
             <p className="text-xs sm:text-sm text-foreground/70 font-medium mt-1">
-              Evidence-based food recommendations, coffee timing, and nutrient synergy for Sami Suliman.
+              Evidence-based food recommendations, coffee timing, and nutrient synergy tailored to you.
             </p>
           </div>
 
@@ -610,7 +610,7 @@ export function MetabolicNutritionGuide() {
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="px-2.5 py-0.5 bg-teal-500/20 border border-teal-500/30 text-teal-300 text-[10px] font-black uppercase rounded-full">
-                      Sami Suliman Daily Schedule
+                      Your Daily Schedule
                     </span>
                   </div>
                   <h3 className="font-bold text-xl text-white">Daily Meal, Coffee &amp; Supplement Timeline</h3>

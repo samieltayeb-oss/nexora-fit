@@ -40,10 +40,10 @@ export interface UserProfile {
 }
 
 export const DEFAULT_USER_PROFILE: UserProfile = {
-  name: 'Sami Suliman',
-  email: 'sami.suliman@gmail.com',
-  avatarUrl: '/brand/owner.png',
-  medicalCondition: 'Diabetic Type 2 Protocol',
+  name: 'Member',
+  email: '',
+  avatarUrl: '/brand/nexorafit.png',
+  medicalCondition: '',
   baselineWeightKg: 81.60,
   targetWeightKg: 75.00,
   glucoseUnit: 'mmol/L',

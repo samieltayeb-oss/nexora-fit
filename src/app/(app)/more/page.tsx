@@ -312,7 +312,7 @@ export default function MorePage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-white">Type 2 Diabetes Safety Limits</h3>
-                    <p className="text-xs text-foreground/60">Sami Suliman • Clinical Safeguards</p>
+                    <p className="text-xs text-foreground/60">Your account • Clinical Safeguards</p>
                   </div>
                 </div>
                 <button onClick={() => setShowMedicalModal(false)} className="text-white/60 hover:text-white p-1">

@@ -13,7 +13,7 @@ export default function OnboardingWizard() {
 
   // State
   const [medicalCleared, setMedicalCleared] = useState(true)
-  const [name, setName] = useState('Sami Suliman')
+  const [name, setName] = useState('')
   const [dob, setDob] = useState('1980-05-02')
   const [height, setHeight] = useState('172')
   const [weight, setWeight] = useState('81.0')
