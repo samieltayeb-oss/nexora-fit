@@ -27,11 +27,24 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // Update session cookies gracefully without blocking access
+  // Refresh the session. Private pages require a signed-in user (fail closed).
+  let user: unknown = null
   try {
-    await supabase.auth.getUser()
-  } catch (err) {
-    // Ignore auth lookup errors for seamless access
+    const { data } = await supabase.auth.getUser()
+    user = data?.user ?? null
+  } catch {
+    user = null
+  }
+
+  const path = request.nextUrl.pathname
+  const isPrivate = /^\/(health|dashboard|workout|progress|waistline|journey|more|admin|onboarding)(\/|$)/.test(path)
+  if (isPrivate && !user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    url.search = ''
+    const redirect = NextResponse.redirect(url)
+    supabaseResponse.cookies.getAll().forEach((c) => redirect.cookies.set(c))
+    return redirect
   }
 
   return supabaseResponse
